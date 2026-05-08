@@ -125,7 +125,7 @@ tbody tr:hover{background:var(--cream)}
 <body>
 
 <div class="header">
-  <div class="eyebrow">Brand Analysis Report · Q2 2026 · Benchmark: Zalando Taxonomy (88 SKU Rows)</div>
+  <div class="eyebrow">Brand Analysis Report · Q2 2026 · Benchmark: Zalando Taxonomy (88 Article Rows)</div>
   <h1 class="header-title"><em>HEYMALE</em> — Peta Ekspansi Kategori</h1>
   <p class="header-sub">Analisis gap portofolio berbasis data CSV Zalando (88 baris, 14 kategori utama), tren global terkini 2025–Q1 2026, dan peluang ekspansi — semua dikaitkan secara strict ke Main Cat → Category → Sub Category Zalando.</p>
   <div class="brand-pill">
@@ -250,7 +250,7 @@ tbody tr:hover{background:var(--cream)}
   </div>
   <div class="two-col" style="margin-top:16px">
     <div class="card"><div class="label">Checklist sebelum masuk kategori baru</div><div id="checklist"></div></div>
-    <div class="card"><div class="label">Target SKU per fase (berdasarkan Zalando sub-category)</div><div id="sku-targets"></div></div>
+    <div class="card"><div class="label">Target Article per fase (berdasarkan Zalando sub-category)</div><div id="sku-targets"></div></div>
   </div>
 </div>
 
@@ -476,7 +476,7 @@ var TRENDS = [
     cagr:"5.8%",priority:"P1",
     title:"Knitwear → Knitted jumper — Premium Layering Gap",
     market:"Global knitwear market CAGR 5.8% (Mordor Intelligence 2025–32). CNN Jan 2026 melaporkan quarter-zip & turtleneck sebagai 'foundational menswear item 2026'. Style Arcade FW26-27: layering knitwear menjadi key purchase driver, bukan sekadar pelengkap. Elevated basics dengan texture premium adalah sinyal pasar yang kuat.",
-    heymale:"HEYMALE punya 11 Knitted jumper dan 4 Cardigans. Knitted jumper masih sangat tipis — target 25–35 SKU untuk solid coverage. Mulai dari crewneck & half-zip dalam palet netral; tambah turtleneck sebagai statement piece yang viral 2026.",
+    heymale:"HEYMALE punya 11 Knitted jumper dan 4 Cardigans. Knitted jumper masih sangat tipis — target 25–35 Article untuk solid coverage. Mulai dari crewneck & half-zip dalam palet netral; tambah turtleneck sebagai statement piece yang viral 2026.",
     fit:"Core — effortless smart-casual layering"
   },
   {
@@ -484,7 +484,7 @@ var TRENDS = [
     cagr:"5.8%",priority:"P2",
     title:"Knitwear → Cardigans — Office-to-Weekend Layer",
     market:"Cardigan sebagai 'smart-casual outer layer' tumbuh kuat di segmen premium accessible. Vogue Business 2025: open-front layering piece pria naik signifikan di Asia Tenggara, terutama versi bahan medium-weight yang bisa dipakai AC ruangan maupun outdoor malam.",
-    heymale:"4 SKU sangat tipis untuk kategori yang masuk weekend + workwear sekaligus. Target 12–18 SKU: open-front knit cardigan, button-through, dan rib-knit minimalist.",
+    heymale:"4 Article sangat tipis untuk kategori yang masuk weekend + workwear sekaligus. Target 12–18 Article: open-front knit cardigan, button-through, dan rib-knit minimalist.",
     fit:"Core — versatile layering, brand-fit tinggi"
   },
   // ── SUITS & TAILORING ────────────────────────────
@@ -493,15 +493,15 @@ var TRENDS = [
     cagr:"4.5%",priority:"P1",
     title:"Suits & Tailoring → Suits — High AOV Complete Set",
     market:"Global formal tailoring CAGR 4.5% (Grand View Research 2026–30). Lyst 2026: intentional dressing dan 'investasi wardrobe' menjadi perilaku utama konsumen pria. Indonesia adalah salah satu pasar dengan frekuensi event formal tertinggi secara global — pernikahan, wisuda, halal bihalal, Idul Fitri = demand suits sepanjang tahun.",
-    heymale:"HEYMALE hanya 1 SKU Suits — kesenjangan sangat besar. Suits adalah high-AOV item yang cross-sell langsung ke Blazer jackets (9 SKU) dan Suit waistcoats (5 SKU). Mulai dengan 2-piece suit slim-modern dalam warna navy, abu-abu charcoal, hitam.",
+    heymale:"HEYMALE hanya 1 Article Suits — kesenjangan sangat besar. Suits adalah high-AOV item yang cross-sell langsung ke Blazer jackets (9 Article) dan Suit waistcoats (5 Article). Mulai dengan 2-piece suit slim-modern dalam warna navy, abu-abu charcoal, hitam.",
     fit:"Core — complete formal wardrobe solution, high AOV"
   },
   {
     cat:"Suits & Tailoring",s1:"Suit trousers",s2:"",n:0,
     cagr:"4.5%",priority:"P1",
-    title:"Suits & Tailoring → Suit trousers — 0 SKU, Cross-sell Kritis",
+    title:"Suits & Tailoring → Suit trousers — 0 Article, Cross-sell Kritis",
     market:"Suit trousers adalah komponen wajib 'complete tailoring wardrobe'. Pasar formal trousers global tumbuh bersama segmen tailoring CAGR 4.5%. Di Indonesia, pria sering membeli celana formal terpisah dari jas — demand sebagai standalone item juga kuat.",
-    heymale:"0 SKU saat ini padahal HEYMALE punya Blazer (9) dan Suit waistcoats (5). Gap yang tidak logis untuk brand yang ingin jadi 'complete formal solution'. Target: 15–20 SKU slim & regular-fit formal trousers.",
+    heymale:"0 Article saat ini padahal HEYMALE punya Blazer (9) dan Suit waistcoats (5). Gap yang tidak logis untuk brand yang ingin jadi 'complete formal solution'. Target: 15–20 Article slim & regular-fit formal trousers.",
     fit:"Core — wajib untuk complete tailoring coverage"
   },
   {
@@ -509,24 +509,24 @@ var TRENDS = [
     cagr:"3.8%",priority:"P2",
     title:"Suits & Tailoring → Shirts — Dedicated Formal Shirt",
     market:"Kemeja formal dalam konteks suit (bukan casual shirt biasa) adalah kategori terpisah dengan kebutuhan spesifik: hidden buttons, French cuff, spread collar. Demand tinggi untuk bundling dengan suit.",
-    heymale:"HEYMALE sudah punya Shirts > Business Shirts (6 SKU) namun di path Suits & Tailoring belum ada item. Ini bisa diisi dengan kemeja formal yang diposisikan sebagai 'suit companion' — beda dari casual shirts main catalog.",
+    heymale:"HEYMALE sudah punya Shirts > Business Shirts (6 Article) namun di path Suits & Tailoring belum ada item. Ini bisa diisi dengan kemeja formal yang diposisikan sebagai 'suit companion' — beda dari casual shirts main catalog.",
     fit:"Core — suit companion, natural bundle item"
   },
   {
     cat:"Suits & Tailoring",s1:"Blazer jackets",s2:"",n:9,
     cagr:"4.5%",priority:"P2",
-    title:"Suits & Tailoring → Blazer jackets — Ekspansi dari 9 SKU",
+    title:"Suits & Tailoring → Blazer jackets — Ekspansi dari 9 Article",
     market:"Unstructured blazer & 'smart-casual blazer' tumbuh kuat di segment business casual. Pasar Asia Tenggara khususnya mencari blazer yang bisa dipakai kerja dan event — tidak terlalu formal, tidak terlalu kasual.",
-    heymale:"9 SKU ada — solid tapi bisa lebih kuat. Target 18–25 SKU dengan variasi: structured, unstructured/soft-shoulder, linen blazer untuk iklim tropis, dan wool-blend untuk event premium.",
+    heymale:"9 Article ada — solid tapi bisa lebih kuat. Target 18–25 Article dengan variasi: structured, unstructured/soft-shoulder, linen blazer untuk iklim tropis, dan wool-blend untuk event premium.",
     fit:"Core — natural expansion dari existing strength"
   },
   // ── JEANS ───────────────────────────────────────
   {
     cat:"Jeans",s1:"Straight",s2:"",n:0,
     cagr:"4.2%",priority:"P1",
-    title:"Jeans → Straight — Wardrobe Staple 0 SKU",
+    title:"Jeans → Straight — Wardrobe Staple 0 Article",
     market:"Straight-leg jeans adalah kategori paling stabil dan laris dalam menswear denim global. CAGR 4.2% (Allied Market Research 2025). Tidak terpengaruh tren musiman — selalu dibutuhkan. Di Indonesia, straight jeans adalah pilihan utama pria untuk casual dan smart-casual sehari-hari.",
-    heymale:"0 SKU. HEYMALE punya 1 SKU Slim dan 0 SKU Straight — gap fundamental untuk brand yang memposisikan diri sebagai 'complete menswear'. Target: 15–25 SKU (rinse dark, medium grey, stone wash) sebagai fondasi koleksi denim.",
+    heymale:"0 Article. HEYMALE punya 1 Article Slim dan 0 Article Straight — gap fundamental untuk brand yang memposisikan diri sebagai 'complete menswear'. Target: 15–25 Article (rinse dark, medium grey, stone wash) sebagai fondasi koleksi denim.",
     fit:"Core — wardrobe staple, brand fit sangat tinggi"
   },
   {
@@ -534,7 +534,7 @@ var TRENDS = [
     cagr:"4.2%",priority:"P2",
     title:"Jeans → Baggy & Loose — Trend Dominan 2025-26",
     market:"Baggy & barrel leg jeans mencatat +243% arrivals di retailer global (Vogue Business 2025). Style Arcade FW26-27: relaxed silhouette menggantikan slim secara dominan. TikTok fashion content 2025: baggy fit adalah format konten terlaris untuk menswear. Generasi muda Indonesia adopsi tren ini sangat cepat.",
-    heymale:"0 SKU. Ini adalah tren terkuat di denim 2025-26 yang masih sama sekali tidak ada di HEYMALE. Target: 10–15 SKU — mulai dari wide-straight transisi, baru ke full baggy.",
+    heymale:"0 Article. Ini adalah tren terkuat di denim 2025-26 yang masih sama sekali tidak ada di HEYMALE. Target: 10–15 Article — mulai dari wide-straight transisi, baru ke full baggy.",
     fit:"Core — smart-casual modern, TikTok content magnet"
   },
   {
@@ -542,7 +542,7 @@ var TRENDS = [
     cagr:"4.2%",priority:"P2",
     title:"Jeans → Tapered — Smart-Casual Denim",
     market:"Tapered jeans adalah sweet spot antara slim yang terlalu ketat dan baggy yang terlalu longgar — paling populer di urban professional pria Indonesia. Versatile: bisa dipakai dengan blazer maupun sneakers.",
-    heymale:"0 SKU. Tapered fit adalah pilihan paling versatile dan brand-fit untuk HEYMALE — cocok dipasangkan dengan Blazer, Polo, dan Casual Shirt yang sudah kuat.",
+    heymale:"0 Article. Tapered fit adalah pilihan paling versatile dan brand-fit untuk HEYMALE — cocok dipasangkan dengan Blazer, Polo, dan Casual Shirt yang sudah kuat.",
     fit:"Core — versatile fit, paling brand-coherent dari semua denim"
   },
   {
@@ -550,7 +550,7 @@ var TRENDS = [
     cagr:"4.2%",priority:"P3",
     title:"Jeans → Relaxed — Comfort Denim",
     market:"Relaxed fit adalah kelanjutan dari comfort dressing trend. Lebih wearable dari baggy untuk pria yang baru transisi dari slim. Demand stabil.",
-    heymale:"0 SKU. Rekomendasi setelah Straight dan Tapered terbentuk — sebagai variasi ketiga dalam denim offering.",
+    heymale:"0 Article. Rekomendasi setelah Straight dan Tapered terbentuk — sebagai variasi ketiga dalam denim offering.",
     fit:"Core — comfort-forward, cocok untuk ekosistem HEYMALE"
   },
   // ── TROUSERS ────────────────────────────────────
@@ -559,7 +559,7 @@ var TRENDS = [
     cagr:"4.8%",priority:"P2",
     title:"Trousers → Cargo trousers — Utilitarian Upgrade",
     market:"Utility & cargo trousers CAGR 4.8% (Persistence Market Research 2025). 'Smart cargo' — cargo dengan silhouette bersih tanpa pocket berlebihan — tumbuh pesat di segmen pria urban yang ingin fungsionalitas tanpa mengorbankan estetika. Di Indonesia, cargo panjang berbahan ringan sangat relevan untuk iklim tropis.",
-    heymale:"Hanya 1 SKU — hampir tidak ada. Target 10–15 SKU: slim cargo (cleaner look), regular cargo (traditional), dan tech-fabric cargo untuk active-smart positioning.",
+    heymale:"Hanya 1 Article — hampir tidak ada. Target 10–15 Article: slim cargo (cleaner look), regular cargo (traditional), dan tech-fabric cargo untuk active-smart positioning.",
     fit:"Core — utilitarian + smart-casual, sangat brand-fit"
   },
   {
@@ -567,24 +567,24 @@ var TRENDS = [
     cagr:"2.5%",priority:"P3",
     title:"Trousers → Dungarees — Niche, Test Dulu",
     market:"Dungarees untuk pria masih niche tapi ada demand di segmen streetwear-influenced. Tren kecil, relevansi untuk HEYMALE terbatas.",
-    heymale:"0 SKU. Potensi rendah — hanya masukkan sebagai capsule test jika streetwear elements ingin dimasukkan ke brand.",
+    heymale:"0 Article. Potensi rendah — hanya masukkan sebagai capsule test jika streetwear elements ingin dimasukkan ke brand.",
     fit:"Adjacent — niche fit"
   },
   // ── SWEATSHIRTS & HOODIES ───────────────────────
   {
     cat:"Sweatshirts & Hoodies",s1:"Hoodies",s2:"",n:3,
     cagr:"5.1%",priority:"P2",
-    title:"Sweatshirts & Hoodies → Hoodies — Expand dari 3 SKU",
+    title:"Sweatshirts & Hoodies → Hoodies — Expand dari 3 Article",
     market:"Global hoodie market CAGR 5.1% (Mordor Intelligence 2025–30). Hoodie adalah item paling viral di TikTok menswear 2025. Oversized hoodie, premium heavy-weight hoodie, dan zip-up hoodie adalah tiga sub-niche berbeda dengan demand besar. Asia Tenggara: hoodie dipakai sebagai outer layer di ruangan ber-AC.",
-    heymale:"3 SKU sangat tipis. Target 15–20 SKU: pullover hoodie (essentials), zip-up hoodie (layering), oversized hoodie (statement). Palet: hitam, abu tua, cream, navy.",
+    heymale:"3 Article sangat tipis. Target 15–20 Article: pullover hoodie (essentials), zip-up hoodie (layering), oversized hoodie (statement). Palet: hitam, abu tua, cream, navy.",
     fit:"Core — lifestyle essential, TikTok magnet"
   },
   {
     cat:"Sweatshirts & Hoodies",s1:"Sweatshirts",s2:"",n:7,
     cagr:"5.1%",priority:"P2",
-    title:"Sweatshirts & Hoodies → Sweatshirts — Expand dari 7 SKU",
+    title:"Sweatshirts & Hoodies → Sweatshirts — Expand dari 7 Article",
     market:"Crewneck sweatshirt adalah 'forever essential' menswear. Demand premium heavyweight crewneck naik drastis 2025 — Lyst mencatat lonjakan search 'premium basics'. Quiet luxury positioning sangat sesuai: minimal branding, fabric premium.",
-    heymale:"7 SKU ada, perlu di-expand ke 18–25 SKU. Fokus pada: premium crewneck (French terry, heavyweight cotton), graphic minimal, dan tie-dye/wash-effect untuk variasi visual.",
+    heymale:"7 Article ada, perlu di-expand ke 18–25 Article. Fokus pada: premium crewneck (French terry, heavyweight cotton), graphic minimal, dan tie-dye/wash-effect untuk variasi visual.",
     fit:"Core — lifestyle staple, premium basics positioning"
   },
   {
@@ -592,7 +592,7 @@ var TRENDS = [
     cagr:"5.1%",priority:"P3",
     title:"Sweatshirts & Hoodies → Sweat jackets — Athleisure Layer",
     market:"Sweat jacket (zip-up fleece-lined jacket) adalah komponen athleisure yang tumbuh. Bisa diposisikan sebagai casual outer layer yang lebih clean dari hoodie.",
-    heymale:"0 SKU. Potensial sebagai Phase 3 — masukkan setelah Hoodies dan Sweatshirts solid.",
+    heymale:"0 Article. Potensial sebagai Phase 3 — masukkan setelah Hoodies dan Sweatshirts solid.",
     fit:"Adjacent — athleisure outer layer"
   },
   // ── TRACKSUITS & JOGGERS ────────────────────────
@@ -601,15 +601,15 @@ var TRENDS = [
     cagr:"9.7%",priority:"P2",
     title:"Tracksuits & Joggers → Tracksuits — Gym Culture Driver",
     market:"Global athleisure CAGR 9.7% (Fortune Business Insights 2026–34) — pertumbuhan tertinggi di seluruh menswear. Indonesia: gym membership +21% YoY (KenResearch 2025). Coordinated tracksuit (jacket + trouser matching set) adalah produk dengan conversion rate tinggi karena nilai estetika sekaligus fungsional. Di Indonesia, dipakai gym, olahraga pagi, dan casual weekend.",
-    heymale:"0 SKU. Target: 8–12 matching sets dalam palet netral (hitam, abu, navy). HANYA full-length — konsisten dengan brand values HEYMALE (covered, modest activewear).",
+    heymale:"0 Article. Target: 8–12 matching sets dalam palet netral (hitam, abu, navy). HANYA full-length — konsisten dengan brand values HEYMALE (covered, modest activewear).",
     fit:"Adjacent — modest activewear, brand-fit dengan filter ketat"
   },
   {
     cat:"Tracksuits & Joggers",s1:"Joggers",s2:"",n:1,
     cagr:"9.7%",priority:"P2",
-    title:"Tracksuits & Joggers → Joggers — Expand dari 1 SKU",
+    title:"Tracksuits & Joggers → Joggers — Expand dari 1 Article",
     market:"Jogger trousers sebagai athleisure staple. Tumbuh bersama gym culture dan WFH comfort culture. Jogger premium (tech-fabric, slim-tapered silhouette) adalah item yang bisa dipakai gym sampai casual weekend.",
-    heymale:"Hanya 1 SKU (di Tracksuits & Joggers) — perlu ekspansi signifikan. Target 10–15 SKU: slim-tapered jogger, wide-leg lounge jogger, dan tech-fabric active jogger.",
+    heymale:"Hanya 1 Article (di Tracksuits & Joggers) — perlu ekspansi signifikan. Target 10–15 Article: slim-tapered jogger, wide-leg lounge jogger, dan tech-fabric active jogger.",
     fit:"Core — versatile athleisure, brand-fit tinggi"
   },
   // ── LOUNGEWEAR & SLEEPWEAR ──────────────────────
@@ -618,7 +618,7 @@ var TRENDS = [
     cagr:"5.5%",priority:"P3",
     title:"Loungewear & Sleepwear → Trousers — Elevated Home Comfort",
     market:"Loungewear market 2x level pre-pandemi (McKinsey 2025). 'Elevated loungewear' — yaitu lounge pieces yang clean, minimal, dan bisa dipakai di luar rumah — adalah sub-niche tumbuh paling cepat. D&G pyjama dressing masuk SS26 runway. WFH culture Indonesia mendorong demand komfort yang tetap 'presentable'.",
-    heymale:"0 SKU. Masukkan sebagai lounge trousers bermaterial premium (linen, modal) yang bisa double sebagai casual wear — bukan pyjama murni. Positioning: 'smart home comfort'.",
+    heymale:"0 Article. Masukkan sebagai lounge trousers bermaterial premium (linen, modal) yang bisa double sebagai casual wear — bukan pyjama murni. Positioning: 'smart home comfort'.",
     fit:"Adjacent — elevated comfort, brand-fit dengan positioning yang tepat"
   },
   {
@@ -626,16 +626,16 @@ var TRENDS = [
     cagr:"5.5%",priority:"P3",
     title:"Loungewear & Sleepwear → Shirts — Linen Comfort Shirts",
     market:"Linen & lightweight shirts sebagai loungewear-crossover tren kuat 2025-26. Bisa diposisikan sebagai 'home-to-café' shirts — bukan murni sleepwear.",
-    heymale:"0 SKU. Bisa diisi dengan linen overshirts bermaterial ringan yang positioning-nya antara loungewear dan casual wear.",
+    heymale:"0 Article. Bisa diisi dengan linen overshirts bermaterial ringan yang positioning-nya antara loungewear dan casual wear.",
     fit:"Adjacent — crossover positioning"
   },
   // ── JACKETS (Relevan) ─────────────────────────────
   {
     cat:"Jackets",s1:"Lightweight jackets",s2:"Bomber Jackets",n:5,
     cagr:"4.0%",priority:"P2",
-    title:"Jackets → Bomber Jackets — Expand dari 5 SKU",
+    title:"Jackets → Bomber Jackets — Expand dari 5 Article",
     market:"Bomber jacket adalah statement casual piece yang konsisten di menswear. CAGR 4.0%. Di Indonesia, bomber dipakai sebagai outer layer ringan di malam hari dan AC.",
-    heymale:"5 SKU — ada tapi tipis. Target 12–15 SKU: satin bomber (premium), nylon bomber (everyday), dan varsity-inspired bomber. Palet: hitam, navy, olive, cream.",
+    heymale:"5 Article — ada tapi tipis. Target 12–15 Article: satin bomber (premium), nylon bomber (everyday), dan varsity-inspired bomber. Palet: hitam, navy, olive, cream.",
     fit:"Core — casual statement, brand-fit"
   },
   {
@@ -643,7 +643,7 @@ var TRENDS = [
     cagr:"4.0%",priority:"P2",
     title:"Jackets → Denim jackets — Synergy dengan Denim Expansion",
     market:"Denim jacket tumbuh bersama whole denim category. Terutama kuat sebagai layering piece yang bisa dipakai dengan casual shirts maupun T-shirts.",
-    heymale:"5 SKU — tipis. Jika HEYMALE ekspansi ke Jeans, maka denim jacket adalah natural bundle partner. Target 10–15 SKU.",
+    heymale:"5 Article — tipis. Jika HEYMALE ekspansi ke Jeans, maka denim jacket adalah natural bundle partner. Target 10–15 Article.",
     fit:"Core — natural denim ecosystem play"
   },
   // ── SKIP CATEGORIES ─────────────────────────────
@@ -652,7 +652,7 @@ var TRENDS = [
     cagr:"5.5%",priority:"SKIP",
     title:"Shorts — Off-brand, Skip",
     market:"Demand tinggi secara global, tapi tidak sesuai brand values HEYMALE yang fokus pada covered, modest menswear.",
-    heymale:"0 SKU. Direkomendasikan skip dari seluruh roadmap.",
+    heymale:"0 Article. Direkomendasikan skip dari seluruh roadmap.",
     fit:"Off-brand — tidak sesuai DNA HEYMALE"
   },
   {
@@ -660,7 +660,7 @@ var TRENDS = [
     cagr:"7.4%",priority:"SKIP",
     title:"Swimwear — Off-brand, Skip",
     market:"Swimwear CAGR 7.4% secara global namun tidak sesuai brand positioning HEYMALE.",
-    heymale:"0 SKU. Skip dari seluruh roadmap.",
+    heymale:"0 Article. Skip dari seluruh roadmap.",
     fit:"Off-brand — tidak sesuai DNA HEYMALE"
   }
 ];
@@ -686,7 +686,7 @@ TRENDS.forEach(function(t,i){
   var isSkip=t.priority==='SKIP';
   var priColor=isSkip?'#bbb':t.priority==='P1'?'var(--red)':t.priority==='P2'?'var(--accent)':'var(--green)';
   var pathStr='<span class="cat-path">'+t.cat+' → '+t.s1+(t.s2?' → '+t.s2:'')+'</span>';
-  var nLabel='<span class="pill '+(t.n===0?'pill-red':t.n<6?'pill-orange':'pill-green')+'">'+t.n+' SKU</span>';
+  var nLabel='<span class="pill '+(t.n===0?'pill-red':t.n<6?'pill-orange':'pill-green')+'">'+t.n+' Article</span>';
   app('trend-tbl','<div class="tbl-row" style="opacity:'+(isSkip?.4:1)+';display:grid;grid-template-columns:22px 1fr 60px 100px 70px;gap:8px;align-items:start">'+
     '<span style="font-size:11px;font-weight:700;color:var(--muted)">'+(i+1)+'</span>'+
     '<div>'+pathStr+' '+nLabel+
@@ -703,10 +703,10 @@ TRENDS.forEach(function(t,i){
 /* ─── RUNWAY ─── */
 var RUNWAY = [
   {icon:"&#129333;",t:"Quiet Luxury & Intentional Dressing",d:"Lyst 2026: pria membangun wardrobe dengan intention. Relevan untuk Suits & Tailoring dan premium Knitwear HEYMALE."},
-  {icon:"&#129329;",t:"Quarter-Zip & Turtleneck Knitwear Viral",d:"CNN Jan 2026: quarter-zip adalah 'foundational item 2026'. Knitted jumper HEYMALE (11 SKU) perlu diperkuat signifikan."},
-  {icon:"&#128084;",t:"Unstructured Blazer & Relaxed Tailoring",d:"FW26-27: blazer modern dengan silhouette lebih santai. Menambah Suits (1 SKU) dan Suit trousers (0 SKU) menjadi kritis."},
-  {icon:"&#128563;",t:"Baggy & Relaxed Denim Comeback",d:"Vogue Business 2025: baggy +243% arrivals. HEYMALE 0 SKU Straight, Baggy & Loose, Tapered — gap terbesar di Jeans."},
-  {icon:"&#128170;",t:"Athleisure & Gym Culture Boom",d:"Gym membership Indonesia +21% YoY. Tracksuits (0 SKU) dan Joggers expansion sangat relevan untuk market ini."}
+  {icon:"&#129329;",t:"Quarter-Zip & Turtleneck Knitwear Viral",d:"CNN Jan 2026: quarter-zip adalah 'foundational item 2026'. Knitted jumper HEYMALE (11 Article) perlu diperkuat signifikan."},
+  {icon:"&#128084;",t:"Unstructured Blazer & Relaxed Tailoring",d:"FW26-27: blazer modern dengan silhouette lebih santai. Menambah Suits (1 Article) dan Suit trousers (0 Article) menjadi kritis."},
+  {icon:"&#128563;",t:"Baggy & Relaxed Denim Comeback",d:"Vogue Business 2025: baggy +243% arrivals. HEYMALE 0 Article Straight, Baggy & Loose, Tapered — gap terbesar di Jeans."},
+  {icon:"&#128170;",t:"Athleisure & Gym Culture Boom",d:"Gym membership Indonesia +21% YoY. Tracksuits (0 Article) dan Joggers expansion sangat relevan untuk market ini."}
 ];
 RUNWAY.forEach(function(r){
   app('runway-list','<div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">'+
@@ -738,81 +738,81 @@ var OPPS = [
   // P1
   {p:1,title:"Suits & Tailoring → Suits",
    zalPath:"Clothing > Suits & Tailoring > Suits",n:1,
-   why:"1 SKU untuk kategori high-AOV yang demand-nya besar di Indonesia — kondangan, wisuda, Idul Fitri. CAGR 4.5%. Cross-sell langsung ke Blazer (9 SKU) dan Suit waistcoats (5 SKU) yang sudah ada.",
+   why:"1 Article untuk kategori high-AOV yang demand-nya besar di Indonesia — kondangan, wisuda, Idul Fitri. CAGR 4.5%. Cross-sell langsung ke Blazer (9 Article) dan Suit waistcoats (5 Article) yang sudah ada.",
    align:"Complete formal wardrobe solution. Suits + Blazer + Suit trousers = bundle HEYMALE yang compelling. 2-piece slim modern dalam navy & charcoal sebagai entry.",
    tags:["CAGR 4.5%","High AOV","Kondangan demand","Cross-sell existing"]},
   {p:1,title:"Suits & Tailoring → Suit trousers",
    zalPath:"Clothing > Suits & Tailoring > Suit trousers",n:0,
-   why:"0 SKU padahal Blazer (9) dan Suit waistcoats (5) sudah ada. Gap tidak logis untuk brand yang claim 'complete formal solution'. Demand standalone celana formal sangat tinggi di Indonesia.",
-   align:"Wajib hadir sebagai pasangan Blazer & Suits. Slim-fit dan regular-fit formal trousers dalam warna netral (hitam, navy, abu charcoal) — 15–20 SKU target.",
-   tags:["CAGR 4.5%","0 SKU gap","Cross-sell kritis","Formal demand"]},
+   why:"0 Article padahal Blazer (9) dan Suit waistcoats (5) sudah ada. Gap tidak logis untuk brand yang claim 'complete formal solution'. Demand standalone celana formal sangat tinggi di Indonesia.",
+   align:"Wajib hadir sebagai pasangan Blazer & Suits. Slim-fit dan regular-fit formal trousers dalam warna netral (hitam, navy, abu charcoal) — 15–20 Article target.",
+   tags:["CAGR 4.5%","0 Article gap","Cross-sell kritis","Formal demand"]},
   {p:1,title:"Shirts → Business Shirts",
    zalPath:"Clothing > Shirts > Business Shirts",n:6,
-   why:"HEYMALE dominan di Casual Shirts (175 SKU) tapi Business Shirts hanya 6 SKU — sangat tidak proporsional. CAGR 3.8%. Office return Indonesia mendorong demand formal shirts sepanjang tahun.",
-   align:"Natural extension dari kekuatan Shirts HEYMALE. Oxford, poplin formal, slim-fit dress shirt cross-sell ke Blazer & Smart trousers existing. Target 20–30 SKU.",
+   why:"HEYMALE dominan di Casual Shirts (175 Article) tapi Business Shirts hanya 6 Article — sangat tidak proporsional. CAGR 3.8%. Office return Indonesia mendorong demand formal shirts sepanjang tahun.",
+   align:"Natural extension dari kekuatan Shirts HEYMALE. Oxford, poplin formal, slim-fit dress shirt cross-sell ke Blazer & Smart trousers existing. Target 20–30 Article.",
    tags:["CAGR 3.8%","Office demand","Cross-sell Blazer","Extension kuat"]},
   {p:1,title:"Jeans → Straight",
    zalPath:"Clothing > Jeans > Straight",n:0,
-   why:"0 SKU. Straight-leg adalah jeans paling versatile dan laris di menswear global — CAGR 4.2%. Wardrobe staple yang tidak mungkin tidak ada untuk brand 'complete menswear'. Fondasi denim yang wajib dibangun.",
-   align:"Palet rinse dark, medium wash, stone wash. Bisa dipakai dengan Polo (28 SKU), Casual Shirts (175 SKU), dan Blazer existing. Perfect brand-coherent item. Target 15–25 SKU.",
-   tags:["CAGR 4.2%","Wardrobe staple","0 SKU","Denim foundation"]},
+   why:"0 Article. Straight-leg adalah jeans paling versatile dan laris di menswear global — CAGR 4.2%. Wardrobe staple yang tidak mungkin tidak ada untuk brand 'complete menswear'. Fondasi denim yang wajib dibangun.",
+   align:"Palet rinse dark, medium wash, stone wash. Bisa dipakai dengan Polo (28 Article), Casual Shirts (175 Article), dan Blazer existing. Perfect brand-coherent item. Target 15–25 Article.",
+   tags:["CAGR 4.2%","Wardrobe staple","0 Article","Denim foundation"]},
   {p:1,title:"Knitwear → Knitted jumper",
    zalPath:"Clothing > Knitwear > Knitted jumper",n:11,
-   why:"11 SKU — ada tapi tipis untuk kategori CAGR 5.8% yang sedang peak demand. Quarter-zip & turtleneck viral 2025-26. CNN Jan 2026: knitted jumper menjadi 'foundational item 2026'.",
-   align:"Crewneck, half-zip, turtleneck dalam palet netral. Layering essentials dari kantor ke weekend tanpa effort — perfect HEYMALE proposition. Target 28–35 SKU.",
+   why:"11 Article — ada tapi tipis untuk kategori CAGR 5.8% yang sedang peak demand. Quarter-zip & turtleneck viral 2025-26. CNN Jan 2026: knitted jumper menjadi 'foundational item 2026'.",
+   align:"Crewneck, half-zip, turtleneck dalam palet netral. Layering essentials dari kantor ke weekend tanpa effort — perfect HEYMALE proposition. Target 28–35 Article.",
    tags:["CAGR 5.8%","2026 Viral","Layering essential","Quick expand"]},
   // P2
   {p:2,title:"Jeans → Baggy & Loose",
    zalPath:"Clothing > Jeans > Baggy & Loose",n:0,
-   why:"0 SKU. Baggy & barrel leg +243% arrivals global (Vogue Business 2025). FW26-27 runway: relaxed silhouette dominan. TikTok #MensFashion: baggy fit konten terlaris. Generasi muda Indonesia adopsi sangat cepat.",
-   align:"Wide-straight sebagai entry, lalu full baggy. Palet dark rinse & washed grey — estetika tetap clean dan brand-coherent. Target 10–15 SKU setelah Straight solid.",
-   tags:["Baggy +243%","Tren 2025-26","TikTok viral","0 SKU"]},
+   why:"0 Article. Baggy & barrel leg +243% arrivals global (Vogue Business 2025). FW26-27 runway: relaxed silhouette dominan. TikTok #MensFashion: baggy fit konten terlaris. Generasi muda Indonesia adopsi sangat cepat.",
+   align:"Wide-straight sebagai entry, lalu full baggy. Palet dark rinse & washed grey — estetika tetap clean dan brand-coherent. Target 10–15 Article setelah Straight solid.",
+   tags:["Baggy +243%","Tren 2025-26","TikTok viral","0 Article"]},
   {p:2,title:"Jeans → Tapered",
    zalPath:"Clothing > Jeans > Tapered",n:0,
-   why:"0 SKU. Tapered adalah sweet spot versatilitas denim — tidak terlalu slim, tidak terlalu baggy. Paling mudah dipasangkan dengan Blazer & Polo yang sudah kuat di HEYMALE.",
-   align:"Perfect cross-sell partner untuk Blazer jackets (9 SKU) dan Business Shirts (6 SKU). Smart-casual denim yang brand-coherent. Target 10–15 SKU.",
-   tags:["CAGR 4.2%","Versatile fit","0 SKU","Cross-sell Blazer"]},
+   why:"0 Article. Tapered adalah sweet spot versatilitas denim — tidak terlalu slim, tidak terlalu baggy. Paling mudah dipasangkan dengan Blazer & Polo yang sudah kuat di HEYMALE.",
+   align:"Perfect cross-sell partner untuk Blazer jackets (9 Article) dan Business Shirts (6 Article). Smart-casual denim yang brand-coherent. Target 10–15 Article.",
+   tags:["CAGR 4.2%","Versatile fit","0 Article","Cross-sell Blazer"]},
   {p:2,title:"Sweatshirts & Hoodies → Hoodies",
    zalPath:"Clothing > Sweatshirts & Hoodies > Hoodies",n:3,
-   why:"3 SKU sangat tipis. Hoodie CAGR 5.1% dan item paling viral TikTok menswear 2025. Asia Tenggara: hoodie = outer layer AC. Demand sangat kuat di urban Indonesia.",
-   align:"Pullover hoodie essentials, zip-up hoodie (layering), oversized hoodie (statement). Palet hitam, abu, cream, navy. Target 15–20 SKU dari 3 SKU.",
-   tags:["CAGR 5.1%","TikTok viral","AC outer layer","3 → 20 SKU"]},
+   why:"3 Article sangat tipis. Hoodie CAGR 5.1% dan item paling viral TikTok menswear 2025. Asia Tenggara: hoodie = outer layer AC. Demand sangat kuat di urban Indonesia.",
+   align:"Pullover hoodie essentials, zip-up hoodie (layering), oversized hoodie (statement). Palet hitam, abu, cream, navy. Target 15–20 Article dari 3 Article.",
+   tags:["CAGR 5.1%","TikTok viral","AC outer layer","3 → 20 Article"]},
   {p:2,title:"Suits & Tailoring → Blazer jackets",
    zalPath:"Clothing > Suits & Tailoring > Blazer jackets",n:9,
-   why:"9 SKU — solid tapi perlu expansion. Smart-casual blazer adalah item kunci untuk 'complete wardrobe' HEYMALE. Unstructured blazer tumbuh kuat di business casual segment.",
-   align:"Structured, unstructured/soft-shoulder, linen blazer (iklim tropis), wool-blend (event premium). Target 20–28 SKU. Anchor untuk Suit trousers dan Business Shirts.",
+   why:"9 Article — solid tapi perlu expansion. Smart-casual blazer adalah item kunci untuk 'complete wardrobe' HEYMALE. Unstructured blazer tumbuh kuat di business casual segment.",
+   align:"Structured, unstructured/soft-shoulder, linen blazer (iklim tropis), wool-blend (event premium). Target 20–28 Article. Anchor untuk Suit trousers dan Business Shirts.",
    tags:["CAGR 4.5%","Smart-casual anchor","Expand 9→25","Bundle center"]},
   {p:2,title:"Tracksuits & Joggers → Tracksuits",
    zalPath:"Clothing > Tracksuits & Joggers > Tracksuits",n:0,
-   why:"0 SKU. CAGR athleisure 9.7% — tertinggi di seluruh menswear. Gym membership Indonesia +21% YoY. Coordinated tracksuit set adalah produk conversion tinggi.",
+   why:"0 Article. CAGR athleisure 9.7% — tertinggi di seluruh menswear. Gym membership Indonesia +21% YoY. Coordinated tracksuit set adalah produk conversion tinggi.",
    align:"HANYA full-length sets (jacket + full-length trouser) — konsisten dengan brand values HEYMALE. Palet netral: hitam, abu, navy. Target 8–12 matching sets.",
-   tags:["CAGR 9.7%","Gym culture","Full-length only","0 SKU"]},
+   tags:["CAGR 9.7%","Gym culture","Full-length only","0 Article"]},
   {p:2,title:"Trousers → Cargo trousers",
    zalPath:"Clothing > Trousers > Cargo trousers",n:1,
-   why:"1 SKU hampir tidak ada. Cargo CAGR 4.8%. 'Smart cargo' — silhouette bersih — tumbuh pesat di urban professional Indonesia. Utilitarian + estetika = fit sempurna untuk HEYMALE.",
-   align:"Slim cargo (cleaner), regular cargo (traditional), tech-fabric cargo (active-smart). Palet: olive, hitam, stone, khaki. Target 10–15 SKU.",
-   tags:["CAGR 4.8%","Smart utility","1 SKU","Expand segera"]},
+   why:"1 Article hampir tidak ada. Cargo CAGR 4.8%. 'Smart cargo' — silhouette bersih — tumbuh pesat di urban professional Indonesia. Utilitarian + estetika = fit sempurna untuk HEYMALE.",
+   align:"Slim cargo (cleaner), regular cargo (traditional), tech-fabric cargo (active-smart). Palet: olive, hitam, stone, khaki. Target 10–15 Article.",
+   tags:["CAGR 4.8%","Smart utility","1 Article","Expand segera"]},
   {p:2,title:"Knitwear → Cardigans",
    zalPath:"Clothing > Knitwear > Cardigans",n:4,
-   why:"4 SKU tipis untuk kategori yang CAGR-nya 5.8%. Cardigan sebagai office-to-weekend layer tumbuh kuat di Asia Tenggara, terutama untuk pria yang bekerja di ruangan ber-AC.",
-   align:"Open-front knit, button-through, rib-knit minimalist. Cross-sell langsung ke Business Shirts dan Smart trousers. Target 12–18 SKU.",
-   tags:["CAGR 5.8%","Office layer","AC essential","4 → 15 SKU"]},
+   why:"4 Article tipis untuk kategori yang CAGR-nya 5.8%. Cardigan sebagai office-to-weekend layer tumbuh kuat di Asia Tenggara, terutama untuk pria yang bekerja di ruangan ber-AC.",
+   align:"Open-front knit, button-through, rib-knit minimalist. Cross-sell langsung ke Business Shirts dan Smart trousers. Target 12–18 Article.",
+   tags:["CAGR 5.8%","Office layer","AC essential","4 → 15 Article"]},
   // P3
   {p:3,title:"Loungewear & Sleepwear → Trousers",
    zalPath:"Clothing > Loungewear & Sleepwear > Trousers",n:0,
-   why:"0 SKU. Loungewear 2x level pre-pandemi (McKinsey 2025). WFH culture kuat. Elevated lounge trousers (linen, modal) yang bisa double sebagai casual wear — bukan pyjama murni.",
-   align:"'Smart home comfort' positioning. Linen lounge pants, modal sweatpants premium. Cross-sell ke Loungewear Shirts. Masuk setelah core categories solid. Target 8–12 SKU.",
-   tags:["WFH culture","Elevated comfort","0 SKU","Phase 3"]},
+   why:"0 Article. Loungewear 2x level pre-pandemi (McKinsey 2025). WFH culture kuat. Elevated lounge trousers (linen, modal) yang bisa double sebagai casual wear — bukan pyjama murni.",
+   align:"'Smart home comfort' positioning. Linen lounge pants, modal sweatpants premium. Cross-sell ke Loungewear Shirts. Masuk setelah core categories solid. Target 8–12 Article.",
+   tags:["WFH culture","Elevated comfort","0 Article","Phase 3"]},
   {p:3,title:"Sweatshirts & Hoodies → Sweat jackets",
    zalPath:"Clothing > Sweatshirts & Hoodies > Sweat jackets",n:0,
-   why:"0 SKU. Sweat jacket sebagai casual outer layer ringan. Tumbuh bersama athleisure trend. Potensial sebagai companion untuk Tracksuits.",
+   why:"0 Article. Sweat jacket sebagai casual outer layer ringan. Tumbuh bersama athleisure trend. Potensial sebagai companion untuk Tracksuits.",
    align:"Zip-up, minimal branding, clean design. Bisa diposisikan sebagai 'active-casual outer layer'. Masuk setelah Hoodies dan Tracksuits kuat.",
-   tags:["Athleisure","Casual outer","0 SKU","Phase 3"]},
+   tags:["Athleisure","Casual outer","0 Article","Phase 3"]},
   {p:3,title:"Suits & Tailoring → Shirts",
    zalPath:"Clothing > Suits & Tailoring > Shirts",n:0,
-   why:"0 SKU. Kemeja formal dedicated sebagai suit companion. Hidden buttons, spread collar, premium fabric. Potensial sebagai bundle item dengan Suits & Blazer.",
-   align:"Suit companion positioning — beda dari Casual Shirts. Bundle: Suit + Blazer + Suit Shirts = complete formal set. Target 8–12 SKU premium formal shirts.",
-   tags:["Bundle item","Formal pair","0 SKU","High AOV bundle"]}
+   why:"0 Article. Kemeja formal dedicated sebagai suit companion. Hidden buttons, spread collar, premium fabric. Potensial sebagai bundle item dengan Suits & Blazer.",
+   align:"Suit companion positioning — beda dari Casual Shirts. Bundle: Suit + Blazer + Suit Shirts = complete formal set. Target 8–12 Article premium formal shirts.",
+   tags:["Bundle item","Formal pair","0 Article","High AOV bundle"]}
 ];
 
 OPPS.forEach(function(o){
@@ -821,7 +821,7 @@ OPPS.forEach(function(o){
   var nColor=o.n===0?'var(--red)':o.n<6?'#c97840':'var(--green)';
   app('opp-cards','<div class="opp-card p'+o.p+'">'+
     '<div class="opp-head"><div class="opp-title">'+o.title+'</div><span style="font-size:20px">'+priIcon+'</span></div>'+
-    '<div><span class="cat-path">'+o.zalPath+'</span> <span style="font-size:11px;font-weight:700;color:'+nColor+'">'+o.n+' SKU kini</span></div>'+
+    '<div><span class="cat-path">'+o.zalPath+'</span> <span style="font-size:11px;font-weight:700;color:'+nColor+'">'+o.n+' Article kini</span></div>'+
     '<div class="opp-why" style="margin-top:7px">'+o.why+'</div>'+
     '<div class="opp-align">'+o.align+'</div>'+
     '<div class="opp-tags">'+tags+'</div></div>');
@@ -830,21 +830,21 @@ OPPS.forEach(function(o){
 /* ─── FULL GAP MATRIX — all 88 rows ─── */
 // We annotate each raw row with CAGR, ID demand, brand fit, action
 var ANNOTATIONS = {
-  "T-shirts & Polos|Basic T-shirts|":       {cagr:"4.0%",id:"Tinggi",fit:"Core",act:"Hold — 22 SKU solid"},
-  "T-shirts & Polos|Printed T-shirts|":     {cagr:"3.5%",id:"Menengah",fit:"Core",act:"Expand tipis → 8–12 SKU"},
+  "T-shirts & Polos|Basic T-shirts|":       {cagr:"4.0%",id:"Tinggi",fit:"Core",act:"Hold — 22 Article solid"},
+  "T-shirts & Polos|Printed T-shirts|":     {cagr:"3.5%",id:"Menengah",fit:"Core",act:"Expand tipis → 8–12 Article"},
   "T-shirts & Polos|Tank tops|":            {cagr:"3.5%",id:"Rendah",fit:"Off-brand",act:"Skip"},
-  "T-shirts & Polos|Polo shirts|":          {cagr:"4.0%",id:"Tinggi",fit:"Core",act:"Hold — 28 SKU kuat"},
-  "T-shirts & Polos|Long-sleeved tops|":    {cagr:"4.0%",id:"Menengah",fit:"Core",act:"Expand → 10–15 SKU"},
-  "T-shirts & Polos|Sports T-shirts|":      {cagr:"5.0%",id:"Menengah",fit:"Adjacent",act:"Expand → 8–10 SKU"},
-  "Shirts|Casual Shirts|":                  {cagr:"3.5%",id:"Tinggi",fit:"Core",act:"Hold — 175 SKU dominan"},
-  "Shirts|Business Shirts|":                {cagr:"3.8%",id:"Sangat Tinggi",fit:"Core",act:"P1 — Expand 6→25 SKU"},
-  "Jackets|Lightweight jackets|Transitional Jackets":{cagr:"4.0%",id:"Tinggi",fit:"Core",act:"Hold — 44 SKU kuat"},
-  "Jackets|Lightweight jackets|Bomber Jackets":{cagr:"4.0%",id:"Tinggi",fit:"Core",act:"P2 — Expand 5→15 SKU"},
+  "T-shirts & Polos|Polo shirts|":          {cagr:"4.0%",id:"Tinggi",fit:"Core",act:"Hold — 28 Article kuat"},
+  "T-shirts & Polos|Long-sleeved tops|":    {cagr:"4.0%",id:"Menengah",fit:"Core",act:"Expand → 10–15 Article"},
+  "T-shirts & Polos|Sports T-shirts|":      {cagr:"5.0%",id:"Menengah",fit:"Adjacent",act:"Expand → 8–10 Article"},
+  "Shirts|Casual Shirts|":                  {cagr:"3.5%",id:"Tinggi",fit:"Core",act:"Hold — 175 Article dominan"},
+  "Shirts|Business Shirts|":                {cagr:"3.8%",id:"Sangat Tinggi",fit:"Core",act:"P1 — Expand 6→25 Article"},
+  "Jackets|Lightweight jackets|Transitional Jackets":{cagr:"4.0%",id:"Tinggi",fit:"Core",act:"Hold — 44 Article kuat"},
+  "Jackets|Lightweight jackets|Bomber Jackets":{cagr:"4.0%",id:"Tinggi",fit:"Core",act:"P2 — Expand 5→15 Article"},
   "Jackets|Lightweight jackets|Windbreaker":{cagr:"4.0%",id:"Menengah",fit:"Adjacent",act:"Expand perlahan"},
   "Jackets|Lightweight jackets|Outdoor Jackets":{cagr:"4.5%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
   "Jackets|Lightweight jackets|Waterproof Jackets":{cagr:"4.5%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Jackets|Leather jackets|":               {cagr:"3.5%",id:"Menengah",fit:"Core",act:"Expand 3→10 SKU"},
-  "Jackets|Denim jackets|":                 {cagr:"4.0%",id:"Menengah",fit:"Core",act:"P2 — Expand 5→12 SKU"},
+  "Jackets|Leather jackets|":               {cagr:"3.5%",id:"Menengah",fit:"Core",act:"Expand 3→10 Article"},
+  "Jackets|Denim jackets|":                 {cagr:"4.0%",id:"Menengah",fit:"Core",act:"P2 — Expand 5→12 Article"},
   "Jackets|Winter jackets|":                {cagr:"2.0%",id:"Sangat Rendah",fit:"Low fit",act:"Skip — iklim tropis"},
   "Jackets|Down jackets|":                  {cagr:"2.0%",id:"Sangat Rendah",fit:"Low fit",act:"Skip — iklim tropis"},
   "Jackets|Outdoor jackets|Windbreakers":   {cagr:"4.0%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
@@ -859,41 +859,41 @@ var ANNOTATIONS = {
   "Jackets|Outdoor jackets|Gilets":         {cagr:"3.0%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
   "Jackets|Fleece jackets|":                {cagr:"3.5%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
   "Jackets|Gilet|":                         {cagr:"3.0%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Jeans|Baggy & Loose|":                   {cagr:"4.2%",id:"Tinggi",fit:"Core",act:"P2 — Expand 0→12 SKU"},
-  "Jeans|Straight|":                        {cagr:"4.2%",id:"Sangat Tinggi",fit:"Core",act:"P1 — Expand 0→20 SKU"},
-  "Jeans|Slim|":                            {cagr:"3.5%",id:"Menengah",fit:"Core",act:"Expand 1→8 SKU"},
-  "Jeans|Tapered|":                         {cagr:"4.2%",id:"Tinggi",fit:"Core",act:"P2 — Expand 0→12 SKU"},
+  "Jeans|Baggy & Loose|":                   {cagr:"4.2%",id:"Tinggi",fit:"Core",act:"P2 — Expand 0→12 Article"},
+  "Jeans|Straight|":                        {cagr:"4.2%",id:"Sangat Tinggi",fit:"Core",act:"P1 — Expand 0→20 Article"},
+  "Jeans|Slim|":                            {cagr:"3.5%",id:"Menengah",fit:"Core",act:"Expand 1→8 Article"},
+  "Jeans|Tapered|":                         {cagr:"4.2%",id:"Tinggi",fit:"Core",act:"P2 — Expand 0→12 Article"},
   "Jeans|Relaxed|":                         {cagr:"4.0%",id:"Menengah",fit:"Core",act:"P3 — setelah Straight solid"},
   "Jeans|Skinny|":                          {cagr:"2.0%",id:"Rendah",fit:"Core",act:"Low priority — trend turun"},
   "Jeans|Bootcut & Flared|":                {cagr:"2.5%",id:"Rendah",fit:"Adjacent",act:"Skip"},
   "Jeans|Overalls & Workwear|":             {cagr:"2.5%",id:"Rendah",fit:"Adjacent",act:"Skip"},
   "Jeans|Denim shorts|":                    {cagr:"3.5%",id:"Menengah",fit:"Off-brand",act:"Skip"},
-  "Trousers|Chinos|":                       {cagr:"3.5%",id:"Tinggi",fit:"Core",act:"Hold — 17 SKU ada"},
-  "Trousers|Smart trousers|":               {cagr:"4.5%",id:"Sangat Tinggi",fit:"Core",act:"Hold — 46 SKU kuat"},
-  "Trousers|Cargo trousers|":               {cagr:"4.8%",id:"Tinggi",fit:"Core",act:"P2 — Expand 1→12 SKU"},
-  "Trousers|Joggers|":                      {cagr:"5.0%",id:"Tinggi",fit:"Core",act:"P2 — Expand 12→20 SKU"},
+  "Trousers|Chinos|":                       {cagr:"3.5%",id:"Tinggi",fit:"Core",act:"Hold — 17 Article ada"},
+  "Trousers|Smart trousers|":               {cagr:"4.5%",id:"Sangat Tinggi",fit:"Core",act:"Hold — 46 Article kuat"},
+  "Trousers|Cargo trousers|":               {cagr:"4.8%",id:"Tinggi",fit:"Core",act:"P2 — Expand 1→12 Article"},
+  "Trousers|Joggers|":                      {cagr:"5.0%",id:"Tinggi",fit:"Core",act:"P2 — Expand 12→20 Article"},
   "Trousers|Dungarees|":                    {cagr:"2.5%",id:"Rendah",fit:"Adjacent",act:"Skip"},
-  "Sweatshirts & Hoodies|Hoodies|":         {cagr:"5.1%",id:"Tinggi",fit:"Core",act:"P2 — Expand 3→18 SKU"},
-  "Sweatshirts & Hoodies|Sweatshirts|":     {cagr:"5.1%",id:"Tinggi",fit:"Core",act:"P2 — Expand 7→22 SKU"},
+  "Sweatshirts & Hoodies|Hoodies|":         {cagr:"5.1%",id:"Tinggi",fit:"Core",act:"P2 — Expand 3→18 Article"},
+  "Sweatshirts & Hoodies|Sweatshirts|":     {cagr:"5.1%",id:"Tinggi",fit:"Core",act:"P2 — Expand 7→22 Article"},
   "Sweatshirts & Hoodies|Sweat jackets|":   {cagr:"5.1%",id:"Menengah",fit:"Adjacent",act:"P3"},
   "Sweatshirts & Hoodies|Fleece pullover|": {cagr:"3.5%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Knitwear|Cardigans|":                    {cagr:"5.8%",id:"Tinggi",fit:"Core",act:"P2 — Expand 4→15 SKU"},
-  "Knitwear|Knitted jumper|":               {cagr:"5.8%",id:"Sangat Tinggi",fit:"Core",act:"P1 — Expand 11→30 SKU"},
+  "Knitwear|Cardigans|":                    {cagr:"5.8%",id:"Tinggi",fit:"Core",act:"P2 — Expand 4→15 Article"},
+  "Knitwear|Knitted jumper|":               {cagr:"5.8%",id:"Sangat Tinggi",fit:"Core",act:"P1 — Expand 11→30 Article"},
   "Coats|Trench coats|":                    {cagr:"3.2%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
   "Coats|Parkas|":                          {cagr:"2.5%",id:"Sangat Rendah",fit:"Low fit",act:"Skip"},
   "Coats|Short coats|":                     {cagr:"3.0%",id:"Rendah",fit:"Low fit",act:"Skip"},
   "Coats|Winter coats|":                    {cagr:"2.0%",id:"Sangat Rendah",fit:"Low fit",act:"Skip — iklim tropis"},
   "Coats|Wool coats|":                      {cagr:"2.5%",id:"Sangat Rendah",fit:"Low fit",act:"Skip"},
   "Coats|Down coats|":                      {cagr:"2.0%",id:"Sangat Rendah",fit:"Low fit",act:"Skip"},
-  "Tracksuits & Joggers|Tracksuits|":       {cagr:"9.7%",id:"Tinggi",fit:"Adjacent",act:"P2 — 0→10 SKU (covered only)"},
-  "Tracksuits & Joggers|Joggers|":          {cagr:"9.7%",id:"Tinggi",fit:"Core",act:"P2 — Expand 1→12 SKU"},
+  "Tracksuits & Joggers|Tracksuits|":       {cagr:"9.7%",id:"Tinggi",fit:"Adjacent",act:"P2 — 0→10 Article (covered only)"},
+  "Tracksuits & Joggers|Joggers|":          {cagr:"9.7%",id:"Tinggi",fit:"Core",act:"P2 — Expand 1→12 Article"},
   "Tracksuits & Joggers|Tracksuit Jackets|":{cagr:"9.7%",id:"Menengah",fit:"Adjacent",act:"P3"},
-  "Suits & Tailoring|Suits|":              {cagr:"4.5%",id:"Sangat Tinggi",fit:"Core",act:"P1 — Expand 1→15 SKU"},
-  "Suits & Tailoring|Suit jackets|":        {cagr:"4.5%",id:"Tinggi",fit:"Core",act:"Expand 1→10 SKU"},
+  "Suits & Tailoring|Suits|":              {cagr:"4.5%",id:"Sangat Tinggi",fit:"Core",act:"P1 — Expand 1→15 Article"},
+  "Suits & Tailoring|Suit jackets|":        {cagr:"4.5%",id:"Tinggi",fit:"Core",act:"Expand 1→10 Article"},
   "Suits & Tailoring|Shirts|":              {cagr:"3.8%",id:"Tinggi",fit:"Core",act:"P3 — Suit companion"},
-  "Suits & Tailoring|Suit trousers|":       {cagr:"4.5%",id:"Sangat Tinggi",fit:"Core",act:"P1 — 0→15 SKU kritis"},
-  "Suits & Tailoring|Suit waistcoats|":     {cagr:"3.5%",id:"Menengah",fit:"Core",act:"Hold — 5 SKU ada"},
-  "Suits & Tailoring|Blazer jackets|":      {cagr:"4.5%",id:"Sangat Tinggi",fit:"Core",act:"P2 — Expand 9→25 SKU"},
+  "Suits & Tailoring|Suit trousers|":       {cagr:"4.5%",id:"Sangat Tinggi",fit:"Core",act:"P1 — 0→15 Article kritis"},
+  "Suits & Tailoring|Suit waistcoats|":     {cagr:"3.5%",id:"Menengah",fit:"Core",act:"Hold — 5 Article ada"},
+  "Suits & Tailoring|Blazer jackets|":      {cagr:"4.5%",id:"Sangat Tinggi",fit:"Core",act:"P2 — Expand 9→25 Article"},
   "Suits & Tailoring|Ties & accessories|":  {cagr:"2.5%",id:"Menengah",fit:"Adjacent",act:"Low priority"},
   "Shorts|Casual Shorts|":                  {cagr:"5.5%",id:"Tinggi",fit:"Off-brand",act:"Skip"},
   "Shorts|Denim shorts|":                   {cagr:"3.5%",id:"Menengah",fit:"Off-brand",act:"Skip"},
@@ -904,10 +904,10 @@ var ANNOTATIONS = {
   "Underwear & Socks|Underpants|Jockstraps":{cagr:"2.0%",id:"Sangat Rendah",fit:"Off-brand",act:"Skip"},
   "Underwear & Socks|Underpants|Thongs":    {cagr:"1.5%",id:"Sangat Rendah",fit:"Off-brand",act:"Skip"},
   "Underwear & Socks|Undershirts|":         {cagr:"3.5%",id:"Menengah",fit:"Adjacent",act:"P3 — base layer"},
-  "Underwear & Socks|Socks|Socks":          {cagr:"3.5%",id:"Menengah",fit:"Adjacent",act:"Expand → 5–8 SKU"},
-  "Underwear & Socks|Socks|Sports socks":   {cagr:"4.0%",id:"Menengah",fit:"Adjacent",act:"Expand → 5 SKU"},
+  "Underwear & Socks|Socks|Socks":          {cagr:"3.5%",id:"Menengah",fit:"Adjacent",act:"Expand → 5–8 Article"},
+  "Underwear & Socks|Socks|Sports socks":   {cagr:"4.0%",id:"Menengah",fit:"Adjacent",act:"Expand → 5 Article"},
   "Underwear & Socks|Socks|Knee high socks":{cagr:"2.5%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Underwear & Socks|Socks|Sneaker Socks":  {cagr:"4.5%",id:"Tinggi",fit:"Adjacent",act:"Hold 1 SKU — expand"},
+  "Underwear & Socks|Socks|Sneaker Socks":  {cagr:"4.5%",id:"Tinggi",fit:"Adjacent",act:"Hold 1 Article — expand"},
   "Underwear & Socks|Bathrobes|":           {cagr:"3.0%",id:"Rendah",fit:"Off-brand",act:"Skip"},
   "Swimwear|Swim trunks|Shorts":            {cagr:"7.4%",id:"Tinggi",fit:"Off-brand",act:"Skip"},
   "Swimwear|Swim trunks|Trunks":            {cagr:"7.4%",id:"Tinggi",fit:"Off-brand",act:"Skip"},
@@ -946,28 +946,28 @@ RAW.forEach(function(r){
 ════════════════════════════════════════════════════ */
 var PHASES=[
   {ph:"Phase 1 — Q3 2026",color:"#c94040",bg:"#fdf2f2",sub:"Quick wins: gap besar, demand tinggi, DNA brand perfect fit, barrier rendah",items:[
-    {cat:"Suits & Tailoring → Suits",zalando:"Clothing > Suits & Tailoring > Suits",n:"1 SKU",why:"1 SKU untuk kategori high-AOV. Kondangan & wisuda = demand year-round di Indonesia. Cross-sell Blazer & Suit trousers.",target:"15–20 SKU",effort:"Menengah"},
-    {cat:"Suits & Tailoring → Suit trousers",zalando:"Clothing > Suits & Tailoring > Suit trousers",n:"0 SKU",why:"0 SKU padahal Blazer (9) dan Waistcoat (5) sudah ada. Gap tidak logis. Wajib hadir.",target:"15–20 SKU",effort:"Rendah"},
-    {cat:"Shirts → Business Shirts",zalando:"Clothing > Shirts > Business Shirts",n:"6 SKU",why:"175 Casual Shirts kuat — tapi Business Shirts hanya 6. Gap besar untuk office demand Indonesia.",target:"20–30 SKU",effort:"Rendah"},
-    {cat:"Jeans → Straight",zalando:"Clothing > Jeans > Straight",n:"0 SKU",why:"0 SKU. Straight denim adalah wardrobe staple paling fundamental — tidak ada untuk complete menswear brand.",target:"18–25 SKU",effort:"Rendah"},
-    {cat:"Knitwear → Knitted jumper",zalando:"Clothing > Knitwear > Knitted jumper",n:"11 SKU",why:"11 SKU tapi CAGR 5.8% dan viral 2026. Quarter-zip, turtleneck, crewneck premium — semua perlu diperkuat.",target:"28–35 SKU",effort:"Rendah"}
+    {cat:"Suits & Tailoring → Suits",zalando:"Clothing > Suits & Tailoring > Suits",n:"1 Article",why:"1 Article untuk kategori high-AOV. Kondangan & wisuda = demand year-round di Indonesia. Cross-sell Blazer & Suit trousers.",target:"15–20 Article",effort:"Menengah"},
+    {cat:"Suits & Tailoring → Suit trousers",zalando:"Clothing > Suits & Tailoring > Suit trousers",n:"0 Article",why:"0 Article padahal Blazer (9) dan Waistcoat (5) sudah ada. Gap tidak logis. Wajib hadir.",target:"15–20 Article",effort:"Rendah"},
+    {cat:"Shirts → Business Shirts",zalando:"Clothing > Shirts > Business Shirts",n:"6 Article",why:"175 Casual Shirts kuat — tapi Business Shirts hanya 6. Gap besar untuk office demand Indonesia.",target:"20–30 Article",effort:"Rendah"},
+    {cat:"Jeans → Straight",zalando:"Clothing > Jeans > Straight",n:"0 Article",why:"0 Article. Straight denim adalah wardrobe staple paling fundamental — tidak ada untuk complete menswear brand.",target:"18–25 Article",effort:"Rendah"},
+    {cat:"Knitwear → Knitted jumper",zalando:"Clothing > Knitwear > Knitted jumper",n:"11 Article",why:"11 Article tapi CAGR 5.8% dan viral 2026. Quarter-zip, turtleneck, crewneck premium — semua perlu diperkuat.",target:"28–35 Article",effort:"Rendah"}
   ]},
   {ph:"Phase 2 — Q1 2027",color:"#c8a96e",bg:"#fffbf0",sub:"Ekspansi strategis: tren kuat, demand terbukti, sesuai DNA HEYMALE",items:[
-    {cat:"Jeans → Baggy & Loose",zalando:"Clothing > Jeans > Baggy & Loose",n:"0 SKU",why:"Baggy +243% arrivals. Tren terkuat denim 2025-26. Masuk setelah Straight solid.",target:"10–15 SKU",effort:"Rendah"},
-    {cat:"Jeans → Tapered",zalando:"Clothing > Jeans > Tapered",n:"0 SKU",why:"Tapered paling versatile — cross-sell ke Blazer & Business Shirts. Smart-casual denim.",target:"10–15 SKU",effort:"Rendah"},
-    {cat:"Sweatshirts & Hoodies → Hoodies",zalando:"Clothing > Sweatshirts & Hoodies > Hoodies",n:"3 SKU",why:"3 SKU sangat tipis. TikTok viral. Pullover + zip-up + oversized = 3 niche berbeda.",target:"15–20 SKU",effort:"Rendah"},
-    {cat:"Sweatshirts & Hoodies → Sweatshirts",zalando:"Clothing > Sweatshirts & Hoodies > Sweatshirts",n:"7 SKU",why:"7 SKU perlu di-expand. Premium crewneck = quiet luxury essentials.",target:"18–25 SKU",effort:"Rendah"},
-    {cat:"Tracksuits & Joggers → Tracksuits",zalando:"Clothing > Tracksuits & Joggers > Tracksuits",n:"0 SKU",why:"CAGR 9.7%. Gym culture +21%. Covered full-length sets saja.",target:"8–12 sets",effort:"Menengah"},
-    {cat:"Suits & Tailoring → Blazer jackets",zalando:"Clothing > Suits & Tailoring > Blazer jackets",n:"9 SKU",why:"9 SKU solid tapi perlu expansion. Structured + unstructured + linen blazer.",target:"20–28 SKU",effort:"Menengah"},
-    {cat:"Knitwear → Cardigans",zalando:"Clothing > Knitwear > Cardigans",n:"4 SKU",why:"4 SKU tipis. Office-to-weekend layer. CAGR 5.8%.",target:"12–18 SKU",effort:"Rendah"},
-    {cat:"Trousers → Cargo trousers",zalando:"Clothing > Trousers > Cargo trousers",n:"1 SKU",why:"1 SKU. Smart cargo CAGR 4.8%. Urban professional Indonesia.",target:"10–15 SKU",effort:"Rendah"}
+    {cat:"Jeans → Baggy & Loose",zalando:"Clothing > Jeans > Baggy & Loose",n:"0 Article",why:"Baggy +243% arrivals. Tren terkuat denim 2025-26. Masuk setelah Straight solid.",target:"10–15 Article",effort:"Rendah"},
+    {cat:"Jeans → Tapered",zalando:"Clothing > Jeans > Tapered",n:"0 Article",why:"Tapered paling versatile — cross-sell ke Blazer & Business Shirts. Smart-casual denim.",target:"10–15 Article",effort:"Rendah"},
+    {cat:"Sweatshirts & Hoodies → Hoodies",zalando:"Clothing > Sweatshirts & Hoodies > Hoodies",n:"3 Article",why:"3 Article sangat tipis. TikTok viral. Pullover + zip-up + oversized = 3 niche berbeda.",target:"15–20 Article",effort:"Rendah"},
+    {cat:"Sweatshirts & Hoodies → Sweatshirts",zalando:"Clothing > Sweatshirts & Hoodies > Sweatshirts",n:"7 Article",why:"7 Article perlu di-expand. Premium crewneck = quiet luxury essentials.",target:"18–25 Article",effort:"Rendah"},
+    {cat:"Tracksuits & Joggers → Tracksuits",zalando:"Clothing > Tracksuits & Joggers > Tracksuits",n:"0 Article",why:"CAGR 9.7%. Gym culture +21%. Covered full-length sets saja.",target:"8–12 sets",effort:"Menengah"},
+    {cat:"Suits & Tailoring → Blazer jackets",zalando:"Clothing > Suits & Tailoring > Blazer jackets",n:"9 Article",why:"9 Article solid tapi perlu expansion. Structured + unstructured + linen blazer.",target:"20–28 Article",effort:"Menengah"},
+    {cat:"Knitwear → Cardigans",zalando:"Clothing > Knitwear > Cardigans",n:"4 Article",why:"4 Article tipis. Office-to-weekend layer. CAGR 5.8%.",target:"12–18 Article",effort:"Rendah"},
+    {cat:"Trousers → Cargo trousers",zalando:"Clothing > Trousers > Cargo trousers",n:"1 Article",why:"1 Article. Smart cargo CAGR 4.8%. Urban professional Indonesia.",target:"10–15 Article",effort:"Rendah"}
   ]},
   {ph:"Phase 3 — H2 2027",color:"#2d7a4f",bg:"#f2faf5",sub:"Diversifikasi ekosistem: memperlengkap brand sebagai one-stop menswear",items:[
-    {cat:"Loungewear & Sleepwear → Trousers",zalando:"Clothing > Loungewear & Sleepwear > Trousers",n:"0 SKU",why:"Elevated lounge pants (linen, modal). WFH culture. 'Smart home comfort' positioning.",target:"8–12 SKU",effort:"Menengah"},
-    {cat:"Sweatshirts & Hoodies → Sweat jackets",zalando:"Clothing > Sweatshirts & Hoodies > Sweat jackets",n:"0 SKU",why:"Casual outer layer. Setelah Hoodies kuat.",target:"8–10 SKU",effort:"Rendah"},
-    {cat:"Tracksuits & Joggers → Tracksuit Jackets",zalando:"Clothing > Tracksuits & Joggers > Tracksuit Jackets",n:"1 SKU",why:"Companion untuk Tracksuits. Expand jika Tracksuits solid.",target:"6–8 SKU",effort:"Rendah"},
-    {cat:"Suits & Tailoring → Shirts",zalando:"Clothing > Suits & Tailoring > Shirts",n:"0 SKU",why:"Suit companion shirts. Bundle dengan Suits & Blazer. Premium formal positioning.",target:"8–12 SKU",effort:"Menengah"},
-    {cat:"Jeans → Relaxed",zalando:"Clothing > Jeans > Relaxed",n:"0 SKU",why:"Setelah Straight & Tapered solid. Comfort denim untuk pria yang transisi dari slim.",target:"8–12 SKU",effort:"Rendah"}
+    {cat:"Loungewear & Sleepwear → Trousers",zalando:"Clothing > Loungewear & Sleepwear > Trousers",n:"0 Article",why:"Elevated lounge pants (linen, modal). WFH culture. 'Smart home comfort' positioning.",target:"8–12 Article",effort:"Menengah"},
+    {cat:"Sweatshirts & Hoodies → Sweat jackets",zalando:"Clothing > Sweatshirts & Hoodies > Sweat jackets",n:"0 Article",why:"Casual outer layer. Setelah Hoodies kuat.",target:"8–10 Article",effort:"Rendah"},
+    {cat:"Tracksuits & Joggers → Tracksuit Jackets",zalando:"Clothing > Tracksuits & Joggers > Tracksuit Jackets",n:"1 Article",why:"Companion untuk Tracksuits. Expand jika Tracksuits solid.",target:"6–8 Article",effort:"Rendah"},
+    {cat:"Suits & Tailoring → Shirts",zalando:"Clothing > Suits & Tailoring > Shirts",n:"0 Article",why:"Suit companion shirts. Bundle dengan Suits & Blazer. Premium formal positioning.",target:"8–12 Article",effort:"Menengah"},
+    {cat:"Jeans → Relaxed",zalando:"Clothing > Jeans > Relaxed",n:"0 Article",why:"Setelah Straight & Tapered solid. Comfort denim untuk pria yang transisi dari slim.",target:"8–12 Article",effort:"Rendah"}
   ]}
 ];
 
@@ -977,7 +977,7 @@ PHASES.forEach(function(p){
       '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px">'+
       '<div><strong style="font-size:13px">'+i.cat+'</strong>'+
       '<br><span class="cat-path" style="font-size:9px">'+i.zalando+'</span>'+
-      '<span style="font-size:11px;color:'+(i.n==='0 SKU'?'var(--red)':'var(--accent)')+';font-weight:700;margin-left:6px">'+i.n+'</span></div>'+
+      '<span style="font-size:11px;color:'+(i.n==='0 Article'?'var(--red)':'var(--accent)')+';font-weight:700;margin-left:6px">'+i.n+'</span></div>'+
       '<div style="display:flex;gap:5px;flex-shrink:0">'+
       '<span class="pill pill-blue">'+i.target+'</span>'+
       '<span class="pill pill-gray">'+i.effort+'</span></div></div>'+
@@ -997,33 +997,33 @@ CL.forEach(function(c){
     '<span>'+c+'</span></div>');
 });
 
-/* SKU TARGETS */
-var SKU_TARGETS=[
+/* Article TARGETS */
+var Article_TARGETS=[
   {ph:"Phase 1",rows:[
-    ["Suits & Tailoring > Suits","1 → 15–20 SKU"],
-    ["Suits & Tailoring > Suit trousers","0 → 15–20 SKU"],
-    ["Shirts > Business Shirts","6 → 25–30 SKU"],
-    ["Jeans > Straight","0 → 18–25 SKU"],
-    ["Knitwear > Knitted jumper","11 → 28–35 SKU"]
+    ["Suits & Tailoring > Suits","1 → 15–20 Article"],
+    ["Suits & Tailoring > Suit trousers","0 → 15–20 Article"],
+    ["Shirts > Business Shirts","6 → 25–30 Article"],
+    ["Jeans > Straight","0 → 18–25 Article"],
+    ["Knitwear > Knitted jumper","11 → 28–35 Article"]
   ],color:"#c94040"},
   {ph:"Phase 2",rows:[
-    ["Jeans > Baggy & Loose","0 → 10–15 SKU"],
-    ["Jeans > Tapered","0 → 10–15 SKU"],
-    ["Sweatshirts & Hoodies > Hoodies","3 → 15–20 SKU"],
-    ["Sweatshirts & Hoodies > Sweatshirts","7 → 18–25 SKU"],
+    ["Jeans > Baggy & Loose","0 → 10–15 Article"],
+    ["Jeans > Tapered","0 → 10–15 Article"],
+    ["Sweatshirts & Hoodies > Hoodies","3 → 15–20 Article"],
+    ["Sweatshirts & Hoodies > Sweatshirts","7 → 18–25 Article"],
     ["Tracksuits & Joggers > Tracksuits","0 → 8–12 sets"],
-    ["Suits & Tailoring > Blazer jackets","9 → 20–28 SKU"],
-    ["Knitwear > Cardigans","4 → 12–18 SKU"],
-    ["Trousers > Cargo trousers","1 → 10–15 SKU"]
+    ["Suits & Tailoring > Blazer jackets","9 → 20–28 Article"],
+    ["Knitwear > Cardigans","4 → 12–18 Article"],
+    ["Trousers > Cargo trousers","1 → 10–15 Article"]
   ],color:"#c8a96e"},
   {ph:"Phase 3",rows:[
-    ["Loungewear > Trousers","0 → 8–12 SKU"],
-    ["Sweatshirts & Hoodies > Sweat jackets","0 → 8–10 SKU"],
-    ["Suits & Tailoring > Shirts","0 → 8–12 SKU"],
-    ["Jeans > Relaxed","0 → 8–12 SKU"]
+    ["Loungewear > Trousers","0 → 8–12 Article"],
+    ["Sweatshirts & Hoodies > Sweat jackets","0 → 8–10 Article"],
+    ["Suits & Tailoring > Shirts","0 → 8–12 Article"],
+    ["Jeans > Relaxed","0 → 8–12 Article"]
   ],color:"#2d7a4f"}
 ];
-SKU_TARGETS.forEach(function(p){
+Article_TARGETS.forEach(function(p){
   app('sku-targets','<div style="margin-bottom:14px"><div style="font-size:11px;font-weight:700;color:'+p.color+';text-transform:uppercase;margin-bottom:6px">'+p.ph+'</div>'+
     p.rows.map(function(r){
       return '<div style="display:flex;justify-content:space-between;font-size:11px;padding:5px 0;border-bottom:1px solid var(--border)">'+
@@ -1116,10 +1116,10 @@ function doExport(){
       '<h2 class="h2">Konsentrasi Tinggi + Gap Besar = Risiko & Peluang</h2>'+
       '<div class="grid3">'+
         '<div class="card"><div class="kv p1c">'+Math.round(175/TOTAL*100)+'%</div><div class="kl">artikel di 1 sub-kategori (Casual Shirts)</div></div>'+
-        '<div class="card"><div class="kv" style="color:#c8a96e">'+ZERO+'</div><div class="kl">sub-kategori Zalando = 0 SKU</div></div>'+
+        '<div class="card"><div class="kv" style="color:#c8a96e">'+ZERO+'</div><div class="kl">sub-kategori Zalando = 0 Article</div></div>'+
         '<div class="card"><div class="kv" style="color:#2d7a4f">13+</div><div class="kl">peluang ekspansi yang brand-fit</div></div>'+
       '</div>'+
-      '<table class="tbl"><thead><tr><th>Zalando Path (Kritis)</th><th>SKU Kini</th><th>CAGR</th><th>Aksi</th></tr></thead><tbody>'+
+      '<table class="tbl"><thead><tr><th>Zalando Path (Kritis)</th><th>Article Kini</th><th>CAGR</th><th>Aksi</th></tr></thead><tbody>'+
       [["Suits & Tailoring > Suits","1","4.5%","P1"],
        ["Suits & Tailoring > Suit trousers","0","4.5%","P1"],
        ["Shirts > Business Shirts","6","3.8%","P1"],
@@ -1129,25 +1129,25 @@ function doExport(){
        ["Sweatshirts & Hoodies > Hoodies","3","5.1%","P2"],
        ["Tracksuits & Joggers > Tracksuits","0","9.7%","P2"]].map(function(r){
         var c=r[3]==='P1'?'p1c':r[3]==='P2'?'p2c':'p3c';
-        return '<tr><td><span class="path">'+r[0]+'</span></td><td style="font-weight:700;color:'+(r[1]==='0'?'#c94040':'#c97840')+'">'+r[1]+' SKU</td><td style="font-weight:700">'+r[2]+'</td><td class="'+c+'" style="font-weight:700">'+r[3]+'</td></tr>';
+        return '<tr><td><span class="path">'+r[0]+'</span></td><td style="font-weight:700;color:'+(r[1]==='0'?'#c94040':'#c97840')+'">'+r[1]+' Article</td><td style="font-weight:700">'+r[2]+'</td><td class="'+c+'" style="font-weight:700">'+r[3]+'</td></tr>';
        }).join('')+
       '</tbody></table>'),
     // TREN GLOBAL
     slide(3,'X','Tren Global','<div class="ey">Global Market Data 2025–Q1 2026 — Mapped ke Zalando Taxonomy</div>'+
       '<h2 class="h2">Segmen Tumbuh yang Relevan untuk HEYMALE</h2>'+
       '<div class="grid3">'+KPIS.slice(0,3).map(function(k){return '<div class="card"><div class="kv">'+k.val+'</div><div class="kl">'+k.lbl+'</div></div>';}).join('')+'</div>'+
-      '<table class="tbl"><thead><tr><th>Zalando: Category → Sub Category</th><th>SKU HEYMALE</th><th>CAGR</th><th>Signal</th></tr></thead><tbody>'+
+      '<table class="tbl"><thead><tr><th>Zalando: Category → Sub Category</th><th>Article HEYMALE</th><th>CAGR</th><th>Signal</th></tr></thead><tbody>'+
       [["Knitwear > Knitted jumper","11","5.8%","CNN Jan 2026: quarter-zip 'foundational item 2026'"],
        ["Jeans > Straight + Baggy & Loose","0","4.2%","Vogue 2025: baggy +243% arrivals global"],
        ["Suits & Tailoring > Suits","1","4.5%","Lyst 2026: intentional dressing & suit rebound"],
        ["Tracksuits & Joggers > Tracksuits","0","9.7%","Indo gym +21% YoY; athleisure CAGR tertinggi"],
        ["Sweatshirts & Hoodies > Hoodies","3","5.1%","TikTok #MensFashion 58B views; hoodie terlaris"]].map(function(r){
-        return '<tr><td><span class="path">'+r[0]+'</span></td><td style="font-weight:700;color:'+(parseInt(r[1])===0?'#c94040':parseInt(r[1])<6?'#c97840':'#2d7a4f')+'">'+r[1]+' SKU</td><td style="font-weight:700">'+r[2]+'</td><td style="font-size:10px;color:#666">'+r[3]+'</td></tr>';
+        return '<tr><td><span class="path">'+r[0]+'</span></td><td style="font-weight:700;color:'+(parseInt(r[1])===0?'#c94040':parseInt(r[1])<6?'#c97840':'#2d7a4f')+'">'+r[1]+' Article</td><td style="font-weight:700">'+r[2]+'</td><td style="font-size:10px;color:#666">'+r[3]+'</td></tr>';
        }).join('')+'</tbody></table>'),
     // TOP PELUANG P1
     slide(4,'X','Prioritas 1 — P1','<div class="ey">5 Kategori Zalando yang Harus Dimasukkan Segera — Q3 2026</div>'+
       '<h2 class="h2">Phase 1: Quick Wins dengan DNA Brand Perfect Fit</h2>'+
-      '<table class="tbl"><thead><tr><th>Zalando Path</th><th>SKU Kini</th><th>Target</th><th>Reasoning</th></tr></thead><tbody>'+p1Items+'</tbody></table>'+
+      '<table class="tbl"><thead><tr><th>Zalando Path</th><th>Article Kini</th><th>Target</th><th>Reasoning</th></tr></thead><tbody>'+p1Items+'</tbody></table>'+
       '<div class="card" style="margin-top:12px;background:#fffbf0;border:1px solid #e8c97a">'+
         '<strong style="font-size:11px;color:#9a7a42">Brand Alignment Check:</strong>'+
         '<p style="font-size:11px;color:#5a4a20;margin-top:3px;line-height:1.5">Semua 5 kategori Phase 1 bisa dieksekusi dalam palet warna netral, desain clean, dan effortless positioning — konsisten 100% dengan DNA HEYMALE. Suit trousers + Blazer + Business Shirts = complete office-to-event bundle.</p>'+
@@ -1172,12 +1172,12 @@ function doExport(){
       '<h2 class="h2">Filter Brand: 3V + Zalando Path Check</h2>'+
       '<div class="grid2">'+
         '<div><div style="font-size:12px;font-weight:700;color:#2d7a4f;margin-bottom:8px">EKSPANSI (Zalando paths yang direkomendasikan)</div>'+
-        [["Suits & Tailoring > Suits","High AOV, kondangan demand, 1 SKU"],
-         ["Suits & Tailoring > Suit trousers","Cross-sell kritis, 0 SKU"],
-         ["Shirts > Business Shirts","Office demand, 6 SKU saja"],
-         ["Jeans > Straight + Baggy + Tapered","Wardrobe staple, 0 SKU"],
+        [["Suits & Tailoring > Suits","High AOV, kondangan demand, 1 Article"],
+         ["Suits & Tailoring > Suit trousers","Cross-sell kritis, 0 Article"],
+         ["Shirts > Business Shirts","Office demand, 6 Article saja"],
+         ["Jeans > Straight + Baggy + Tapered","Wardrobe staple, 0 Article"],
          ["Knitwear > Knitted jumper + Cardigans","Viral 2026, CAGR 5.8%"],
-         ["Sweatshirts & Hoodies > Hoodies + Sweatshirts","TikTok viral, 3+7 SKU tipis"],
+         ["Sweatshirts & Hoodies > Hoodies + Sweatshirts","TikTok viral, 3+7 Article tipis"],
          ["Tracksuits & Joggers > Tracksuits","Full-length only, gym culture"]].map(function(a){
           return '<div style="font-size:10px;padding:5px 0;border-bottom:1px solid #dce8dc"><span class="path">'+a[0]+'</span><br><span style="color:#555">'+a[1]+'</span></div>';
         }).join('')+'</div>'+
@@ -1195,7 +1195,7 @@ function doExport(){
     slides.push(slide(slides.length+1,'X','Next Steps',
       '<div class="ey">Action Items — Apa yang Dilakukan Sekarang</div>'+
       '<h2 class="h2">5 Langkah Segera</h2>'+
-      [['1','Approve Phase 1 — Q3 2026','Suits (1→15 SKU), Suit trousers (0→15), Business Shirts (6→25), Jeans Straight (0→20), Knitted jumper (11→30). Start sourcing & sampling.','#c94040'],
+      [['1','Approve Phase 1 — Q3 2026','Suits (1→15 Article), Suit trousers (0→15), Business Shirts (6→25), Jeans Straight (0→20), Knitted jumper (11→30). Start sourcing & sampling.','#c94040'],
        ['2','Validate Demand Lokal','Cek search volume Shopee/Tokopedia untuk setiap Zalando sub-category path P1. Prioritaskan berdasarkan volume Jakarta/Surabaya.','#c94040'],
        ['3','Content Plan per Kategori','Setiap kategori baru butuh TikTok + IG content plan sebelum launch. Knitted jumper & Jeans adalah yang paling viral.','#c97840'],
        ['4','Supplier Audit per Path','Identifikasi supplier untuk Suits, Jeans denim, dan Knitwear. Cek overlap dengan supplier existing (Trousers → Suit trousers, Shirts → Business Shirts).','#c97840'],
