@@ -132,9 +132,9 @@ tbody tr:hover{background:var(--cream)}
     <p><strong>Brand Positioning:</strong> HEYMALE adalah <strong>one-stop lifestyle solution</strong> untuk pria modern — memadukan <strong>smart-casual wear, modest athleisure, dan daily essentials</strong> dengan desain versatile, palet warna netral, dan kenyamanan maksimal. Setiap rekomendasi ekspansi dalam laporan ini dikaitkan langsung ke path kategori Zalando.</p>
   </div>
   <div class="header-meta">
-    <div class="meta-item"><div class="val" id="hdr-total">—</div><div class="lbl">Total artikel HEYMALE</div></div>
-    <div class="meta-item"><div class="val" id="hdr-active">—</div><div class="lbl">Sub-kategori aktif (≥1 artikel)</div></div>
-    <div class="meta-item"><div class="val" id="hdr-zero">—</div><div class="lbl">Sub-kategori = 0 artikel</div></div>
+    <div class="meta-item"><div class="val" id="hdr-total">—</div><div class="lbl">Total Artikel HEYMALE</div></div>
+    <div class="meta-item"><div class="val" id="hdr-active">—</div><div class="lbl">Sub-kategori aktif (≥1 Artikel)</div></div>
+    <div class="meta-item"><div class="val" id="hdr-zero">—</div><div class="lbl">Sub-kategori = 0 Artikel</div></div>
     <div class="meta-item"><div class="val">88</div><div class="lbl">Total baris Zalando taxonomy</div></div>
     <div class="meta-item"><div class="val">6.2%</div><div class="lbl">CAGR Smart-Casual 2026–30</div></div>
     <div class="meta-item"><div class="val">5.8%</div><div class="lbl">CAGR Premium Knitwear</div></div>
@@ -155,7 +155,7 @@ tbody tr:hover{background:var(--cream)}
 ════════════════════════════════════════════════ -->
 <div id="sec-portfolio" class="section active">
   <h2 class="section-title">Peta Portofolio HEYMALE — Data Real CSV Zalando</h2>
-  <p class="section-sub">Distribusi artikel berdasarkan 88 baris taksonomi Zalando. Konsentrasi besar di Casual Shirts & Smart Trousers; mayoritas sub-kategori masih 0 artikel.</p>
+  <p class="section-sub">Distribusi Artikel berdasarkan 88 baris taksonomi Zalando. Konsentrasi besar di Casual Shirts & Smart Trousers; mayoritas sub-kategori masih 0 Artikel.</p>
   <div class="port-grid" id="port-cards"></div>
   <div class="two-col">
     <div class="card">
@@ -181,7 +181,7 @@ tbody tr:hover{background:var(--cream)}
 ════════════════════════════════════════════════ -->
 <div id="sec-global" class="section">
   <h2 class="section-title">Tren Global — Dikaitkan Strict ke Kategori Zalando</h2>
-  <p class="section-sub">Setiap tren global dikaitkan ke path kategori Zalando yang spesifik. Hanya kategori yang relevan dengan positioning HEYMALE dan memiliki artikel sedikit/nol yang dibahas sebagai peluang ekspansi.</p>
+  <p class="section-sub">Setiap tren global dikaitkan ke path kategori Zalando yang spesifik. Hanya kategori yang relevan dengan positioning HEYMALE dan memiliki Artikel sedikit/nol yang dibahas sebagai peluang ekspansi.</p>
 
   <div class="three-col" id="kpi-cards"></div>
 
@@ -406,7 +406,7 @@ el('cov-note').innerHTML = 'Hanya <strong>'+ACTIVE+'</strong> dari 88 sub-katego
 
 /* ─── CONCENTRATION NOTE ─── */
 var topRow = RAW.slice().sort(function(a,b){return b.n-a.n;})[0];
-el('conc-note').innerHTML = Math.round(topRow.n/TOTAL*100)+'% dari seluruh artikel HEYMALE ada di satu sub-kategori: <strong>'+topRow.c+' → '+topRow.s1+'</strong> ('+topRow.n+' artikel). Dari '+ZERO+' sub-kategori yang 0 artikel, sejumlah kategori punya potensi pasar besar secara global dan sesuai DNA HEYMALE — terutama di Jeans, Suits & Tailoring, Knitwear, dan Tracksuits & Joggers.';
+el('conc-note').innerHTML = Math.round(topRow.n/TOTAL*100)+'% dari seluruh Artikel HEYMALE ada di satu sub-kategori: <strong>'+topRow.c+' → '+topRow.s1+'</strong> ('+topRow.n+' Artikel). Dari '+ZERO+' sub-kategori yang 0 Artikel, sejumlah kategori punya potensi pasar besar secara global dan sesuai DNA HEYMALE — terutama di Jeans, Suits & Tailoring, Knitwear, dan Tracksuits & Joggers.';
 
 /* ─── PORTFOLIO CARDS ─── */
 var COLORS = {
@@ -424,7 +424,7 @@ Object.keys(CAT_MAP).forEach(function(c){
   app('port-cards','<div class="port-card" style="border-left-color:'+col+';background:'+(n===0?'#f5f5f3':'#fff')+'">'+
     '<div class="cn">'+c+'</div>'+
     '<div class="num" style="color:'+(n===0?'#ccc':col)+'">'+n+'</div>'+
-    '<div class="sub">artikel &middot; '+pct+'% total</div>'+
+    '<div class="sub">Artikel &middot; '+pct+'% total</div>'+
     '<div class="bar"><div class="bar-f" style="width:'+Math.min(Math.round(n/175*100),100)+'%;background:'+col+'"></div></div>'+
     '<span class="pill '+sc+'" style="margin-top:7px">'+st+'</span>'+
   '</div>');
@@ -457,7 +457,7 @@ RAW.filter(function(r){return r.n>0;}).sort(function(a,b){return b.n-a.n;}).forE
 
 /* ═══════════════════════════════════════════════════
    TREN GLOBAL — Mapped strictly to Zalando taxonomy
-   Each entry: path (c→s1→s2), HM artikel saat ini,
+   Each entry: path (c→s1→s2), HM Artikel saat ini,
    CAGR, insight, relevance flag
 ════════════════════════════════════════════════════ */
 var TRENDS = [
@@ -467,7 +467,7 @@ var TRENDS = [
     cagr:"3.8%",priority:"P1",
     title:"Business Shirts — Core Smart-Casual Gap",
     market:"Global menswear formal segments tumbuh CAGR 3.8% (Grand View Research 2026). Office return pasca-pandemi mendorong demand business shirts premium di Asia Tenggara. Di Indonesia, kembalinya WFO full-time sejak 2024 + budaya event formal (kondangan, wisuda, halal bihalal) memperkuat demand sepanjang tahun.",
-    heymale:"HEYMALE punya 175 Casual Shirts — fondasi sangat kuat. Namun Business Shirts hanya 6 artikel. Oxford cloth, poplin formal, slim-fit dress shirt adalah sub-niche yang langsung cross-sell ke Blazer (9) dan Smart Trousers (46) yang sudah ada.",
+    heymale:"HEYMALE punya 175 Casual Shirts — fondasi sangat kuat. Namun Business Shirts hanya 6 Artikel. Oxford cloth, poplin formal, slim-fit dress shirt adalah sub-niche yang langsung cross-sell ke Blazer (9) dan Smart Trousers (46) yang sudah ada.",
     fit:"Core — natural extension dari Shirts existing"
   },
   // ── KNITWEAR ────────────────────────────────────
@@ -1102,8 +1102,8 @@ function doExport(){
       '<h1 class="h1">HEYMALE — Peta Ekspansi Kategori</h1>'+
       '<p class="sub">Gap portofolio berbasis data Zalando taxonomy, tren global 2025–Q1 2026, dan brand positioning HEYMALE.<br><em>One-stop lifestyle solution · Smart-casual · Modest athleisure · Effortless · Premium accessible</em></p>'+
       '<div class="grid3">'+
-        '<div class="card"><div class="kv">'+TOTAL+'</div><div class="kl">Total artikel HEYMALE</div></div>'+
-        '<div class="card"><div class="kv">'+ZERO+'/88</div><div class="kl">Sub-kategori Zalando = 0 artikel</div></div>'+
+        '<div class="card"><div class="kv">'+TOTAL+'</div><div class="kl">Total Artikel HEYMALE</div></div>'+
+        '<div class="card"><div class="kv">'+ZERO+'/88</div><div class="kl">Sub-kategori Zalando = 0 Artikel</div></div>'+
         '<div class="card"><div class="kv">'+ACTIVE+'</div><div class="kl">Sub-kategori aktif</div></div>'+
       '</div>'+
       '<div class="grid3">'+
@@ -1115,7 +1115,7 @@ function doExport(){
     slide(2,'X','Situasi Portofolio','<div class="ey">Data CSV Zalando — 88 Sub-Kategori</div>'+
       '<h2 class="h2">Konsentrasi Tinggi + Gap Besar = Risiko & Peluang</h2>'+
       '<div class="grid3">'+
-        '<div class="card"><div class="kv p1c">'+Math.round(175/TOTAL*100)+'%</div><div class="kl">artikel di 1 sub-kategori (Casual Shirts)</div></div>'+
+        '<div class="card"><div class="kv p1c">'+Math.round(175/TOTAL*100)+'%</div><div class="kl">Artikel di 1 sub-kategori (Casual Shirts)</div></div>'+
         '<div class="card"><div class="kv" style="color:#c8a96e">'+ZERO+'</div><div class="kl">sub-kategori Zalando = 0 Article</div></div>'+
         '<div class="card"><div class="kv" style="color:#2d7a4f">13+</div><div class="kl">peluang ekspansi yang brand-fit</div></div>'+
       '</div>'+
