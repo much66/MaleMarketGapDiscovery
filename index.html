@@ -6,6 +6,7 @@
 <title>HEYMALE Expansion 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -27,6 +28,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);
 .header-meta{display:flex;gap:28px;flex-wrap:wrap}
 .meta-item .val{font-size:26px;font-weight:300;color:#fff}
 .meta-item .lbl{font-size:11px;color:rgba(255,255,255,.38);margin-top:1px}
+
+/* UPLOAD BANNER */
+.upload-banner{background:linear-gradient(135deg,#1a1400,#0f0f0f);border-bottom:2px solid var(--accent);padding:14px 48px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.upload-banner .ub-label{font-size:12px;color:rgba(255,255,255,.6);flex-shrink:0}
+.upload-zone{display:flex;align-items:center;gap:10px;flex:1;min-width:280px}
+.upload-btn-lbl{display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#1a1200;font-size:12px;font-weight:700;padding:7px 14px;border-radius:6px;cursor:pointer;transition:background .15s;white-space:nowrap}
+.upload-btn-lbl:hover{background:#d9b87a}
+#csv-file-input{display:none}
+.upload-status{font-size:11px;padding:5px 10px;border-radius:5px;flex:1}
+.upload-status.idle{color:rgba(255,255,255,.35)}
+.upload-status.ok{background:rgba(45,122,79,.2);border:1px solid rgba(45,122,79,.4);color:#7acc9a}
+.upload-status.err{background:rgba(201,64,64,.2);border:1px solid rgba(201,64,64,.4);color:#e88}
+.upload-hint{font-size:10px;color:rgba(255,255,255,.25);margin-left:auto;white-space:nowrap}
+.upload-template-btn{background:none;border:1px solid rgba(200,169,110,.4);color:var(--accent);font-size:11px;padding:5px 10px;border-radius:5px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:all .15s}
+.upload-template-btn:hover{background:rgba(200,169,110,.1)}
+
 .nav{background:var(--cream);border-bottom:1px solid var(--border);padding:0 48px;display:flex;position:sticky;top:0;z-index:100;overflow-x:auto}
 .nav-btn{padding:13px 18px;font-size:13px;font-weight:500;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
 .nav-btn.active{color:var(--text);border-bottom-color:var(--accent)}
@@ -49,7 +66,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);
 .pill-gray{background:#f0f0f0;color:#666}
 .pill-blue{background:#e4eaf8;color:#1e3a6e}
 .pill-orange{background:#fdecd8;color:#7a3a00}
-/* PORT CARDS */
 .port-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:28px}
 .port-card{border-radius:8px;padding:14px 16px;border:1px solid var(--border);border-left:3px solid transparent}
 .port-card .cn{font-size:11px;font-weight:600;margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
@@ -57,13 +73,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);
 .port-card .sub{font-size:11px;color:var(--muted)}
 .port-card .bar{margin-top:8px;background:rgba(0,0,0,.08);border-radius:99px;height:3px}
 .port-card .bar-f{height:3px;border-radius:99px}
-/* TREND TABLE */
 .tbl-wrap{border-radius:8px;overflow:hidden;border:1px solid var(--border);margin-bottom:20px}
 .tbl-head{display:grid;gap:0;background:var(--cream);border-bottom:2px solid var(--border);padding:8px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
 .tbl-row{padding:12px 14px;border-bottom:1px solid var(--border);font-size:12px}
 .tbl-row:last-child{border-bottom:none}
 .tbl-row:nth-child(even){background:#fafafa}
-/* OPP CARDS */
 .opp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:20px}
 .opp-card{border-radius:8px;padding:18px 20px;border:1px solid var(--border);background:#fff;transition:box-shadow .15s}
 .opp-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.07)}
@@ -72,14 +86,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);
 .opp-card.p3{border-left:4px solid var(--green)}
 .opp-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
 .opp-title{font-weight:700;font-size:13px;line-height:1.4;flex:1;margin-right:8px}
-.opp-zalando{font-size:10px;font-weight:600;color:var(--accent-dark);background:var(--accent-light);padding:2px 7px;border-radius:4px;margin-bottom:6px;display:inline-block}
 .opp-why{font-size:12px;color:var(--text-light);line-height:1.55;margin-bottom:8px}
 .opp-align{font-size:11px;color:var(--accent-dark);font-style:italic;margin-bottom:8px;border-left:2px solid var(--accent);padding-left:8px}
 .opp-tags{display:flex;flex-wrap:wrap;gap:4px}
 .opp-tag{font-size:10px;background:var(--cream);color:var(--text-light);padding:2px 7px;border-radius:4px}
-/* GAP MATRIX */
 table{width:100%;border-collapse:collapse;font-size:12px}
-thead th{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:8px 10px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap}
+thead th{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:8px 10px;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap;cursor:pointer;user-select:none;position:relative}
+thead th:hover{background:var(--cream);color:var(--text)}
+thead th .sort-icon{margin-left:4px;opacity:.4;font-size:9px}
+thead th.sort-asc .sort-icon,thead th.sort-desc .sort-icon{opacity:1;color:var(--accent-dark)}
 tbody td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.4}
 tbody tr:last-child td{border-bottom:none}
 tbody tr:hover{background:var(--cream)}
@@ -88,20 +103,30 @@ tbody tr:hover{background:var(--cream)}
 .highlight .ht{font-size:11px;font-weight:700;color:var(--accent-dark);margin-bottom:3px}
 .highlight p{font-size:12px;color:#5a4a20;line-height:1.6}
 .divider{border:none;border-top:1px solid var(--border);margin:28px 0}
-/* ROADMAP */
 .phase-block{border-radius:8px;padding:18px 22px;margin-bottom:14px}
 .phase-item{padding:11px 0;border-bottom:1px solid rgba(0,0,0,.07)}
 .phase-item:last-child{border-bottom:none}
-/* SOURCES */
 .source-item{padding:11px 0;border-bottom:1px solid var(--border)}
 .source-item:last-child{border-bottom:none}
 .source-name{font-size:13px;font-weight:600;margin-bottom:2px}
 .source-url{font-size:11px;color:var(--blue);margin-bottom:3px}
 .source-desc{font-size:12px;color:var(--text-light);line-height:1.5}
-/* CHART */
 .chart-wrap{position:relative;width:100%}
-/* CATEGORY BADGE in trends */
 .cat-path{font-size:10px;color:var(--blue);background:#eef2fb;padding:2px 6px;border-radius:3px;font-family:monospace;display:inline-block;margin-bottom:4px}
+
+/* GAP MATRIX FILTERS */
+.gap-controls{background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:16px}
+.gap-controls-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.gc-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);white-space:nowrap}
+.gc-select{font-size:12px;padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;font-family:'DM Sans',sans-serif;color:var(--text);cursor:pointer}
+.gc-select:focus{outline:none;border-color:var(--accent)}
+.gc-input{font-size:12px;padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;font-family:'DM Sans',sans-serif;color:var(--text);min-width:180px}
+.gc-input:focus{outline:none;border-color:var(--accent)}
+.gc-btn{font-size:11px;padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;font-family:'DM Sans',sans-serif;cursor:pointer;color:var(--text-light);transition:all .15s}
+.gc-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent-dark)}
+.gc-count{font-size:11px;color:var(--muted);margin-left:auto}
+.gap-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:8px}
+
 /* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9000;align-items:center;justify-content:center}
 .modal-bg.open{display:flex}
@@ -120,25 +145,40 @@ tbody tr:hover{background:var(--cream)}
 .slide-opt .so-desc{font-size:11px;color:var(--muted);line-height:1.4}
 .export-btn{display:block;width:100%;background:var(--black);color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
 .export-btn:hover{background:#333}
+
+/* DATA CHANGED BADGE */
+.changed-badge{display:inline-block;background:rgba(45,122,79,.15);border:1px solid rgba(45,122,79,.4);color:#1a5c35;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:8px;vertical-align:middle}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="eyebrow">Brand Analysis Report · Q2 2026 · Benchmark: Zalando Taxonomy (88 Article Rows)</div>
+  <div class="eyebrow">Brand Analysis Report · Q2 2026 · Benchmark: Zalando Taxonomy (88 SKU Rows)</div>
   <h1 class="header-title"><em>HEYMALE</em> — Peta Ekspansi Kategori</h1>
   <p class="header-sub">Analisis gap portofolio berbasis data CSV Zalando (88 baris, 14 kategori utama), tren global terkini 2025–Q1 2026, dan peluang ekspansi — semua dikaitkan secara strict ke Main Cat → Category → Sub Category Zalando.</p>
   <div class="brand-pill">
-    <p><strong>Brand Positioning:</strong> HEYMALE adalah <strong>one-stop lifestyle solution</strong> untuk pria modern — memadukan <strong>smart-casual wear, modest athleisure, dan daily essentials</strong> dengan desain versatile, palet warna netral, dan kenyamanan maksimal. Setiap rekomendasi ekspansi dalam laporan ini dikaitkan langsung ke path kategori Zalando.</p>
+    <p><strong>Brand Positioning:</strong> HEYMALE adalah <strong>one-stop lifestyle solution</strong> untuk pria modern — memadukan <strong>smart-casual wear, modest athleisure, dan daily essentials</strong> dengan desain versatile, palet warna netral, dan kenyamanan maksimal.</p>
   </div>
   <div class="header-meta">
-    <div class="meta-item"><div class="val" id="hdr-total">—</div><div class="lbl">Total Artikel HEYMALE</div></div>
-    <div class="meta-item"><div class="val" id="hdr-active">—</div><div class="lbl">Sub-kategori aktif (≥1 Artikel)</div></div>
-    <div class="meta-item"><div class="val" id="hdr-zero">—</div><div class="lbl">Sub-kategori = 0 Artikel</div></div>
+    <div class="meta-item"><div class="val" id="hdr-total">—</div><div class="lbl">Total artikel HEYMALE</div></div>
+    <div class="meta-item"><div class="val" id="hdr-active">—</div><div class="lbl">Sub-kategori aktif (≥1 artikel)</div></div>
+    <div class="meta-item"><div class="val" id="hdr-zero">—</div><div class="lbl">Sub-kategori = 0 artikel</div></div>
     <div class="meta-item"><div class="val">88</div><div class="lbl">Total baris Zalando taxonomy</div></div>
     <div class="meta-item"><div class="val">6.2%</div><div class="lbl">CAGR Smart-Casual 2026–30</div></div>
     <div class="meta-item"><div class="val">5.8%</div><div class="lbl">CAGR Premium Knitwear</div></div>
   </div>
+</div>
+
+<!-- UPLOAD BANNER -->
+<div class="upload-banner">
+  <span class="ub-label">&#128190; Update Data Artikel:</span>
+  <div class="upload-zone">
+    <label class="upload-btn-lbl" for="csv-file-input">&#8593; Upload CSV</label>
+    <input type="file" id="csv-file-input" accept=".csv">
+    <div class="upload-status idle" id="upload-status">Belum ada file — gunakan data default</div>
+  </div>
+  <button class="upload-template-btn" onclick="downloadTemplate()">&#8595; Download Template CSV</button>
+  <span class="upload-hint">Kolom wajib: Main Cat, Category, Sub Category 1, Sub Category 2, Heymale's Article</span>
 </div>
 
 <nav class="nav">
@@ -150,12 +190,10 @@ tbody tr:hover{background:var(--cream)}
   <button class="nav-export" onclick="openExport()">&#8659; Export Presentation</button>
 </nav>
 
-<!-- ═══════════════════════════════════════════════
-     SECTION: PORTFOLIO
-════════════════════════════════════════════════ -->
+<!-- PORTFOLIO -->
 <div id="sec-portfolio" class="section active">
-  <h2 class="section-title">Peta Portofolio HEYMALE — Data Real CSV Zalando</h2>
-  <p class="section-sub">Distribusi Artikel berdasarkan 88 baris taksonomi Zalando. Konsentrasi besar di Casual Shirts & Smart Trousers; mayoritas sub-kategori masih 0 Artikel.</p>
+  <h2 class="section-title">Peta Portofolio HEYMALE — Data Real CSV Zalando <span class="changed-badge" id="data-source-badge" style="display:none">Data diperbarui</span></h2>
+  <p class="section-sub">Distribusi artikel berdasarkan 88 baris taksonomi Zalando. Konsentrasi besar di Casual Shirts & Smart Trousers; mayoritas sub-kategori masih 0 artikel.</p>
   <div class="port-grid" id="port-cards"></div>
   <div class="two-col">
     <div class="card">
@@ -168,98 +206,114 @@ tbody tr:hover{background:var(--cream)}
       <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:8px" id="cov-note">—</p>
     </div>
   </div>
-  <div class="highlight">
-    <div class="ht">Catatan Konsentrasi & Risiko</div>
-    <p id="conc-note">—</p>
-  </div>
+  <div class="highlight"><div class="ht">Catatan Konsentrasi & Risiko</div><p id="conc-note">—</p></div>
   <div class="label">Semua sub-kategori Zalando yang aktif di HEYMALE</div>
   <div class="card"><table><thead><tr><th>Main Cat</th><th>Category</th><th>Sub Category 1</th><th>Sub Category 2</th><th>Artikel</th><th>% Total</th><th>Status</th></tr></thead><tbody id="port-tbl"></tbody></table></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
-     SECTION: TREN GLOBAL
-════════════════════════════════════════════════ -->
+<!-- TREN GLOBAL -->
 <div id="sec-global" class="section">
   <h2 class="section-title">Tren Global — Dikaitkan Strict ke Kategori Zalando</h2>
-  <p class="section-sub">Setiap tren global dikaitkan ke path kategori Zalando yang spesifik. Hanya kategori yang relevan dengan positioning HEYMALE dan memiliki Artikel sedikit/nol yang dibahas sebagai peluang ekspansi.</p>
-
+  <p class="section-sub">Setiap tren global dikaitkan ke path kategori Zalando. Angka SKU HEYMALE otomatis terupdate jika Anda mengupload data baru.</p>
   <div class="three-col" id="kpi-cards"></div>
-
-  <div class="highlight">
-    <div class="ht">Metodologi</div>
-    <p>Semua tren di bawah dipetakan ke <strong>Main Cat → Category → Sub Category</strong> persis seperti yang ada di Zalando taxonomy CSV. Kategori yang sudah kuat di HEYMALE (Casual Shirts: 175, Smart Trousers: 46, Basic T-shirts: 22) tidak dimasukkan sebagai peluang ekspansi, melainkan sebagai anchor kekuatan brand.</p>
-  </div>
-
-  <!-- TREND TABLE -->
+  <div class="highlight"><div class="ht">Metodologi</div><p>Semua tren dipetakan ke <strong>Main Cat → Category → Sub Category</strong> persis seperti di Zalando taxonomy CSV. Angka SKU HEYMALE di bawah merefleksikan data terbaru yang diupload.</p></div>
   <div class="label" style="margin-bottom:12px">Tren Global per Kategori Zalando — Artikel HEYMALE vs Potensi Pasar</div>
   <div class="tbl-wrap" id="trend-tbl"></div>
-
   <div class="two-col" style="margin-top:20px">
-    <div class="card">
-      <div class="label">Runway & Trade Signal 2025–2026</div>
-      <div id="runway-list"></div>
-      <p style="font-size:10px;color:var(--muted);margin-top:10px">Sumber: Style Arcade FW26-27 (Feb 2026), CNN Menswear (Jan 2026), Vogue Business (2025)</p>
-    </div>
-    <div class="card">
-      <div class="label">Indonesia Market Signals 2025</div>
-      <div id="indo-list"></div>
-    </div>
+    <div class="card"><div class="label">Runway & Trade Signal 2025–2026</div><div id="runway-list"></div><p style="font-size:10px;color:var(--muted);margin-top:10px">Sumber: Style Arcade FW26-27, CNN Menswear (Jan 2026), Vogue Business (2025)</p></div>
+    <div class="card"><div class="label">Indonesia Market Signals 2025</div><div id="indo-list"></div></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
-     SECTION: GAP & PELUANG
-════════════════════════════════════════════════ -->
+<!-- GAP & PELUANG -->
 <div id="sec-gaps" class="section">
   <h2 class="section-title">Gap & Peluang — Mapped ke Zalando Taxonomy</h2>
-  <p class="section-sub">Setiap peluang ditampilkan dengan path kategori Zalando yang eksak (Main Cat → Category → Sub Category 1 → Sub Category 2). Artikel HEYMALE saat ini ditampilkan untuk konteks gap. Filter brand HEYMALE tetap berlaku: versatile, smart-casual, effortless, premium accessible.</p>
-
+  <p class="section-sub">Setiap peluang ditampilkan dengan path kategori Zalando yang eksak. Filter dan urutkan Full Gap Matrix sesuai kebutuhan analisis.</p>
   <div style="display:flex;flex-wrap:wrap;gap:14px;font-size:12px;margin-bottom:20px;align-items:center">
     <div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:2px;background:var(--red)"></div><strong>P1</strong> Prioritas Tinggi — Q3 2026</div>
     <div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:2px;background:var(--accent)"></div><strong>P2</strong> Prioritas Menengah — Q1 2027</div>
     <div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:2px;background:var(--green)"></div><strong>P3</strong> Prioritas Panjang — H2 2027</div>
-    <div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:2px;background:#bbb"></div>Skip — Off-brand / Iklim tropis</div>
   </div>
-
   <div class="opp-grid" id="opp-cards"></div>
 
   <hr class="divider">
   <h3 style="font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:6px">Full Gap Matrix — Semua 88 Baris Zalando</h3>
-  <p style="font-size:13px;color:var(--text-light);margin-bottom:16px">Setiap baris dari CSV Zalando ditampilkan dengan status HEYMALE kini, tren global, dan rekomendasi aksi.</p>
-  <div class="card" style="overflow-x:auto">
-    <table>
-      <thead><tr>
-        <th>Main Cat</th><th>Category (Zalando)</th><th>Sub Cat 1</th><th>Sub Cat 2</th>
-        <th>HM Artikel</th><th>CAGR Global</th><th>ID Demand</th><th>Brand Fit</th><th>Aksi</th>
-      </tr></thead>
+  <p style="font-size:13px;color:var(--text-light);margin-bottom:14px">Filter, urutkan, dan analisis seluruh kategori. Klik header kolom untuk sorting ASC/DESC.</p>
+
+  <!-- FILTER CONTROLS -->
+  <div class="gap-controls">
+    <div class="gap-controls-row">
+      <span class="gc-label">Filter:</span>
+      <input type="text" class="gc-input" id="gc-search" placeholder="Cari nama kategori..." oninput="renderGapMatrix()">
+      <select class="gc-select" id="gc-maincat" onchange="renderGapMatrix()"><option value="">Semua Main Cat</option></select>
+      <select class="gc-select" id="gc-fit" onchange="renderGapMatrix()">
+        <option value="">Semua Brand Fit</option>
+        <option value="Core">Core</option>
+        <option value="Adjacent">Adjacent</option>
+        <option value="Off-brand">Off-brand</option>
+        <option value="Low fit">Low fit</option>
+      </select>
+      <select class="gc-select" id="gc-act" onchange="renderGapMatrix()">
+        <option value="">Semua Aksi</option>
+        <option value="P1">P1</option>
+        <option value="P2">P2</option>
+        <option value="P3">P3</option>
+        <option value="Hold">Hold</option>
+        <option value="Expand">Expand</option>
+        <option value="Skip">Skip</option>
+        <option value="Low priority">Low priority</option>
+      </select>
+      <select class="gc-select" id="gc-sku" onchange="renderGapMatrix()">
+        <option value="">Semua SKU</option>
+        <option value="0">0 SKU</option>
+        <option value="1-5">1–5 SKU</option>
+        <option value="6-20">6–20 SKU</option>
+        <option value="20+">20+ SKU</option>
+      </select>
+      <button class="gc-btn" onclick="resetGapFilters()">&#10005; Reset</button>
+      <span class="gc-count" id="gap-count">— baris</span>
+    </div>
+  </div>
+
+  <div class="gap-table-wrap">
+    <table id="gap-table">
+      <thead>
+        <tr>
+          <th onclick="sortGap('mainCat')" id="gh-mainCat">Main Cat <span class="sort-icon">&#8597;</span></th>
+          <th onclick="sortGap('cat')" id="gh-cat">Category <span class="sort-icon">&#8597;</span></th>
+          <th onclick="sortGap('s1')" id="gh-s1">Sub Cat 1 <span class="sort-icon">&#8597;</span></th>
+          <th onclick="sortGap('s2')" id="gh-s2">Sub Cat 2 <span class="sort-icon">&#8597;</span></th>
+          <th onclick="sortGap('n')" id="gh-n">HM Artikel <span class="sort-icon">&#8597;</span></th>
+          <th onclick="sortGap('cagr')" id="gh-cagr">CAGR <span class="sort-icon">&#8597;</span></th>
+          <th onclick="sortGap('id')" id="gh-id">ID Demand <span class="sort-icon">&#8597;</span></th>
+          <th onclick="sortGap('fit')" id="gh-fit">Brand Fit <span class="sort-icon">&#8597;</span></th>
+          <th onclick="sortGap('act')" id="gh-act">Aksi <span class="sort-icon">&#8597;</span></th>
+        </tr>
+      </thead>
       <tbody id="gap-tbl"></tbody>
     </table>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
-     SECTION: ROADMAP
-════════════════════════════════════════════════ -->
+<!-- ROADMAP -->
 <div id="sec-roadmap" class="section">
   <h2 class="section-title">Roadmap Ekspansi Bertahap</h2>
-  <p class="section-sub">Semua kategori dalam roadmap mengacu pada path Zalando taxonomy yang aktual. Tiga fase berdasarkan prioritas gap, demand, dan kesiapan operasional HEYMALE.</p>
+  <p class="section-sub">Semua kategori mengacu pada path Zalando taxonomy. Angka SKU merefleksikan data terbaru.</p>
   <div id="roadmap-body"></div>
   <div class="highlight" style="background:#f0f7f0;border-color:#7ac97a;margin-top:4px">
     <div class="ht" style="color:var(--green)">Prinsip Ekspansi HEYMALE — 3V</div>
-    <p>Setiap kategori baru wajib lulus uji <strong>Versatile</strong> (multi-situasi), <strong>Visual Coherent</strong> (palet netral + clean design), dan <strong>Value-driven</strong> (premium feel, harga accessible). Path Zalando digunakan sebagai taksonomi resmi untuk listing produk.</p>
+    <p>Setiap kategori baru wajib lulus uji <strong>Versatile</strong> (multi-situasi), <strong>Visual Coherent</strong> (palet netral + clean design), dan <strong>Value-driven</strong> (premium feel, harga accessible).</p>
   </div>
   <div class="two-col" style="margin-top:16px">
     <div class="card"><div class="label">Checklist sebelum masuk kategori baru</div><div id="checklist"></div></div>
-    <div class="card"><div class="label">Target Article per fase (berdasarkan Zalando sub-category)</div><div id="sku-targets"></div></div>
+    <div class="card"><div class="label">Target SKU per fase</div><div id="sku-targets"></div></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════
-     SECTION: SOURCES
-════════════════════════════════════════════════ -->
+<!-- SOURCES -->
 <div id="sec-sources" class="section">
   <h2 class="section-title">Sumber & Referensi</h2>
-  <p class="section-sub">Semua data pasar dari riset 2025–Q1 2026. Baseline taksonomi: Zalando CSV (88 rows, 6 kolom).</p>
+  <p class="section-sub">Semua data pasar dari riset 2025–Q1 2026. Baseline taksonomi: Zalando CSV (88 rows).</p>
   <div class="two-col">
     <div><div class="label">Sumber primer</div><div class="card"><div id="src-used"></div></div></div>
     <div><div class="label">Sumber monitoring ongoing</div><div class="card"><div id="src-ongoing"></div></div></div>
@@ -269,17 +323,11 @@ tbody tr:hover{background:var(--cream)}
 <!-- EXPORT MODAL -->
 <div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeExport()">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Export Presentation</div>
-      <button class="modal-close" onclick="closeExport()">&#10005;</button>
-    </div>
+    <div class="modal-header"><div class="modal-title">Export Presentation</div><button class="modal-close" onclick="closeExport()">&#10005;</button></div>
     <div class="modal-body">
       <p style="font-size:13px;color:var(--text-light);margin-bottom:16px">Pilih format presentasi untuk diunduh.</p>
       <div class="slide-options" id="slide-opts"></div>
-      <div style="background:var(--cream);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--text-light)">
-        <strong style="color:var(--text);display:block;margin-bottom:4px">Format:</strong>
-        File HTML yang bisa dibuka di browser → Ctrl+P → Save as PDF.
-      </div>
+      <div style="background:var(--cream);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:var(--text-light)"><strong style="color:var(--text);display:block;margin-bottom:4px">Format:</strong>File HTML yang bisa dibuka di browser → Ctrl+P → Save as PDF.</div>
       <div id="export-msg" style="display:none;background:#f0f7f0;border:1px solid #7ac97a;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--green)"></div>
       <button class="export-btn" onclick="doExport()">Generate &amp; Download</button>
     </div>
@@ -287,11 +335,11 @@ tbody tr:hover{background:var(--cream)}
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════════
-   RAW DATA — direct dari CSV Zalando (88 baris)
-   Fields: mainCat, cat, sub1, sub2, n (Heymale's Article)
-════════════════════════════════════════════════════ */
-var RAW = [
+/* ════════════════════════════════════════════════════════
+   DEFAULT DATA — RAW (88 rows from Zalando taxonomy)
+   Fields: m(Main Cat), c(Category), s1(Sub Cat 1), s2(Sub Cat 2), n(Heymale article count)
+════════════════════════════════════════════════════════ */
+var DEFAULT_RAW = [
   {m:"Clothing",c:"T-shirts & Polos",s1:"Basic T-shirts",s2:"",n:22},
   {m:"Clothing",c:"T-shirts & Polos",s1:"Printed T-shirts",s2:"",n:1},
   {m:"Clothing",c:"T-shirts & Polos",s1:"Tank tops",s2:"",n:0},
@@ -382,33 +430,111 @@ var RAW = [
   {m:"Clothing",c:"Loungewear & Sleepwear",s1:"Trousers",s2:"",n:0}
 ];
 
-/* ═══════════════════════════════════════════════════
-   COMPUTED STATS
-════════════════════════════════════════════════════ */
-var TOTAL = RAW.reduce(function(a,r){return a+r.n;},0);
-var ACTIVE = RAW.filter(function(r){return r.n>0;}).length;
-var ZERO   = RAW.filter(function(r){return r.n===0;}).length;
+/* ════════════════════════════════════════════════════════
+   ANNOTATIONS — static market data per Zalando key
+   Key format: "Category|Sub Cat 1|Sub Cat 2"
+════════════════════════════════════════════════════════ */
+var ANNOTATIONS = {
+  "T-shirts & Polos|Basic T-shirts|":       {cagr:"4.0%",cagrN:4.0,id:"Tinggi",idN:4,fit:"Core",act:"Hold — 22 SKU solid"},
+  "T-shirts & Polos|Printed T-shirts|":     {cagr:"3.5%",cagrN:3.5,id:"Menengah",idN:3,fit:"Core",act:"Expand tipis → 8–12 SKU"},
+  "T-shirts & Polos|Tank tops|":            {cagr:"3.5%",cagrN:3.5,id:"Rendah",idN:2,fit:"Off-brand",act:"Skip"},
+  "T-shirts & Polos|Polo shirts|":          {cagr:"4.0%",cagrN:4.0,id:"Tinggi",idN:4,fit:"Core",act:"Hold — 28 SKU kuat"},
+  "T-shirts & Polos|Long-sleeved tops|":    {cagr:"4.0%",cagrN:4.0,id:"Menengah",idN:3,fit:"Core",act:"Expand → 10–15 SKU"},
+  "T-shirts & Polos|Sports T-shirts|":      {cagr:"5.0%",cagrN:5.0,id:"Menengah",idN:3,fit:"Adjacent",act:"Expand → 8–10 SKU"},
+  "Shirts|Casual Shirts|":                  {cagr:"3.5%",cagrN:3.5,id:"Tinggi",idN:4,fit:"Core",act:"Hold — dominan"},
+  "Shirts|Business Shirts|":                {cagr:"3.8%",cagrN:3.8,id:"Sangat Tinggi",idN:5,fit:"Core",act:"P1 — Expand"},
+  "Jackets|Lightweight jackets|Transitional Jackets":{cagr:"4.0%",cagrN:4.0,id:"Tinggi",idN:4,fit:"Core",act:"Hold — kuat"},
+  "Jackets|Lightweight jackets|Bomber Jackets":{cagr:"4.0%",cagrN:4.0,id:"Tinggi",idN:4,fit:"Core",act:"P2 — Expand"},
+  "Jackets|Lightweight jackets|Windbreaker":{cagr:"4.0%",cagrN:4.0,id:"Menengah",idN:3,fit:"Adjacent",act:"Expand perlahan"},
+  "Jackets|Lightweight jackets|Outdoor Jackets":{cagr:"4.5%",cagrN:4.5,id:"Rendah",idN:2,fit:"Adjacent",act:"Low priority"},
+  "Jackets|Lightweight jackets|Waterproof Jackets":{cagr:"4.5%",cagrN:4.5,id:"Rendah",idN:2,fit:"Adjacent",act:"Low priority"},
+  "Jackets|Leather jackets|":               {cagr:"3.5%",cagrN:3.5,id:"Menengah",idN:3,fit:"Core",act:"Expand 3→10 SKU"},
+  "Jackets|Denim jackets|":                 {cagr:"4.0%",cagrN:4.0,id:"Menengah",idN:3,fit:"Core",act:"P2 — Expand"},
+  "Jackets|Winter jackets|":                {cagr:"2.0%",cagrN:2.0,id:"Sangat Rendah",idN:1,fit:"Low fit",act:"Skip — iklim tropis"},
+  "Jackets|Down jackets|":                  {cagr:"2.0%",cagrN:2.0,id:"Sangat Rendah",idN:1,fit:"Low fit",act:"Skip — iklim tropis"},
+  "Jackets|Outdoor jackets|Windbreakers":   {cagr:"4.0%",cagrN:4.0,id:"Rendah",idN:2,fit:"Adjacent",act:"Low priority"},
+  "Jackets|Outdoor jackets|Softshell jackets":{cagr:"4.0%",cagrN:4.0,id:"Rendah",idN:2,fit:"Adjacent",act:"Low priority"},
+  "Jackets|Outdoor jackets|Training jackets":{cagr:"5.0%",cagrN:5.0,id:"Menengah",idN:3,fit:"Adjacent",act:"P3"},
+  "Jackets|Outdoor jackets|Running jackets":{cagr:"5.5%",cagrN:5.5,id:"Menengah",idN:3,fit:"Adjacent",act:"Low priority"},
+  "Jackets|Outdoor jackets|Cycling jackets":{cagr:"4.5%",cagrN:4.5,id:"Rendah",idN:2,fit:"Off-brand",act:"Skip"},
+  "Jackets|Outdoor jackets|Fleece jackets": {cagr:"3.5%",cagrN:3.5,id:"Rendah",idN:2,fit:"Adjacent",act:"Low priority"},
+  "Jackets|Outdoor jackets|Down jackets & coats":{cagr:"2.0%",cagrN:2.0,id:"Sangat Rendah",idN:1,fit:"Low fit",act:"Skip"},
+  "Jackets|Outdoor jackets|Winter jackets & coats":{cagr:"2.0%",cagrN:2.0,id:"Sangat Rendah",idN:1,fit:"Low fit",act:"Skip"},
+  "Jackets|Outdoor jackets|Ski & snowboard jackets":{cagr:"2.0%",cagrN:2.0,id:"Sangat Rendah",idN:1,fit:"Off-brand",act:"Skip"},
+  "Jackets|Outdoor jackets|Gilets":         {cagr:"3.0%",cagrN:3.0,id:"Rendah",idN:2,fit:"Adjacent",act:"Low priority"},
+  "Jackets|Fleece jackets|":                {cagr:"3.5%",cagrN:3.5,id:"Rendah",idN:2,fit:"Adjacent",act:"Low priority"},
+  "Jackets|Gilet|":                         {cagr:"3.0%",cagrN:3.0,id:"Rendah",idN:2,fit:"Adjacent",act:"Low priority"},
+  "Jeans|Baggy & Loose|":                   {cagr:"4.2%",cagrN:4.2,id:"Tinggi",idN:4,fit:"Core",act:"P2 — Expand"},
+  "Jeans|Straight|":                        {cagr:"4.2%",cagrN:4.2,id:"Sangat Tinggi",idN:5,fit:"Core",act:"P1 — Expand"},
+  "Jeans|Slim|":                            {cagr:"3.5%",cagrN:3.5,id:"Menengah",idN:3,fit:"Core",act:"Expand 1→8 SKU"},
+  "Jeans|Tapered|":                         {cagr:"4.2%",cagrN:4.2,id:"Tinggi",idN:4,fit:"Core",act:"P2 — Expand"},
+  "Jeans|Relaxed|":                         {cagr:"4.0%",cagrN:4.0,id:"Menengah",idN:3,fit:"Core",act:"P3 — setelah Straight solid"},
+  "Jeans|Skinny|":                          {cagr:"2.0%",cagrN:2.0,id:"Rendah",idN:2,fit:"Core",act:"Low priority — trend turun"},
+  "Jeans|Bootcut & Flared|":                {cagr:"2.5%",cagrN:2.5,id:"Rendah",idN:2,fit:"Adjacent",act:"Skip"},
+  "Jeans|Overalls & Workwear|":             {cagr:"2.5%",cagrN:2.5,id:"Rendah",idN:2,fit:"Adjacent",act:"Skip"},
+  "Jeans|Denim shorts|":                    {cagr:"3.5%",cagrN:3.5,id:"Menengah",idN:3,fit:"Off-brand",act:"Skip"},
+  "Trousers|Chinos|":                       {cagr:"3.5%",cagrN:3.5,id:"Tinggi",idN:4,fit:"Core",act:"Hold — ada"},
+  "Trousers|Smart trousers|":               {cagr:"4.5%",cagrN:4.5,id:"Sangat Tinggi",idN:5,fit:"Core",act:"Hold — kuat"},
+  "Trousers|Cargo trousers|":               {cagr:"4.8%",cagrN:4.8,id:"Tinggi",idN:4,fit:"Core",act:"P2 — Expand"},
+  "Trousers|Joggers|":                      {cagr:"5.0%",cagrN:5.0,id:"Tinggi",idN:4,fit:"Core",act:"P2 — Expand"},
+  "Trousers|Dungarees|":                    {cagr:"2.5%",cagrN:2.5,id:"Rendah",idN:2,fit:"Adjacent",act:"Skip"},
+  "Sweatshirts & Hoodies|Hoodies|":         {cagr:"5.1%",cagrN:5.1,id:"Tinggi",idN:4,fit:"Core",act:"P2 — Expand"},
+  "Sweatshirts & Hoodies|Sweatshirts|":     {cagr:"5.1%",cagrN:5.1,id:"Tinggi",idN:4,fit:"Core",act:"P2 — Expand"},
+  "Sweatshirts & Hoodies|Sweat jackets|":   {cagr:"5.1%",cagrN:5.1,id:"Menengah",idN:3,fit:"Adjacent",act:"P3"},
+  "Sweatshirts & Hoodies|Fleece pullover|": {cagr:"3.5%",cagrN:3.5,id:"Rendah",idN:2,fit:"Adjacent",act:"Low priority"},
+  "Knitwear|Cardigans|":                    {cagr:"5.8%",cagrN:5.8,id:"Tinggi",idN:4,fit:"Core",act:"P2 — Expand"},
+  "Knitwear|Knitted jumper|":               {cagr:"5.8%",cagrN:5.8,id:"Sangat Tinggi",idN:5,fit:"Core",act:"P1 — Expand"},
+  "Coats|Trench coats|":                    {cagr:"3.2%",cagrN:3.2,id:"Rendah",idN:2,fit:"Adjacent",act:"Low priority"},
+  "Coats|Parkas|":                          {cagr:"2.5%",cagrN:2.5,id:"Sangat Rendah",idN:1,fit:"Low fit",act:"Skip"},
+  "Coats|Short coats|":                     {cagr:"3.0%",cagrN:3.0,id:"Rendah",idN:2,fit:"Low fit",act:"Skip"},
+  "Coats|Winter coats|":                    {cagr:"2.0%",cagrN:2.0,id:"Sangat Rendah",idN:1,fit:"Low fit",act:"Skip — iklim tropis"},
+  "Coats|Wool coats|":                      {cagr:"2.5%",cagrN:2.5,id:"Sangat Rendah",idN:1,fit:"Low fit",act:"Skip"},
+  "Coats|Down coats|":                      {cagr:"2.0%",cagrN:2.0,id:"Sangat Rendah",idN:1,fit:"Low fit",act:"Skip"},
+  "Tracksuits & Joggers|Tracksuits|":       {cagr:"9.7%",cagrN:9.7,id:"Tinggi",idN:4,fit:"Adjacent",act:"P2 — Expand (covered only)"},
+  "Tracksuits & Joggers|Joggers|":          {cagr:"9.7%",cagrN:9.7,id:"Tinggi",idN:4,fit:"Core",act:"P2 — Expand"},
+  "Tracksuits & Joggers|Tracksuit Jackets|":{cagr:"9.7%",cagrN:9.7,id:"Menengah",idN:3,fit:"Adjacent",act:"P3"},
+  "Suits & Tailoring|Suits|":              {cagr:"4.5%",cagrN:4.5,id:"Sangat Tinggi",idN:5,fit:"Core",act:"P1 — Expand"},
+  "Suits & Tailoring|Suit jackets|":        {cagr:"4.5%",cagrN:4.5,id:"Tinggi",idN:4,fit:"Core",act:"Expand"},
+  "Suits & Tailoring|Shirts|":              {cagr:"3.8%",cagrN:3.8,id:"Tinggi",idN:4,fit:"Core",act:"P3 — Suit companion"},
+  "Suits & Tailoring|Suit trousers|":       {cagr:"4.5%",cagrN:4.5,id:"Sangat Tinggi",idN:5,fit:"Core",act:"P1 — Expand kritis"},
+  "Suits & Tailoring|Suit waistcoats|":     {cagr:"3.5%",cagrN:3.5,id:"Menengah",idN:3,fit:"Core",act:"Hold — ada"},
+  "Suits & Tailoring|Blazer jackets|":      {cagr:"4.5%",cagrN:4.5,id:"Sangat Tinggi",idN:5,fit:"Core",act:"P2 — Expand"},
+  "Suits & Tailoring|Ties & accessories|":  {cagr:"2.5%",cagrN:2.5,id:"Menengah",idN:3,fit:"Adjacent",act:"Low priority"},
+  "Shorts|Casual Shorts|":                  {cagr:"5.5%",cagrN:5.5,id:"Tinggi",idN:4,fit:"Off-brand",act:"Skip"},
+  "Shorts|Denim shorts|":                   {cagr:"3.5%",cagrN:3.5,id:"Menengah",idN:3,fit:"Off-brand",act:"Skip"},
+  "Shorts|Sport Shorts|":                   {cagr:"5.5%",cagrN:5.5,id:"Tinggi",idN:4,fit:"Off-brand",act:"Skip"},
+  "Underwear & Socks|Underpants|Boxers & trunks":{cagr:"4.0%",cagrN:4.0,id:"Menengah",idN:3,fit:"Adjacent",act:"P3 — brand extension"},
+  "Underwear & Socks|Underpants|Boxer shorts":{cagr:"4.0%",cagrN:4.0,id:"Menengah",idN:3,fit:"Adjacent",act:"P3 — bundle"},
+  "Underwear & Socks|Underpants|Briefs":    {cagr:"3.5%",cagrN:3.5,id:"Rendah",idN:2,fit:"Adjacent",act:"Low priority"},
+  "Underwear & Socks|Underpants|Jockstraps":{cagr:"2.0%",cagrN:2.0,id:"Sangat Rendah",idN:1,fit:"Off-brand",act:"Skip"},
+  "Underwear & Socks|Underpants|Thongs":    {cagr:"1.5%",cagrN:1.5,id:"Sangat Rendah",idN:1,fit:"Off-brand",act:"Skip"},
+  "Underwear & Socks|Undershirts|":         {cagr:"3.5%",cagrN:3.5,id:"Menengah",idN:3,fit:"Adjacent",act:"P3 — base layer"},
+  "Underwear & Socks|Socks|Socks":          {cagr:"3.5%",cagrN:3.5,id:"Menengah",idN:3,fit:"Adjacent",act:"Expand → 5–8 SKU"},
+  "Underwear & Socks|Socks|Sports socks":   {cagr:"4.0%",cagrN:4.0,id:"Menengah",idN:3,fit:"Adjacent",act:"Expand → 5 SKU"},
+  "Underwear & Socks|Socks|Knee high socks":{cagr:"2.5%",cagrN:2.5,id:"Rendah",idN:2,fit:"Adjacent",act:"Low priority"},
+  "Underwear & Socks|Socks|Sneaker Socks":  {cagr:"4.5%",cagrN:4.5,id:"Tinggi",idN:4,fit:"Adjacent",act:"Expand"},
+  "Underwear & Socks|Bathrobes|":           {cagr:"3.0%",cagrN:3.0,id:"Rendah",idN:2,fit:"Off-brand",act:"Skip"},
+  "Swimwear|Swim trunks|Shorts":            {cagr:"7.4%",cagrN:7.4,id:"Tinggi",idN:4,fit:"Off-brand",act:"Skip"},
+  "Swimwear|Swim trunks|Trunks":            {cagr:"7.4%",cagrN:7.4,id:"Tinggi",idN:4,fit:"Off-brand",act:"Skip"},
+  "Swimwear|Swim trunks|Briefs":            {cagr:"5.0%",cagrN:5.0,id:"Rendah",idN:2,fit:"Off-brand",act:"Skip"},
+  "Swimwear|Shirts & tops|":               {cagr:"5.0%",cagrN:5.0,id:"Menengah",idN:3,fit:"Off-brand",act:"Skip"},
+  "Swimwear|Bathrobes|":                    {cagr:"3.0%",cagrN:3.0,id:"Rendah",idN:2,fit:"Off-brand",act:"Skip"},
+  "Swimwear|Towels|":                       {cagr:"2.5%",cagrN:2.5,id:"Rendah",idN:2,fit:"Off-brand",act:"Skip"},
+  "Loungewear & Sleepwear|Pyjamas|":        {cagr:"5.5%",cagrN:5.5,id:"Menengah",idN:3,fit:"Adjacent",act:"P3 — elevated version"},
+  "Loungewear & Sleepwear|Shirts|":         {cagr:"5.5%",cagrN:5.5,id:"Menengah",idN:3,fit:"Adjacent",act:"P3 — linen crossover"},
+  "Loungewear & Sleepwear|Trousers|":       {cagr:"5.5%",cagrN:5.5,id:"Tinggi",idN:4,fit:"Adjacent",act:"P3 — elevated lounge pants"}
+};
 
-// Per main category totals
-var CAT_MAP = {};
-RAW.forEach(function(r){
-  CAT_MAP[r.c] = (CAT_MAP[r.c]||0)+r.n;
-});
+/* ════════════════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════════════════ */
+var RAW = DEFAULT_RAW.map(function(r){return Object.assign({},r);});
+var dataFromUpload = false;
 
-var el=function(id){return document.getElementById(id);};
-var app=function(id,str){el(id).innerHTML+=str;};
+// Gap matrix sort state
+var gapSortCol = 'n';
+var gapSortDir = 'desc'; // 'asc' | 'desc'
 
-/* ─── HEADER STATS ─── */
-el('hdr-total').textContent = TOTAL;
-el('hdr-active').textContent = ACTIVE;
-el('hdr-zero').textContent = ZERO;
-el('cov-note').innerHTML = 'Hanya <strong>'+ACTIVE+'</strong> dari 88 sub-kategori Zalando aktif di HEYMALE ('+Math.round(ACTIVE/88*100)+'%)';
-
-/* ─── CONCENTRATION NOTE ─── */
-var topRow = RAW.slice().sort(function(a,b){return b.n-a.n;})[0];
-el('conc-note').innerHTML = Math.round(topRow.n/TOTAL*100)+'% dari seluruh Artikel HEYMALE ada di satu sub-kategori: <strong>'+topRow.c+' → '+topRow.s1+'</strong> ('+topRow.n+' Artikel). Dari '+ZERO+' sub-kategori yang 0 Artikel, sejumlah kategori punya potensi pasar besar secara global dan sesuai DNA HEYMALE — terutama di Jeans, Suits & Tailoring, Knitwear, dan Tracksuits & Joggers.';
-
-/* ─── PORTFOLIO CARDS ─── */
 var COLORS = {
   "T-shirts & Polos":"#c97840","Shirts":"#c94040","Jackets":"#c8a96e",
   "Jeans":"#2952a3","Trousers":"#2d7a4f","Sweatshirts & Hoodies":"#7a52a3",
@@ -416,817 +542,666 @@ var COLORS = {
   "Suits & Tailoring":"#5c2da3","Shorts":"#bbb","Underwear & Socks":"#9a9a9a",
   "Swimwear":"#3a7a9a","Loungewear & Sleepwear":"#7a9a3a"
 };
-Object.keys(CAT_MAP).forEach(function(c){
-  var n=CAT_MAP[c], col=COLORS[c]||'#aaa';
-  var pct=Math.round(n/TOTAL*100);
-  var sc=n===0?'pill-gray':n<10?'pill-red':n<40?'pill-orange':n<100?'pill-green':'pill-gold';
-  var st=n===0?'Kosong':n<10?'Sangat Tipis':n<40?'Ada':n<100?'Solid':'Dominan';
-  app('port-cards','<div class="port-card" style="border-left-color:'+col+';background:'+(n===0?'#f5f5f3':'#fff')+'">'+
-    '<div class="cn">'+c+'</div>'+
-    '<div class="num" style="color:'+(n===0?'#ccc':col)+'">'+n+'</div>'+
-    '<div class="sub">Artikel &middot; '+pct+'% total</div>'+
-    '<div class="bar"><div class="bar-f" style="width:'+Math.min(Math.round(n/175*100),100)+'%;background:'+col+'"></div></div>'+
-    '<span class="pill '+sc+'" style="margin-top:7px">'+st+'</span>'+
-  '</div>');
+
+var chartMain = null, chartCov = null;
+
+/* ════════════════════════════════════════════════════════
+   CSV UPLOAD
+════════════════════════════════════════════════════════ */
+document.getElementById('csv-file-input').addEventListener('change', function(e){
+  var file = e.target.files[0];
+  if(!file) return;
+  Papa.parse(file, {
+    header: true,
+    skipEmptyLines: true,
+    dynamicTyping: false,
+    complete: function(results){
+      processCSVUpload(results.data, file.name);
+    },
+    error: function(err){
+      setUploadStatus('err', 'Error parsing CSV: ' + err.message);
+    }
+  });
 });
 
-/* ─── CHARTS ─── */
-var catLabels = Object.keys(CAT_MAP);
-var catVals   = catLabels.map(function(c){return CAT_MAP[c];});
-var catCols   = catLabels.map(function(c){return COLORS[c]||'#ccc';});
+function normalizeHeader(h){
+  return (h||'').trim().toLowerCase().replace(/['']/g,"'").replace(/\s+/g,' ');
+}
 
-new Chart(el('ch-main'),{type:'bar',data:{
-  labels:catLabels,
-  datasets:[{data:catVals,backgroundColor:catCols.map(function(c){return c+'bb';}),borderColor:catCols,borderWidth:1}]
-},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-  scales:{x:{ticks:{font:{size:9},maxRotation:50},grid:{display:false}},y:{ticks:{font:{size:10}}}}}});
-
-new Chart(el('ch-cov'),{type:'doughnut',data:{
-  labels:['Aktif ('+ACTIVE+')','Potensi Ekspansi ('+Math.min(ZERO,40)+')','Low fit / Skip ('+(ZERO-Math.min(ZERO,40))+')'],
-  datasets:[{data:[ACTIVE,Math.min(ZERO,40),ZERO-Math.min(ZERO,40)],
-    backgroundColor:['#c8a96e','#2d7a4f','#e8e3d8'],borderWidth:0}]
-},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
-  plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:12}}}}});
-
-/* ─── PORTFOLIO TABLE (active rows only) ─── */
-RAW.filter(function(r){return r.n>0;}).sort(function(a,b){return b.n-a.n;}).forEach(function(r){
-  var pct=(r.n/TOTAL*100).toFixed(1);
-  var s=r.n>30?'<span class="pill pill-gold">Dominan</span>':r.n>10?'<span class="pill pill-green">Solid</span>':r.n>4?'<span class="pill pill-orange">Ada</span>':'<span class="pill pill-red">Sangat Tipis</span>';
-  app('port-tbl','<tr><td>'+r.m+'</td><td>'+r.c+'</td><td>'+r.s1+'</td><td>'+(r.s2||'—')+'</td><td><strong>'+r.n+'</strong></td><td>'+pct+'%</td><td>'+s+'</td></tr>');
-});
-
-/* ═══════════════════════════════════════════════════
-   TREN GLOBAL — Mapped strictly to Zalando taxonomy
-   Each entry: path (c→s1→s2), HM Artikel saat ini,
-   CAGR, insight, relevance flag
-════════════════════════════════════════════════════ */
-var TRENDS = [
-  // ── SHIRTS ──────────────────────────────────────
-  {
-    cat:"Shirts",s1:"Business Shirts",s2:"",n:6,
-    cagr:"3.8%",priority:"P1",
-    title:"Business Shirts — Core Smart-Casual Gap",
-    market:"Global menswear formal segments tumbuh CAGR 3.8% (Grand View Research 2026). Office return pasca-pandemi mendorong demand business shirts premium di Asia Tenggara. Di Indonesia, kembalinya WFO full-time sejak 2024 + budaya event formal (kondangan, wisuda, halal bihalal) memperkuat demand sepanjang tahun.",
-    heymale:"HEYMALE punya 175 Casual Shirts — fondasi sangat kuat. Namun Business Shirts hanya 6 Artikel. Oxford cloth, poplin formal, slim-fit dress shirt adalah sub-niche yang langsung cross-sell ke Blazer (9) dan Smart Trousers (46) yang sudah ada.",
-    fit:"Core — natural extension dari Shirts existing"
-  },
-  // ── KNITWEAR ────────────────────────────────────
-  {
-    cat:"Knitwear",s1:"Knitted jumper",s2:"",n:11,
-    cagr:"5.8%",priority:"P1",
-    title:"Knitwear → Knitted jumper — Premium Layering Gap",
-    market:"Global knitwear market CAGR 5.8% (Mordor Intelligence 2025–32). CNN Jan 2026 melaporkan quarter-zip & turtleneck sebagai 'foundational menswear item 2026'. Style Arcade FW26-27: layering knitwear menjadi key purchase driver, bukan sekadar pelengkap. Elevated basics dengan texture premium adalah sinyal pasar yang kuat.",
-    heymale:"HEYMALE punya 11 Knitted jumper dan 4 Cardigans. Knitted jumper masih sangat tipis — target 25–35 Article untuk solid coverage. Mulai dari crewneck & half-zip dalam palet netral; tambah turtleneck sebagai statement piece yang viral 2026.",
-    fit:"Core — effortless smart-casual layering"
-  },
-  {
-    cat:"Knitwear",s1:"Cardigans",s2:"",n:4,
-    cagr:"5.8%",priority:"P2",
-    title:"Knitwear → Cardigans — Office-to-Weekend Layer",
-    market:"Cardigan sebagai 'smart-casual outer layer' tumbuh kuat di segmen premium accessible. Vogue Business 2025: open-front layering piece pria naik signifikan di Asia Tenggara, terutama versi bahan medium-weight yang bisa dipakai AC ruangan maupun outdoor malam.",
-    heymale:"4 Article sangat tipis untuk kategori yang masuk weekend + workwear sekaligus. Target 12–18 Article: open-front knit cardigan, button-through, dan rib-knit minimalist.",
-    fit:"Core — versatile layering, brand-fit tinggi"
-  },
-  // ── SUITS & TAILORING ────────────────────────────
-  {
-    cat:"Suits & Tailoring",s1:"Suits",s2:"",n:1,
-    cagr:"4.5%",priority:"P1",
-    title:"Suits & Tailoring → Suits — High AOV Complete Set",
-    market:"Global formal tailoring CAGR 4.5% (Grand View Research 2026–30). Lyst 2026: intentional dressing dan 'investasi wardrobe' menjadi perilaku utama konsumen pria. Indonesia adalah salah satu pasar dengan frekuensi event formal tertinggi secara global — pernikahan, wisuda, halal bihalal, Idul Fitri = demand suits sepanjang tahun.",
-    heymale:"HEYMALE hanya 1 Article Suits — kesenjangan sangat besar. Suits adalah high-AOV item yang cross-sell langsung ke Blazer jackets (9 Article) dan Suit waistcoats (5 Article). Mulai dengan 2-piece suit slim-modern dalam warna navy, abu-abu charcoal, hitam.",
-    fit:"Core — complete formal wardrobe solution, high AOV"
-  },
-  {
-    cat:"Suits & Tailoring",s1:"Suit trousers",s2:"",n:0,
-    cagr:"4.5%",priority:"P1",
-    title:"Suits & Tailoring → Suit trousers — 0 Article, Cross-sell Kritis",
-    market:"Suit trousers adalah komponen wajib 'complete tailoring wardrobe'. Pasar formal trousers global tumbuh bersama segmen tailoring CAGR 4.5%. Di Indonesia, pria sering membeli celana formal terpisah dari jas — demand sebagai standalone item juga kuat.",
-    heymale:"0 Article saat ini padahal HEYMALE punya Blazer (9) dan Suit waistcoats (5). Gap yang tidak logis untuk brand yang ingin jadi 'complete formal solution'. Target: 15–20 Article slim & regular-fit formal trousers.",
-    fit:"Core — wajib untuk complete tailoring coverage"
-  },
-  {
-    cat:"Suits & Tailoring",s1:"Shirts",s2:"",n:0,
-    cagr:"3.8%",priority:"P2",
-    title:"Suits & Tailoring → Shirts — Dedicated Formal Shirt",
-    market:"Kemeja formal dalam konteks suit (bukan casual shirt biasa) adalah kategori terpisah dengan kebutuhan spesifik: hidden buttons, French cuff, spread collar. Demand tinggi untuk bundling dengan suit.",
-    heymale:"HEYMALE sudah punya Shirts > Business Shirts (6 Article) namun di path Suits & Tailoring belum ada item. Ini bisa diisi dengan kemeja formal yang diposisikan sebagai 'suit companion' — beda dari casual shirts main catalog.",
-    fit:"Core — suit companion, natural bundle item"
-  },
-  {
-    cat:"Suits & Tailoring",s1:"Blazer jackets",s2:"",n:9,
-    cagr:"4.5%",priority:"P2",
-    title:"Suits & Tailoring → Blazer jackets — Ekspansi dari 9 Article",
-    market:"Unstructured blazer & 'smart-casual blazer' tumbuh kuat di segment business casual. Pasar Asia Tenggara khususnya mencari blazer yang bisa dipakai kerja dan event — tidak terlalu formal, tidak terlalu kasual.",
-    heymale:"9 Article ada — solid tapi bisa lebih kuat. Target 18–25 Article dengan variasi: structured, unstructured/soft-shoulder, linen blazer untuk iklim tropis, dan wool-blend untuk event premium.",
-    fit:"Core — natural expansion dari existing strength"
-  },
-  // ── JEANS ───────────────────────────────────────
-  {
-    cat:"Jeans",s1:"Straight",s2:"",n:0,
-    cagr:"4.2%",priority:"P1",
-    title:"Jeans → Straight — Wardrobe Staple 0 Article",
-    market:"Straight-leg jeans adalah kategori paling stabil dan laris dalam menswear denim global. CAGR 4.2% (Allied Market Research 2025). Tidak terpengaruh tren musiman — selalu dibutuhkan. Di Indonesia, straight jeans adalah pilihan utama pria untuk casual dan smart-casual sehari-hari.",
-    heymale:"0 Article. HEYMALE punya 1 Article Slim dan 0 Article Straight — gap fundamental untuk brand yang memposisikan diri sebagai 'complete menswear'. Target: 15–25 Article (rinse dark, medium grey, stone wash) sebagai fondasi koleksi denim.",
-    fit:"Core — wardrobe staple, brand fit sangat tinggi"
-  },
-  {
-    cat:"Jeans",s1:"Baggy & Loose",s2:"",n:0,
-    cagr:"4.2%",priority:"P2",
-    title:"Jeans → Baggy & Loose — Trend Dominan 2025-26",
-    market:"Baggy & barrel leg jeans mencatat +243% arrivals di retailer global (Vogue Business 2025). Style Arcade FW26-27: relaxed silhouette menggantikan slim secara dominan. TikTok fashion content 2025: baggy fit adalah format konten terlaris untuk menswear. Generasi muda Indonesia adopsi tren ini sangat cepat.",
-    heymale:"0 Article. Ini adalah tren terkuat di denim 2025-26 yang masih sama sekali tidak ada di HEYMALE. Target: 10–15 Article — mulai dari wide-straight transisi, baru ke full baggy.",
-    fit:"Core — smart-casual modern, TikTok content magnet"
-  },
-  {
-    cat:"Jeans",s1:"Tapered",s2:"",n:0,
-    cagr:"4.2%",priority:"P2",
-    title:"Jeans → Tapered — Smart-Casual Denim",
-    market:"Tapered jeans adalah sweet spot antara slim yang terlalu ketat dan baggy yang terlalu longgar — paling populer di urban professional pria Indonesia. Versatile: bisa dipakai dengan blazer maupun sneakers.",
-    heymale:"0 Article. Tapered fit adalah pilihan paling versatile dan brand-fit untuk HEYMALE — cocok dipasangkan dengan Blazer, Polo, dan Casual Shirt yang sudah kuat.",
-    fit:"Core — versatile fit, paling brand-coherent dari semua denim"
-  },
-  {
-    cat:"Jeans",s1:"Relaxed",s2:"",n:0,
-    cagr:"4.2%",priority:"P3",
-    title:"Jeans → Relaxed — Comfort Denim",
-    market:"Relaxed fit adalah kelanjutan dari comfort dressing trend. Lebih wearable dari baggy untuk pria yang baru transisi dari slim. Demand stabil.",
-    heymale:"0 Article. Rekomendasi setelah Straight dan Tapered terbentuk — sebagai variasi ketiga dalam denim offering.",
-    fit:"Core — comfort-forward, cocok untuk ekosistem HEYMALE"
-  },
-  // ── TROUSERS ────────────────────────────────────
-  {
-    cat:"Trousers",s1:"Cargo trousers",s2:"",n:1,
-    cagr:"4.8%",priority:"P2",
-    title:"Trousers → Cargo trousers — Utilitarian Upgrade",
-    market:"Utility & cargo trousers CAGR 4.8% (Persistence Market Research 2025). 'Smart cargo' — cargo dengan silhouette bersih tanpa pocket berlebihan — tumbuh pesat di segmen pria urban yang ingin fungsionalitas tanpa mengorbankan estetika. Di Indonesia, cargo panjang berbahan ringan sangat relevan untuk iklim tropis.",
-    heymale:"Hanya 1 Article — hampir tidak ada. Target 10–15 Article: slim cargo (cleaner look), regular cargo (traditional), dan tech-fabric cargo untuk active-smart positioning.",
-    fit:"Core — utilitarian + smart-casual, sangat brand-fit"
-  },
-  {
-    cat:"Trousers",s1:"Dungarees",s2:"",n:0,
-    cagr:"2.5%",priority:"P3",
-    title:"Trousers → Dungarees — Niche, Test Dulu",
-    market:"Dungarees untuk pria masih niche tapi ada demand di segmen streetwear-influenced. Tren kecil, relevansi untuk HEYMALE terbatas.",
-    heymale:"0 Article. Potensi rendah — hanya masukkan sebagai capsule test jika streetwear elements ingin dimasukkan ke brand.",
-    fit:"Adjacent — niche fit"
-  },
-  // ── SWEATSHIRTS & HOODIES ───────────────────────
-  {
-    cat:"Sweatshirts & Hoodies",s1:"Hoodies",s2:"",n:3,
-    cagr:"5.1%",priority:"P2",
-    title:"Sweatshirts & Hoodies → Hoodies — Expand dari 3 Article",
-    market:"Global hoodie market CAGR 5.1% (Mordor Intelligence 2025–30). Hoodie adalah item paling viral di TikTok menswear 2025. Oversized hoodie, premium heavy-weight hoodie, dan zip-up hoodie adalah tiga sub-niche berbeda dengan demand besar. Asia Tenggara: hoodie dipakai sebagai outer layer di ruangan ber-AC.",
-    heymale:"3 Article sangat tipis. Target 15–20 Article: pullover hoodie (essentials), zip-up hoodie (layering), oversized hoodie (statement). Palet: hitam, abu tua, cream, navy.",
-    fit:"Core — lifestyle essential, TikTok magnet"
-  },
-  {
-    cat:"Sweatshirts & Hoodies",s1:"Sweatshirts",s2:"",n:7,
-    cagr:"5.1%",priority:"P2",
-    title:"Sweatshirts & Hoodies → Sweatshirts — Expand dari 7 Article",
-    market:"Crewneck sweatshirt adalah 'forever essential' menswear. Demand premium heavyweight crewneck naik drastis 2025 — Lyst mencatat lonjakan search 'premium basics'. Quiet luxury positioning sangat sesuai: minimal branding, fabric premium.",
-    heymale:"7 Article ada, perlu di-expand ke 18–25 Article. Fokus pada: premium crewneck (French terry, heavyweight cotton), graphic minimal, dan tie-dye/wash-effect untuk variasi visual.",
-    fit:"Core — lifestyle staple, premium basics positioning"
-  },
-  {
-    cat:"Sweatshirts & Hoodies",s1:"Sweat jackets",s2:"",n:0,
-    cagr:"5.1%",priority:"P3",
-    title:"Sweatshirts & Hoodies → Sweat jackets — Athleisure Layer",
-    market:"Sweat jacket (zip-up fleece-lined jacket) adalah komponen athleisure yang tumbuh. Bisa diposisikan sebagai casual outer layer yang lebih clean dari hoodie.",
-    heymale:"0 Article. Potensial sebagai Phase 3 — masukkan setelah Hoodies dan Sweatshirts solid.",
-    fit:"Adjacent — athleisure outer layer"
-  },
-  // ── TRACKSUITS & JOGGERS ────────────────────────
-  {
-    cat:"Tracksuits & Joggers",s1:"Tracksuits",s2:"",n:0,
-    cagr:"9.7%",priority:"P2",
-    title:"Tracksuits & Joggers → Tracksuits — Gym Culture Driver",
-    market:"Global athleisure CAGR 9.7% (Fortune Business Insights 2026–34) — pertumbuhan tertinggi di seluruh menswear. Indonesia: gym membership +21% YoY (KenResearch 2025). Coordinated tracksuit (jacket + trouser matching set) adalah produk dengan conversion rate tinggi karena nilai estetika sekaligus fungsional. Di Indonesia, dipakai gym, olahraga pagi, dan casual weekend.",
-    heymale:"0 Article. Target: 8–12 matching sets dalam palet netral (hitam, abu, navy). HANYA full-length — konsisten dengan brand values HEYMALE (covered, modest activewear).",
-    fit:"Adjacent — modest activewear, brand-fit dengan filter ketat"
-  },
-  {
-    cat:"Tracksuits & Joggers",s1:"Joggers",s2:"",n:1,
-    cagr:"9.7%",priority:"P2",
-    title:"Tracksuits & Joggers → Joggers — Expand dari 1 Article",
-    market:"Jogger trousers sebagai athleisure staple. Tumbuh bersama gym culture dan WFH comfort culture. Jogger premium (tech-fabric, slim-tapered silhouette) adalah item yang bisa dipakai gym sampai casual weekend.",
-    heymale:"Hanya 1 Article (di Tracksuits & Joggers) — perlu ekspansi signifikan. Target 10–15 Article: slim-tapered jogger, wide-leg lounge jogger, dan tech-fabric active jogger.",
-    fit:"Core — versatile athleisure, brand-fit tinggi"
-  },
-  // ── LOUNGEWEAR & SLEEPWEAR ──────────────────────
-  {
-    cat:"Loungewear & Sleepwear",s1:"Trousers",s2:"",n:0,
-    cagr:"5.5%",priority:"P3",
-    title:"Loungewear & Sleepwear → Trousers — Elevated Home Comfort",
-    market:"Loungewear market 2x level pre-pandemi (McKinsey 2025). 'Elevated loungewear' — yaitu lounge pieces yang clean, minimal, dan bisa dipakai di luar rumah — adalah sub-niche tumbuh paling cepat. D&G pyjama dressing masuk SS26 runway. WFH culture Indonesia mendorong demand komfort yang tetap 'presentable'.",
-    heymale:"0 Article. Masukkan sebagai lounge trousers bermaterial premium (linen, modal) yang bisa double sebagai casual wear — bukan pyjama murni. Positioning: 'smart home comfort'.",
-    fit:"Adjacent — elevated comfort, brand-fit dengan positioning yang tepat"
-  },
-  {
-    cat:"Loungewear & Sleepwear",s1:"Shirts",s2:"",n:0,
-    cagr:"5.5%",priority:"P3",
-    title:"Loungewear & Sleepwear → Shirts — Linen Comfort Shirts",
-    market:"Linen & lightweight shirts sebagai loungewear-crossover tren kuat 2025-26. Bisa diposisikan sebagai 'home-to-café' shirts — bukan murni sleepwear.",
-    heymale:"0 Article. Bisa diisi dengan linen overshirts bermaterial ringan yang positioning-nya antara loungewear dan casual wear.",
-    fit:"Adjacent — crossover positioning"
-  },
-  // ── JACKETS (Relevan) ─────────────────────────────
-  {
-    cat:"Jackets",s1:"Lightweight jackets",s2:"Bomber Jackets",n:5,
-    cagr:"4.0%",priority:"P2",
-    title:"Jackets → Bomber Jackets — Expand dari 5 Article",
-    market:"Bomber jacket adalah statement casual piece yang konsisten di menswear. CAGR 4.0%. Di Indonesia, bomber dipakai sebagai outer layer ringan di malam hari dan AC.",
-    heymale:"5 Article — ada tapi tipis. Target 12–15 Article: satin bomber (premium), nylon bomber (everyday), dan varsity-inspired bomber. Palet: hitam, navy, olive, cream.",
-    fit:"Core — casual statement, brand-fit"
-  },
-  {
-    cat:"Jackets",s1:"Denim jackets",s2:"",n:5,
-    cagr:"4.0%",priority:"P2",
-    title:"Jackets → Denim jackets — Synergy dengan Denim Expansion",
-    market:"Denim jacket tumbuh bersama whole denim category. Terutama kuat sebagai layering piece yang bisa dipakai dengan casual shirts maupun T-shirts.",
-    heymale:"5 Article — tipis. Jika HEYMALE ekspansi ke Jeans, maka denim jacket adalah natural bundle partner. Target 10–15 Article.",
-    fit:"Core — natural denim ecosystem play"
-  },
-  // ── SKIP CATEGORIES ─────────────────────────────
-  {
-    cat:"Shorts",s1:"Casual / Denim / Sport Shorts",s2:"",n:0,
-    cagr:"5.5%",priority:"SKIP",
-    title:"Shorts — Off-brand, Skip",
-    market:"Demand tinggi secara global, tapi tidak sesuai brand values HEYMALE yang fokus pada covered, modest menswear.",
-    heymale:"0 Article. Direkomendasikan skip dari seluruh roadmap.",
-    fit:"Off-brand — tidak sesuai DNA HEYMALE"
-  },
-  {
-    cat:"Swimwear",s1:"Swim trunks / Shirts & tops / Towels",s2:"",n:0,
-    cagr:"7.4%",priority:"SKIP",
-    title:"Swimwear — Off-brand, Skip",
-    market:"Swimwear CAGR 7.4% secara global namun tidak sesuai brand positioning HEYMALE.",
-    heymale:"0 Article. Skip dari seluruh roadmap.",
-    fit:"Off-brand — tidak sesuai DNA HEYMALE"
+function processCSVUpload(rows, fname){
+  if(!rows || rows.length === 0){
+    setUploadStatus('err', 'File kosong atau format tidak valid.');
+    return;
   }
+  // Detect headers
+  var headers = Object.keys(rows[0]).map(normalizeHeader);
+  // Find column indices (flexible matching)
+  function findCol(patterns){
+    for(var i=0;i<patterns.length;i++){
+      for(var j=0;j<headers.length;j++){
+        if(headers[j].indexOf(patterns[i])!==-1) return Object.keys(rows[0])[j];
+      }
+    }
+    return null;
+  }
+  var colMainCat  = findCol(['main cat','main_cat','maincat']);
+  var colCat      = findCol(['category']);
+  var colSub1     = findCol(['sub category 1','sub_category_1','sub cat 1','sub1']);
+  var colSub2     = findCol(['sub category 2','sub_category_2','sub cat 2','sub2']);
+  var colArticle  = findCol(["heymale's article","heymale article","article","heymale_article","heymale's_article"]);
+
+  // Also allow the combined "Category | Sub Category 1 | Sub Category 2" column (ignored for mapping, we use individual cols)
+  if(!colArticle){
+    setUploadStatus('err', "Kolom 'Heymale's Article' tidak ditemukan. Pastikan header CSV sesuai template.");
+    return;
+  }
+
+  var updated = 0, notFound = 0;
+  // Build lookup map from DEFAULT_RAW for matching
+  var newRaw = DEFAULT_RAW.map(function(r){return Object.assign({},r);});
+
+  rows.forEach(function(row){
+    var c   = colCat      ? (row[colCat]||'').trim()  : '';
+    var s1  = colSub1     ? (row[colSub1]||'').trim() : '';
+    var s2  = colSub2     ? (row[colSub2]||'').trim() : '';
+    var nStr = (row[colArticle]||'').toString().trim();
+    var n = parseInt(nStr, 10);
+    if(isNaN(n)) return;
+
+    // Find matching row in newRaw
+    for(var i=0;i<newRaw.length;i++){
+      var r = newRaw[i];
+      if(r.c.toLowerCase()===c.toLowerCase() &&
+         r.s1.toLowerCase()===s1.toLowerCase() &&
+         r.s2.toLowerCase()===s2.toLowerCase()){
+        newRaw[i].n = n;
+        updated++;
+        return;
+      }
+    }
+    notFound++;
+  });
+
+  if(updated === 0){
+    setUploadStatus('err', 'Tidak ada baris yang cocok dengan Zalando taxonomy. Cek nama Category/Sub Category 1/Sub Category 2.');
+    return;
+  }
+
+  RAW = newRaw;
+  dataFromUpload = true;
+  document.getElementById('data-source-badge').style.display='inline-block';
+  setUploadStatus('ok', '✓ ' + fname + ' — ' + updated + ' baris diperbarui' + (notFound>0?' ('+notFound+' baris tidak cocok)':''));
+  rebuildAll();
+}
+
+function setUploadStatus(type, msg){
+  var el = document.getElementById('upload-status');
+  el.className = 'upload-status ' + type;
+  el.textContent = msg;
+}
+
+function downloadTemplate(){
+  var header = 'Main Cat,Category,Sub Category 1,Sub Category 2,Category | Sub Category 1 | Sub Category 2,Heymale\'s Article\n';
+  var rows = DEFAULT_RAW.map(function(r){
+    var combined = r.c + ' | ' + r.s1 + (r.s2?' | '+r.s2:'');
+    return [r.m, r.c, r.s1, r.s2, combined, r.n].map(function(v){ return '"'+String(v||'').replace(/"/g,'""')+'"'; }).join(',');
+  }).join('\n');
+  var blob = new Blob([header+rows], {type:'text/csv;charset=utf-8'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href=url; a.download='HEYMALE_Template.csv';
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){URL.revokeObjectURL(url);document.body.removeChild(a);},500);
+}
+
+/* ════════════════════════════════════════════════════════
+   COMPUTED STATS
+════════════════════════════════════════════════════════ */
+function getStats(){
+  var total = RAW.reduce(function(a,r){return a+r.n;},0);
+  var active = RAW.filter(function(r){return r.n>0;}).length;
+  var zero = RAW.filter(function(r){return r.n===0;}).length;
+  var catMap = {};
+  RAW.forEach(function(r){ catMap[r.c]=(catMap[r.c]||0)+r.n; });
+  return {total:total, active:active, zero:zero, catMap:catMap};
+}
+
+function getN(c,s1,s2){
+  var key = c+'|'+s1+'|'+(s2||'');
+  for(var i=0;i<RAW.length;i++){
+    if(RAW[i].c===c && RAW[i].s1===s1 && RAW[i].s2===(s2||'')) return RAW[i].n;
+  }
+  return 0;
+}
+
+/* ════════════════════════════════════════════════════════
+   REBUILD ALL — called on init and after CSV upload
+════════════════════════════════════════════════════════ */
+function rebuildAll(){
+  buildPortfolio();
+  buildTrends();
+  buildOpportunities();
+  renderGapMatrix();
+  buildRoadmap();
+}
+
+/* ════════════════════════════════════════════════════════
+   PORTFOLIO
+════════════════════════════════════════════════════════ */
+function buildPortfolio(){
+  var s = getStats();
+  document.getElementById('hdr-total').textContent = s.total;
+  document.getElementById('hdr-active').textContent = s.active;
+  document.getElementById('hdr-zero').textContent = s.zero;
+  document.getElementById('cov-note').innerHTML = 'Hanya <strong>'+s.active+'</strong> dari 88 sub-kategori Zalando aktif di HEYMALE ('+Math.round(s.active/88*100)+'%)';
+
+  var topRow = RAW.slice().sort(function(a,b){return b.n-a.n;})[0];
+  document.getElementById('conc-note').innerHTML = Math.round(topRow.n/s.total*100)+'% dari seluruh artikel HEYMALE ada di satu sub-kategori: <strong>'+topRow.c+' → '+topRow.s1+'</strong> ('+topRow.n+' artikel). Dari '+s.zero+' sub-kategori yang 0 artikel, sejumlah kategori punya potensi pasar besar — terutama di Jeans, Suits & Tailoring, Knitwear, dan Tracksuits & Joggers.';
+
+  // Port cards
+  var pc = document.getElementById('port-cards');
+  pc.innerHTML = '';
+  Object.keys(s.catMap).forEach(function(c){
+    var n=s.catMap[c], col=COLORS[c]||'#aaa';
+    var pct=Math.round(n/s.total*100);
+    var sc=n===0?'pill-gray':n<10?'pill-red':n<40?'pill-orange':n<100?'pill-green':'pill-gold';
+    var st=n===0?'Kosong':n<10?'Sangat Tipis':n<40?'Ada':n<100?'Solid':'Dominan';
+    var maxN = Math.max.apply(null, Object.values(s.catMap));
+    pc.innerHTML += '<div class="port-card" style="border-left-color:'+col+';background:'+(n===0?'#f5f5f3':'#fff')+'">'+
+      '<div class="cn">'+c+'</div>'+
+      '<div class="num" style="color:'+(n===0?'#ccc':col)+'">'+n+'</div>'+
+      '<div class="sub">artikel &middot; '+pct+'% total</div>'+
+      '<div class="bar"><div class="bar-f" style="width:'+Math.min(Math.round(n/maxN*100),100)+'%;background:'+col+'"></div></div>'+
+      '<span class="pill '+sc+'" style="margin-top:7px">'+st+'</span></div>';
+  });
+
+  // Charts
+  var catLabels = Object.keys(s.catMap);
+  var catVals = catLabels.map(function(c){return s.catMap[c];});
+  var catCols = catLabels.map(function(c){return COLORS[c]||'#ccc';});
+
+  if(chartMain){ chartMain.destroy(); }
+  chartMain = new Chart(document.getElementById('ch-main'),{type:'bar',data:{
+    labels:catLabels,
+    datasets:[{data:catVals,backgroundColor:catCols.map(function(c){return c+'bb';}),borderColor:catCols,borderWidth:1}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+    scales:{x:{ticks:{font:{size:9},maxRotation:50},grid:{display:false}},y:{ticks:{font:{size:10}}}}}});
+
+  if(chartCov){ chartCov.destroy(); }
+  var potentialExp = Math.min(s.zero, 40);
+  chartCov = new Chart(document.getElementById('ch-cov'),{type:'doughnut',data:{
+    labels:['Aktif ('+s.active+')','Potensi Ekspansi ('+potentialExp+')','Low fit / Skip ('+(s.zero-potentialExp)+')'],
+    datasets:[{data:[s.active,potentialExp,s.zero-potentialExp],
+      backgroundColor:['#c8a96e','#2d7a4f','#e8e3d8'],borderWidth:0}]
+  },options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+    plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:12}}}}});
+
+  // Portfolio table
+  var tb = document.getElementById('port-tbl');
+  tb.innerHTML = '';
+  RAW.filter(function(r){return r.n>0;}).sort(function(a,b){return b.n-a.n;}).forEach(function(r){
+    var pct=(r.n/s.total*100).toFixed(1);
+    var st=r.n>30?'<span class="pill pill-gold">Dominan</span>':r.n>10?'<span class="pill pill-green">Solid</span>':r.n>4?'<span class="pill pill-orange">Ada</span>':'<span class="pill pill-red">Sangat Tipis</span>';
+    tb.innerHTML += '<tr><td>'+r.m+'</td><td>'+r.c+'</td><td>'+r.s1+'</td><td>'+(r.s2||'—')+'</td><td><strong>'+r.n+'</strong></td><td>'+pct+'%</td><td>'+st+'</td></tr>';
+  });
+}
+
+/* ════════════════════════════════════════════════════════
+   TREND TABLE
+════════════════════════════════════════════════════════ */
+var TRENDS_DEF = [
+  {cat:"Shirts",s1:"Business Shirts",s2:"",cagr:"3.8%",priority:"P1",title:"Business Shirts — Core Smart-Casual Gap",market:"Global menswear formal segments tumbuh CAGR 3.8%. Office return pasca-pandemi mendorong demand business shirts premium di Asia Tenggara.",heymale:"Natural extension dari Shirts existing. Oxford cloth, poplin formal, slim-fit dress shirt cross-sell ke Blazer dan Smart Trousers.",fit:"Core — natural extension dari Shirts existing"},
+  {cat:"Knitwear",s1:"Knitted jumper",s2:"",cagr:"5.8%",priority:"P1",title:"Knitwear → Knitted jumper — Premium Layering",market:"CAGR 5.8% (Mordor Intelligence 2025–32). CNN Jan 2026: quarter-zip & turtleneck sebagai 'foundational menswear item 2026'. Layering knitwear menjadi key purchase driver.",heymale:"Knitted jumper masih sangat tipis — target 25–35 SKU. Mulai dari crewneck & half-zip dalam palet netral.",fit:"Core — effortless smart-casual layering"},
+  {cat:"Knitwear",s1:"Cardigans",s2:"",cagr:"5.8%",priority:"P2",title:"Knitwear → Cardigans — Office-to-Weekend Layer",market:"Cardigan sebagai 'smart-casual outer layer' tumbuh kuat. Vogue Business 2025: open-front layering piece pria naik signifikan di Asia Tenggara.",heymale:"4 SKU sangat tipis. Target 12–18 SKU: open-front knit cardigan, button-through, rib-knit minimalist.",fit:"Core — versatile layering"},
+  {cat:"Suits & Tailoring",s1:"Suits",s2:"",cagr:"4.5%",priority:"P1",title:"Suits & Tailoring → Suits — High AOV",market:"CAGR 4.5%. Lyst 2026: intentional dressing. Indonesia: kondangan, wisuda, Idul Fitri = demand suits sepanjang tahun.",heymale:"Hanya 1–few SKU. High-AOV item yang cross-sell ke Blazer dan Suit waistcoats. 2-piece slim-modern navy & charcoal sebagai entry.",fit:"Core — complete formal wardrobe, high AOV"},
+  {cat:"Suits & Tailoring",s1:"Suit trousers",s2:"",cagr:"4.5%",priority:"P1",title:"Suits & Tailoring → Suit trousers — 0 SKU Gap",market:"Pasar formal trousers CAGR 4.5%. Di Indonesia, pria sering membeli celana formal terpisah — demand sebagai standalone item kuat.",heymale:"0 SKU padahal Blazer dan Suit waistcoats sudah ada. Gap kritis untuk brand 'complete formal solution'. Target 15–20 SKU.",fit:"Core — wajib untuk complete tailoring coverage"},
+  {cat:"Jeans",s1:"Straight",s2:"",cagr:"4.2%",priority:"P1",title:"Jeans → Straight — Wardrobe Staple 0 SKU",market:"Straight-leg adalah kategori paling stabil dan laris. CAGR 4.2%. Di Indonesia, straight jeans pilihan utama pria untuk casual dan smart-casual.",heymale:"0 SKU. Fondasi denim yang wajib dibangun pertama kali.",fit:"Core — wardrobe staple"},
+  {cat:"Jeans",s1:"Baggy & Loose",s2:"",cagr:"4.2%",priority:"P2",title:"Jeans → Baggy & Loose — Tren Dominan",market:"Baggy & barrel leg +243% arrivals (Vogue Business 2025). FW26-27: relaxed silhouette dominan. TikTok menswear: baggy terlaris.",heymale:"0 SKU. Tren terkuat denim 2025-26. Target 10–15 SKU setelah Straight solid.",fit:"Core — TikTok content magnet"},
+  {cat:"Jeans",s1:"Tapered",s2:"",cagr:"4.2%",priority:"P2",title:"Jeans → Tapered — Smart-Casual Denim",market:"Tapered adalah sweet spot antara slim dan baggy — paling populer di urban professional pria Indonesia.",heymale:"0 SKU. Paling versatile — cocok dipasangkan dengan Blazer, Polo, dan Casual Shirt.",fit:"Core — versatile denim"},
+  {cat:"Sweatshirts & Hoodies",s1:"Hoodies",s2:"",cagr:"5.1%",priority:"P2",title:"Sweatshirts & Hoodies → Hoodies — Expand",market:"CAGR 5.1%. Hoodie item paling viral TikTok menswear 2025. Asia Tenggara: hoodie = outer layer AC.",heymale:"3 SKU sangat tipis. Target 15–20 SKU: pullover, zip-up, oversized. Palet hitam, abu, cream, navy.",fit:"Core — lifestyle essential"},
+  {cat:"Sweatshirts & Hoodies",s1:"Sweatshirts",s2:"",cagr:"5.1%",priority:"P2",title:"Sweatshirts & Hoodies → Sweatshirts — Expand",market:"Crewneck sweatshirt 'forever essential'. Premium heavyweight crewneck naik drastis 2025.",heymale:"7 SKU ada, perlu expand ke 18–25 SKU. Premium crewneck French terry sebagai fokus.",fit:"Core — premium basics positioning"},
+  {cat:"Tracksuits & Joggers",s1:"Tracksuits",s2:"",cagr:"9.7%",priority:"P2",title:"Tracksuits & Joggers → Tracksuits — Gym Culture",market:"Athleisure CAGR 9.7% — tertinggi di seluruh menswear. Indonesia: gym membership +21% YoY.",heymale:"0 SKU. Target 8–12 matching sets dalam palet netral. HANYA full-length.",fit:"Adjacent — modest activewear"},
+  {cat:"Loungewear & Sleepwear",s1:"Trousers",s2:"",cagr:"5.5%",priority:"P3",title:"Loungewear & Sleepwear → Trousers — Elevated Comfort",market:"Loungewear 2x level pre-pandemi. 'Elevated loungewear' — lounge pieces yang clean dan bisa dipakai di luar rumah.",heymale:"0 SKU. Lounge trousers premium (linen, modal) yang bisa double sebagai casual wear.",fit:"Adjacent — smart home comfort"}
 ];
 
-/* ─── KPI CARDS ─── */
-var KPIS = [
-  {lbl:"Pasar Menswear Global 2034",val:"$973B",sub:"CAGR 5.1% · Renub Research 2026"},
-  {lbl:"CAGR Smart-Casual / Business Casual",val:"6.2%",sub:"Grand View Research 2026–30"},
-  {lbl:"CAGR Premium Knitwear",val:"5.8%",sub:"Mordor Intelligence 2025–32"},
-  {lbl:"CAGR Formal Tailoring",val:"4.5%",sub:"Grand View Research 2026–30"},
-  {lbl:"CAGR Athleisure Global",val:"9.7%",sub:"Fortune Business Insights 2026–34"},
-  {lbl:"Indonesia Menswear 2028",val:"$8.4B",sub:"CAGR 3.64% · Statista 2026"}
-];
-KPIS.forEach(function(k){
-  app('kpi-cards','<div class="card-sm"><div class="label">'+k.lbl+'</div><div style="font-size:22px;font-weight:300;margin:4px 0">'+k.val+'</div><div style="font-size:11px;color:var(--muted)">'+k.sub+'</div></div>');
-});
+function buildTrends(){
+  // KPI Cards
+  var KPIS = [
+    {lbl:"Pasar Menswear Global 2034",val:"$973B",sub:"CAGR 5.1% · Renub Research 2026"},
+    {lbl:"CAGR Smart-Casual / Business Casual",val:"6.2%",sub:"Grand View Research 2026–30"},
+    {lbl:"CAGR Premium Knitwear",val:"5.8%",sub:"Mordor Intelligence 2025–32"},
+    {lbl:"CAGR Formal Tailoring",val:"4.5%",sub:"Grand View Research 2026–30"},
+    {lbl:"CAGR Athleisure Global",val:"9.7%",sub:"Fortune Business Insights 2026–34"},
+    {lbl:"Indonesia Menswear 2028",val:"$8.4B",sub:"CAGR 3.64% · Statista 2026"}
+  ];
+  var kc = document.getElementById('kpi-cards');
+  kc.innerHTML = '';
+  KPIS.forEach(function(k){
+    kc.innerHTML += '<div class="card-sm"><div class="label">'+k.lbl+'</div><div style="font-size:22px;font-weight:300;margin:4px 0">'+k.val+'</div><div style="font-size:11px;color:var(--muted)">'+k.sub+'</div></div>';
+  });
 
-/* ─── TREND TABLE ─── */
-var trendHead='<div class="tbl-head" style="grid-template-columns:22px 1fr 60px 100px 70px">'+
-  '<span>#</span><span>Zalando Category Path & Insight</span><span>CAGR</span><span>Brand Fit</span><span>Aksi</span></div>';
-el('trend-tbl').innerHTML = trendHead;
-TRENDS.forEach(function(t,i){
-  var isSkip=t.priority==='SKIP';
-  var priColor=isSkip?'#bbb':t.priority==='P1'?'var(--red)':t.priority==='P2'?'var(--accent)':'var(--green)';
-  var pathStr='<span class="cat-path">'+t.cat+' → '+t.s1+(t.s2?' → '+t.s2:'')+'</span>';
-  var nLabel='<span class="pill '+(t.n===0?'pill-red':t.n<6?'pill-orange':'pill-green')+'">'+t.n+' Article</span>';
-  app('trend-tbl','<div class="tbl-row" style="opacity:'+(isSkip?.4:1)+';display:grid;grid-template-columns:22px 1fr 60px 100px 70px;gap:8px;align-items:start">'+
-    '<span style="font-size:11px;font-weight:700;color:var(--muted)">'+(i+1)+'</span>'+
-    '<div>'+pathStr+' '+nLabel+
-      '<div style="font-weight:700;font-size:12px;margin:4px 0 3px">'+t.title+'</div>'+
-      '<div style="font-size:11px;color:var(--text-light);line-height:1.5;margin-bottom:3px">'+t.market+'</div>'+
-      '<div style="font-size:11px;color:var(--accent-dark);border-left:2px solid var(--accent);padding-left:6px;font-style:italic">HEYMALE Kini: '+t.heymale+'</div>'+
-    '</div>'+
-    '<span style="font-weight:700;font-size:13px">'+t.cagr+'</span>'+
-    '<span style="font-size:11px;color:var(--text-light)">'+t.fit+'</span>'+
-    '<span style="font-weight:700;font-size:12px;color:'+priColor+'">'+t.priority+'</span>'+
-  '</div>');
-});
+  // Trend table
+  var tbl = document.getElementById('trend-tbl');
+  var head='<div class="tbl-head" style="grid-template-columns:22px 1fr 60px 100px 70px">'+
+    '<span>#</span><span>Zalando Category Path & Insight</span><span>CAGR</span><span>Brand Fit</span><span>Aksi</span></div>';
+  tbl.innerHTML = head;
+  TRENDS_DEF.forEach(function(t,i){
+    var n = getN(t.cat, t.s1, t.s2);
+    var priColor=t.priority==='P1'?'var(--red)':t.priority==='P2'?'var(--accent)':'var(--green)';
+    var pathStr='<span class="cat-path">'+t.cat+' → '+t.s1+(t.s2?' → '+t.s2:'')+'</span>';
+    var nLabel='<span class="pill '+(n===0?'pill-red':n<6?'pill-orange':'pill-green')+'">'+n+' SKU</span>';
+    tbl.innerHTML += '<div class="tbl-row" style="display:grid;grid-template-columns:22px 1fr 60px 100px 70px;gap:8px;align-items:start">'+
+      '<span style="font-size:11px;font-weight:700;color:var(--muted)">'+(i+1)+'</span>'+
+      '<div>'+pathStr+' '+nLabel+
+        '<div style="font-weight:700;font-size:12px;margin:4px 0 3px">'+t.title+'</div>'+
+        '<div style="font-size:11px;color:var(--text-light);line-height:1.5;margin-bottom:3px">'+t.market+'</div>'+
+        '<div style="font-size:11px;color:var(--accent-dark);border-left:2px solid var(--accent);padding-left:6px;font-style:italic">HEYMALE Kini: '+t.heymale+'</div>'+
+      '</div>'+
+      '<span style="font-weight:700;font-size:13px">'+t.cagr+'</span>'+
+      '<span style="font-size:11px;color:var(--text-light)">'+t.fit+'</span>'+
+      '<span style="font-weight:700;font-size:12px;color:'+priColor+'">'+t.priority+'</span>'+
+    '</div>';
+  });
 
-/* ─── RUNWAY ─── */
-var RUNWAY = [
-  {icon:"&#129333;",t:"Quiet Luxury & Intentional Dressing",d:"Lyst 2026: pria membangun wardrobe dengan intention. Relevan untuk Suits & Tailoring dan premium Knitwear HEYMALE."},
-  {icon:"&#129329;",t:"Quarter-Zip & Turtleneck Knitwear Viral",d:"CNN Jan 2026: quarter-zip adalah 'foundational item 2026'. Knitted jumper HEYMALE (11 Article) perlu diperkuat signifikan."},
-  {icon:"&#128084;",t:"Unstructured Blazer & Relaxed Tailoring",d:"FW26-27: blazer modern dengan silhouette lebih santai. Menambah Suits (1 Article) dan Suit trousers (0 Article) menjadi kritis."},
-  {icon:"&#128563;",t:"Baggy & Relaxed Denim Comeback",d:"Vogue Business 2025: baggy +243% arrivals. HEYMALE 0 Article Straight, Baggy & Loose, Tapered — gap terbesar di Jeans."},
-  {icon:"&#128170;",t:"Athleisure & Gym Culture Boom",d:"Gym membership Indonesia +21% YoY. Tracksuits (0 Article) dan Joggers expansion sangat relevan untuk market ini."}
-];
-RUNWAY.forEach(function(r){
-  app('runway-list','<div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">'+
-    '<span style="font-size:18px">'+r.icon+'</span>'+
-    '<div><div style="font-size:13px;font-weight:600;margin-bottom:2px">'+r.t+'</div>'+
-    '<div style="font-size:12px;color:var(--text-light);line-height:1.5">'+r.d+'</div></div></div>');
-});
+  // Runway list
+  var rl = document.getElementById('runway-list');
+  var RUNWAY = [
+    {icon:"&#129333;",t:"Quiet Luxury & Intentional Dressing",d:"Lyst 2026: pria membangun wardrobe dengan intention. Relevan untuk Suits & Tailoring dan premium Knitwear."},
+    {icon:"&#129329;",t:"Quarter-Zip & Turtleneck Knitwear Viral",d:"CNN Jan 2026: quarter-zip 'foundational item 2026'. Knitted jumper perlu diperkuat."},
+    {icon:"&#128084;",t:"Unstructured Blazer & Relaxed Tailoring",d:"FW26-27: blazer modern lebih santai. Suits dan Suit trousers menjadi kritis."},
+    {icon:"&#128563;",t:"Baggy & Relaxed Denim Comeback",d:"Vogue Business 2025: baggy +243% arrivals. HEYMALE 0 SKU Straight, Baggy, Tapered."},
+    {icon:"&#128170;",t:"Athleisure & Gym Culture Boom",d:"Gym membership Indonesia +21% YoY. Tracksuits (0 SKU) sangat relevan."}
+  ];
+  rl.innerHTML = '';
+  RUNWAY.forEach(function(r){
+    rl.innerHTML += '<div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">'+
+      '<span style="font-size:18px">'+r.icon+'</span>'+
+      '<div><div style="font-size:13px;font-weight:600;margin-bottom:2px">'+r.t+'</div>'+
+      '<div style="font-size:12px;color:var(--text-light);line-height:1.5">'+r.d+'</div></div></div>';
+  });
 
-/* ─── INDO SIGNALS ─── */
-var INDO=[
-  {icon:"&#127973;",t:"Office Return & Event Formal Culture",d:"Kembalinya WFO + frekuensi kondangan/wisuda tinggi mendorong demand Business Shirts, Suits, Suit trousers, dan Blazer."},
-  {icon:"&#128170;",t:"Gym Membership +21% YoY",d:"KenResearch 2025. Driver langsung untuk Tracksuits, Joggers, dan active-wear yang covered & effortless."},
-  {icon:"&#128241;",t:"TikTok #MensFashion 58B Views 2025",d:"Jeans (terutama baggy & tapered), Hoodies, dan Knitwear adalah kategori paling viral — HEYMALE 0 atau sangat tipis di semua ini."},
-  {icon:"&#127981;",t:"E-commerce Menswear Indonesia +26%",d:"Shopee & Tokopedia investasi besar di smart-casual & athleisure pria. HEYMALE butuh coverage lebih luas di kategori-kategori ini."},
-  {icon:"&#128101;",t:"Generasi Muda Fashion-Conscious",d:"Pria urban 20-35 tahun di Jakarta/Surabaya/Bandung makin aware styling dan investasi wardrobe versatile & premium."}
-];
-INDO.forEach(function(r){
-  app('indo-list','<div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">'+
-    '<span style="font-size:18px">'+r.icon+'</span>'+
-    '<div><div style="font-size:13px;font-weight:600;margin-bottom:2px">'+r.t+'</div>'+
-    '<div style="font-size:12px;color:var(--text-light);line-height:1.5">'+r.d+'</div></div></div>');
-});
+  var il = document.getElementById('indo-list');
+  var INDO=[
+    {icon:"&#127973;",t:"Office Return & Event Formal Culture",d:"Kembalinya WFO + kondangan/wisuda mendorong demand Business Shirts, Suits, Suit trousers, dan Blazer."},
+    {icon:"&#128170;",t:"Gym Membership +21% YoY",d:"KenResearch 2025. Driver langsung untuk Tracksuits dan Joggers."},
+    {icon:"&#128241;",t:"TikTok #MensFashion 58B Views 2025",d:"Jeans, Hoodies, dan Knitwear adalah kategori paling viral — HEYMALE 0 atau sangat tipis."},
+    {icon:"&#127981;",t:"E-commerce Menswear Indonesia +26%",d:"Shopee & Tokopedia investasi besar di smart-casual & athleisure pria."},
+    {icon:"&#128101;",t:"Generasi Muda Fashion-Conscious",d:"Pria urban 20-35 tahun di Jakarta/Surabaya/Bandung makin aware styling dan investasi wardrobe versatile."}
+  ];
+  il.innerHTML = '';
+  INDO.forEach(function(r){
+    il.innerHTML += '<div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">'+
+      '<span style="font-size:18px">'+r.icon+'</span>'+
+      '<div><div style="font-size:13px;font-weight:600;margin-bottom:2px">'+r.t+'</div>'+
+      '<div style="font-size:12px;color:var(--text-light);line-height:1.5">'+r.d+'</div></div></div>';
+  });
+}
 
-/* ═══════════════════════════════════════════════════
-   GAP & PELUANG — Opportunity Cards
-   Setiap kartu: Zalando path, n saat ini, why, alignment
-════════════════════════════════════════════════════ */
-var OPPS = [
-  // P1
-  {p:1,title:"Suits & Tailoring → Suits",
-   zalPath:"Clothing > Suits & Tailoring > Suits",n:1,
-   why:"1 Article untuk kategori high-AOV yang demand-nya besar di Indonesia — kondangan, wisuda, Idul Fitri. CAGR 4.5%. Cross-sell langsung ke Blazer (9 Article) dan Suit waistcoats (5 Article) yang sudah ada.",
-   align:"Complete formal wardrobe solution. Suits + Blazer + Suit trousers = bundle HEYMALE yang compelling. 2-piece slim modern dalam navy & charcoal sebagai entry.",
-   tags:["CAGR 4.5%","High AOV","Kondangan demand","Cross-sell existing"]},
-  {p:1,title:"Suits & Tailoring → Suit trousers",
-   zalPath:"Clothing > Suits & Tailoring > Suit trousers",n:0,
-   why:"0 Article padahal Blazer (9) dan Suit waistcoats (5) sudah ada. Gap tidak logis untuk brand yang claim 'complete formal solution'. Demand standalone celana formal sangat tinggi di Indonesia.",
-   align:"Wajib hadir sebagai pasangan Blazer & Suits. Slim-fit dan regular-fit formal trousers dalam warna netral (hitam, navy, abu charcoal) — 15–20 Article target.",
-   tags:["CAGR 4.5%","0 Article gap","Cross-sell kritis","Formal demand"]},
-  {p:1,title:"Shirts → Business Shirts",
-   zalPath:"Clothing > Shirts > Business Shirts",n:6,
-   why:"HEYMALE dominan di Casual Shirts (175 Article) tapi Business Shirts hanya 6 Article — sangat tidak proporsional. CAGR 3.8%. Office return Indonesia mendorong demand formal shirts sepanjang tahun.",
-   align:"Natural extension dari kekuatan Shirts HEYMALE. Oxford, poplin formal, slim-fit dress shirt cross-sell ke Blazer & Smart trousers existing. Target 20–30 Article.",
-   tags:["CAGR 3.8%","Office demand","Cross-sell Blazer","Extension kuat"]},
-  {p:1,title:"Jeans → Straight",
-   zalPath:"Clothing > Jeans > Straight",n:0,
-   why:"0 Article. Straight-leg adalah jeans paling versatile dan laris di menswear global — CAGR 4.2%. Wardrobe staple yang tidak mungkin tidak ada untuk brand 'complete menswear'. Fondasi denim yang wajib dibangun.",
-   align:"Palet rinse dark, medium wash, stone wash. Bisa dipakai dengan Polo (28 Article), Casual Shirts (175 Article), dan Blazer existing. Perfect brand-coherent item. Target 15–25 Article.",
-   tags:["CAGR 4.2%","Wardrobe staple","0 Article","Denim foundation"]},
-  {p:1,title:"Knitwear → Knitted jumper",
-   zalPath:"Clothing > Knitwear > Knitted jumper",n:11,
-   why:"11 Article — ada tapi tipis untuk kategori CAGR 5.8% yang sedang peak demand. Quarter-zip & turtleneck viral 2025-26. CNN Jan 2026: knitted jumper menjadi 'foundational item 2026'.",
-   align:"Crewneck, half-zip, turtleneck dalam palet netral. Layering essentials dari kantor ke weekend tanpa effort — perfect HEYMALE proposition. Target 28–35 Article.",
-   tags:["CAGR 5.8%","2026 Viral","Layering essential","Quick expand"]},
-  // P2
-  {p:2,title:"Jeans → Baggy & Loose",
-   zalPath:"Clothing > Jeans > Baggy & Loose",n:0,
-   why:"0 Article. Baggy & barrel leg +243% arrivals global (Vogue Business 2025). FW26-27 runway: relaxed silhouette dominan. TikTok #MensFashion: baggy fit konten terlaris. Generasi muda Indonesia adopsi sangat cepat.",
-   align:"Wide-straight sebagai entry, lalu full baggy. Palet dark rinse & washed grey — estetika tetap clean dan brand-coherent. Target 10–15 Article setelah Straight solid.",
-   tags:["Baggy +243%","Tren 2025-26","TikTok viral","0 Article"]},
-  {p:2,title:"Jeans → Tapered",
-   zalPath:"Clothing > Jeans > Tapered",n:0,
-   why:"0 Article. Tapered adalah sweet spot versatilitas denim — tidak terlalu slim, tidak terlalu baggy. Paling mudah dipasangkan dengan Blazer & Polo yang sudah kuat di HEYMALE.",
-   align:"Perfect cross-sell partner untuk Blazer jackets (9 Article) dan Business Shirts (6 Article). Smart-casual denim yang brand-coherent. Target 10–15 Article.",
-   tags:["CAGR 4.2%","Versatile fit","0 Article","Cross-sell Blazer"]},
-  {p:2,title:"Sweatshirts & Hoodies → Hoodies",
-   zalPath:"Clothing > Sweatshirts & Hoodies > Hoodies",n:3,
-   why:"3 Article sangat tipis. Hoodie CAGR 5.1% dan item paling viral TikTok menswear 2025. Asia Tenggara: hoodie = outer layer AC. Demand sangat kuat di urban Indonesia.",
-   align:"Pullover hoodie essentials, zip-up hoodie (layering), oversized hoodie (statement). Palet hitam, abu, cream, navy. Target 15–20 Article dari 3 Article.",
-   tags:["CAGR 5.1%","TikTok viral","AC outer layer","3 → 20 Article"]},
-  {p:2,title:"Suits & Tailoring → Blazer jackets",
-   zalPath:"Clothing > Suits & Tailoring > Blazer jackets",n:9,
-   why:"9 Article — solid tapi perlu expansion. Smart-casual blazer adalah item kunci untuk 'complete wardrobe' HEYMALE. Unstructured blazer tumbuh kuat di business casual segment.",
-   align:"Structured, unstructured/soft-shoulder, linen blazer (iklim tropis), wool-blend (event premium). Target 20–28 Article. Anchor untuk Suit trousers dan Business Shirts.",
-   tags:["CAGR 4.5%","Smart-casual anchor","Expand 9→25","Bundle center"]},
-  {p:2,title:"Tracksuits & Joggers → Tracksuits",
-   zalPath:"Clothing > Tracksuits & Joggers > Tracksuits",n:0,
-   why:"0 Article. CAGR athleisure 9.7% — tertinggi di seluruh menswear. Gym membership Indonesia +21% YoY. Coordinated tracksuit set adalah produk conversion tinggi.",
-   align:"HANYA full-length sets (jacket + full-length trouser) — konsisten dengan brand values HEYMALE. Palet netral: hitam, abu, navy. Target 8–12 matching sets.",
-   tags:["CAGR 9.7%","Gym culture","Full-length only","0 Article"]},
-  {p:2,title:"Trousers → Cargo trousers",
-   zalPath:"Clothing > Trousers > Cargo trousers",n:1,
-   why:"1 Article hampir tidak ada. Cargo CAGR 4.8%. 'Smart cargo' — silhouette bersih — tumbuh pesat di urban professional Indonesia. Utilitarian + estetika = fit sempurna untuk HEYMALE.",
-   align:"Slim cargo (cleaner), regular cargo (traditional), tech-fabric cargo (active-smart). Palet: olive, hitam, stone, khaki. Target 10–15 Article.",
-   tags:["CAGR 4.8%","Smart utility","1 Article","Expand segera"]},
-  {p:2,title:"Knitwear → Cardigans",
-   zalPath:"Clothing > Knitwear > Cardigans",n:4,
-   why:"4 Article tipis untuk kategori yang CAGR-nya 5.8%. Cardigan sebagai office-to-weekend layer tumbuh kuat di Asia Tenggara, terutama untuk pria yang bekerja di ruangan ber-AC.",
-   align:"Open-front knit, button-through, rib-knit minimalist. Cross-sell langsung ke Business Shirts dan Smart trousers. Target 12–18 Article.",
-   tags:["CAGR 5.8%","Office layer","AC essential","4 → 15 Article"]},
-  // P3
-  {p:3,title:"Loungewear & Sleepwear → Trousers",
-   zalPath:"Clothing > Loungewear & Sleepwear > Trousers",n:0,
-   why:"0 Article. Loungewear 2x level pre-pandemi (McKinsey 2025). WFH culture kuat. Elevated lounge trousers (linen, modal) yang bisa double sebagai casual wear — bukan pyjama murni.",
-   align:"'Smart home comfort' positioning. Linen lounge pants, modal sweatpants premium. Cross-sell ke Loungewear Shirts. Masuk setelah core categories solid. Target 8–12 Article.",
-   tags:["WFH culture","Elevated comfort","0 Article","Phase 3"]},
-  {p:3,title:"Sweatshirts & Hoodies → Sweat jackets",
-   zalPath:"Clothing > Sweatshirts & Hoodies > Sweat jackets",n:0,
-   why:"0 Article. Sweat jacket sebagai casual outer layer ringan. Tumbuh bersama athleisure trend. Potensial sebagai companion untuk Tracksuits.",
-   align:"Zip-up, minimal branding, clean design. Bisa diposisikan sebagai 'active-casual outer layer'. Masuk setelah Hoodies dan Tracksuits kuat.",
-   tags:["Athleisure","Casual outer","0 Article","Phase 3"]},
-  {p:3,title:"Suits & Tailoring → Shirts",
-   zalPath:"Clothing > Suits & Tailoring > Shirts",n:0,
-   why:"0 Article. Kemeja formal dedicated sebagai suit companion. Hidden buttons, spread collar, premium fabric. Potensial sebagai bundle item dengan Suits & Blazer.",
-   align:"Suit companion positioning — beda dari Casual Shirts. Bundle: Suit + Blazer + Suit Shirts = complete formal set. Target 8–12 Article premium formal shirts.",
-   tags:["Bundle item","Formal pair","0 Article","High AOV bundle"]}
+/* ════════════════════════════════════════════════════════
+   OPPORTUNITIES
+════════════════════════════════════════════════════════ */
+var OPPS_DEF = [
+  {p:1,title:"Suits & Tailoring → Suits",zalPath:"Clothing > Suits & Tailoring > Suits",cat:"Suits & Tailoring",s1:"Suits",s2:"",why:"High-AOV item. Kondangan & wisuda = demand year-round. Cross-sell langsung ke Blazer dan Suit waistcoats.",align:"Complete formal wardrobe solution. Suits + Blazer + Suit trousers = bundle HEYMALE yang compelling. 2-piece slim modern sebagai entry.",tags:["CAGR 4.5%","High AOV","Kondangan demand","Cross-sell existing"]},
+  {p:1,title:"Suits & Tailoring → Suit trousers",zalPath:"Clothing > Suits & Tailoring > Suit trousers",cat:"Suits & Tailoring",s1:"Suit trousers",s2:"",why:"0 SKU padahal Blazer dan Suit waistcoats sudah ada. Gap tidak logis untuk 'complete formal solution'.",align:"Wajib hadir. Slim-fit dan regular-fit dalam warna netral. Target 15–20 SKU.",tags:["CAGR 4.5%","0 SKU gap","Cross-sell kritis","Formal demand"]},
+  {p:1,title:"Shirts → Business Shirts",zalPath:"Clothing > Shirts > Business Shirts",cat:"Shirts",s1:"Business Shirts",s2:"",why:"Dominan Casual Shirts tapi Business Shirts sangat tipis. CAGR 3.8%. Office return Indonesia sepanjang tahun.",align:"Natural extension dari kekuatan Shirts. Cross-sell ke Blazer & Smart trousers existing.",tags:["CAGR 3.8%","Office demand","Cross-sell Blazer","Extension kuat"]},
+  {p:1,title:"Jeans → Straight",zalPath:"Clothing > Jeans > Straight",cat:"Jeans",s1:"Straight",s2:"",why:"Jeans paling versatile dan laris — CAGR 4.2%. Wardrobe staple yang wajib ada untuk 'complete menswear'.",align:"Palet rinse dark, medium wash, stone wash. Perfect cross-sell ke Polo, Casual Shirts, dan Blazer.",tags:["CAGR 4.2%","Wardrobe staple","Denim foundation","0 SKU"]},
+  {p:1,title:"Knitwear → Knitted jumper",zalPath:"Clothing > Knitwear > Knitted jumper",cat:"Knitwear",s1:"Knitted jumper",s2:"",why:"CAGR 5.8% dan sedang peak demand. Quarter-zip & turtleneck viral 2026.",align:"Crewneck, half-zip, turtleneck dalam palet netral. Layering essentials sempurna.",tags:["CAGR 5.8%","2026 Viral","Layering essential","Quick expand"]},
+  {p:2,title:"Jeans → Baggy & Loose",zalPath:"Clothing > Jeans > Baggy & Loose",cat:"Jeans",s1:"Baggy & Loose",s2:"",why:"Baggy & barrel leg +243% arrivals (Vogue Business 2025). Tren terkuat denim 2025-26.",align:"Wide-straight sebagai entry, lalu full baggy. Estetika clean dan brand-coherent.",tags:["Baggy +243%","Tren 2025-26","TikTok viral","0 SKU"]},
+  {p:2,title:"Jeans → Tapered",zalPath:"Clothing > Jeans > Tapered",cat:"Jeans",s1:"Tapered",s2:"",why:"Sweet spot versatilitas denim. Paling mudah dipasangkan dengan Blazer & Polo HEYMALE.",align:"Perfect cross-sell partner untuk Blazer jackets dan Business Shirts.",tags:["CAGR 4.2%","Versatile fit","0 SKU","Cross-sell Blazer"]},
+  {p:2,title:"Sweatshirts & Hoodies → Hoodies",zalPath:"Clothing > Sweatshirts & Hoodies > Hoodies",cat:"Sweatshirts & Hoodies",s1:"Hoodies",s2:"",why:"CAGR 5.1% dan item paling viral TikTok menswear 2025. Outer layer AC di Asia Tenggara.",align:"Pullover, zip-up, oversized. Palet hitam, abu, cream, navy.",tags:["CAGR 5.1%","TikTok viral","AC outer layer","Quick expand"]},
+  {p:2,title:"Tracksuits & Joggers → Tracksuits",zalPath:"Clothing > Tracksuits & Joggers > Tracksuits",cat:"Tracksuits & Joggers",s1:"Tracksuits",s2:"",why:"CAGR athleisure 9.7% — tertinggi di seluruh menswear. Gym membership Indonesia +21% YoY.",align:"HANYA full-length sets — konsisten dengan brand values. Palet: hitam, abu, navy.",tags:["CAGR 9.7%","Gym culture","Full-length only","0 SKU"]},
+  {p:2,title:"Trousers → Cargo trousers",zalPath:"Clothing > Trousers > Cargo trousers",cat:"Trousers",s1:"Cargo trousers",s2:"",why:"'Smart cargo' — silhouette bersih — tumbuh pesat di urban professional Indonesia.",align:"Slim cargo, regular cargo, tech-fabric cargo. Palet: olive, hitam, stone, khaki.",tags:["CAGR 4.8%","Smart utility","Quick expand"]},
+  {p:2,title:"Knitwear → Cardigans",zalPath:"Clothing > Knitwear > Cardigans",cat:"Knitwear",s1:"Cardigans",s2:"",why:"CAGR 5.8%. Office-to-weekend layer tumbuh kuat di Asia Tenggara, terutama ruangan ber-AC.",align:"Open-front knit, button-through, rib-knit minimalist. Cross-sell ke Business Shirts.",tags:["CAGR 5.8%","Office layer","AC essential","Expand"]},
+  {p:3,title:"Loungewear & Sleepwear → Trousers",zalPath:"Clothing > Loungewear & Sleepwear > Trousers",cat:"Loungewear & Sleepwear",s1:"Trousers",s2:"",why:"Loungewear 2x level pre-pandemi. WFH culture kuat. Elevated lounge trousers (linen, modal).",align:"'Smart home comfort'. Linen lounge pants, modal sweatpants premium.",tags:["WFH culture","Elevated comfort","0 SKU","Phase 3"]}
 ];
 
-OPPS.forEach(function(o){
-  var tags=o.tags.map(function(t){return '<span class="opp-tag">'+t+'</span>';}).join('');
-  var priIcon=o.p===1?'&#128308;':o.p===2?'&#128992;':'&#128993;';
-  var nColor=o.n===0?'var(--red)':o.n<6?'#c97840':'var(--green)';
-  app('opp-cards','<div class="opp-card p'+o.p+'">'+
-    '<div class="opp-head"><div class="opp-title">'+o.title+'</div><span style="font-size:20px">'+priIcon+'</span></div>'+
-    '<div><span class="cat-path">'+o.zalPath+'</span> <span style="font-size:11px;font-weight:700;color:'+nColor+'">'+o.n+' Article kini</span></div>'+
-    '<div class="opp-why" style="margin-top:7px">'+o.why+'</div>'+
-    '<div class="opp-align">'+o.align+'</div>'+
-    '<div class="opp-tags">'+tags+'</div></div>');
-});
+function buildOpportunities(){
+  var oc = document.getElementById('opp-cards');
+  oc.innerHTML = '';
+  OPPS_DEF.forEach(function(o){
+    var n = getN(o.cat, o.s1, o.s2);
+    var tags=o.tags.map(function(t){return '<span class="opp-tag">'+t+'</span>';}).join('');
+    var priIcon=o.p===1?'&#128308;':o.p===2?'&#128992;':'&#128993;';
+    var nColor=n===0?'var(--red)':n<6?'#c97840':'var(--green)';
+    oc.innerHTML += '<div class="opp-card p'+o.p+'">'+
+      '<div class="opp-head"><div class="opp-title">'+o.title+'</div><span style="font-size:20px">'+priIcon+'</span></div>'+
+      '<div><span class="cat-path">'+o.zalPath+'</span> <span style="font-size:11px;font-weight:700;color:'+nColor+'">'+n+' SKU kini</span></div>'+
+      '<div class="opp-why" style="margin-top:7px">'+o.why+'</div>'+
+      '<div class="opp-align">'+o.align+'</div>'+
+      '<div class="opp-tags">'+tags+'</div></div>';
+  });
+}
 
-/* ─── FULL GAP MATRIX — all 88 rows ─── */
-// We annotate each raw row with CAGR, ID demand, brand fit, action
-var ANNOTATIONS = {
-  "T-shirts & Polos|Basic T-shirts|":       {cagr:"4.0%",id:"Tinggi",fit:"Core",act:"Hold — 22 Article solid"},
-  "T-shirts & Polos|Printed T-shirts|":     {cagr:"3.5%",id:"Menengah",fit:"Core",act:"Expand tipis → 8–12 Article"},
-  "T-shirts & Polos|Tank tops|":            {cagr:"3.5%",id:"Rendah",fit:"Off-brand",act:"Skip"},
-  "T-shirts & Polos|Polo shirts|":          {cagr:"4.0%",id:"Tinggi",fit:"Core",act:"Hold — 28 Article kuat"},
-  "T-shirts & Polos|Long-sleeved tops|":    {cagr:"4.0%",id:"Menengah",fit:"Core",act:"Expand → 10–15 Article"},
-  "T-shirts & Polos|Sports T-shirts|":      {cagr:"5.0%",id:"Menengah",fit:"Adjacent",act:"Expand → 8–10 Article"},
-  "Shirts|Casual Shirts|":                  {cagr:"3.5%",id:"Tinggi",fit:"Core",act:"Hold — 175 Article dominan"},
-  "Shirts|Business Shirts|":                {cagr:"3.8%",id:"Sangat Tinggi",fit:"Core",act:"P1 — Expand 6→25 Article"},
-  "Jackets|Lightweight jackets|Transitional Jackets":{cagr:"4.0%",id:"Tinggi",fit:"Core",act:"Hold — 44 Article kuat"},
-  "Jackets|Lightweight jackets|Bomber Jackets":{cagr:"4.0%",id:"Tinggi",fit:"Core",act:"P2 — Expand 5→15 Article"},
-  "Jackets|Lightweight jackets|Windbreaker":{cagr:"4.0%",id:"Menengah",fit:"Adjacent",act:"Expand perlahan"},
-  "Jackets|Lightweight jackets|Outdoor Jackets":{cagr:"4.5%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Jackets|Lightweight jackets|Waterproof Jackets":{cagr:"4.5%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Jackets|Leather jackets|":               {cagr:"3.5%",id:"Menengah",fit:"Core",act:"Expand 3→10 Article"},
-  "Jackets|Denim jackets|":                 {cagr:"4.0%",id:"Menengah",fit:"Core",act:"P2 — Expand 5→12 Article"},
-  "Jackets|Winter jackets|":                {cagr:"2.0%",id:"Sangat Rendah",fit:"Low fit",act:"Skip — iklim tropis"},
-  "Jackets|Down jackets|":                  {cagr:"2.0%",id:"Sangat Rendah",fit:"Low fit",act:"Skip — iklim tropis"},
-  "Jackets|Outdoor jackets|Windbreakers":   {cagr:"4.0%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Jackets|Outdoor jackets|Softshell jackets":{cagr:"4.0%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Jackets|Outdoor jackets|Training jackets":{cagr:"5.0%",id:"Menengah",fit:"Adjacent",act:"P3 — setelah athleisure kuat"},
-  "Jackets|Outdoor jackets|Running jackets":{cagr:"5.5%",id:"Menengah",fit:"Adjacent",act:"Low priority"},
-  "Jackets|Outdoor jackets|Cycling jackets":{cagr:"4.5%",id:"Rendah",fit:"Off-brand",act:"Skip"},
-  "Jackets|Outdoor jackets|Fleece jackets": {cagr:"3.5%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Jackets|Outdoor jackets|Down jackets & coats":{cagr:"2.0%",id:"Sangat Rendah",fit:"Low fit",act:"Skip"},
-  "Jackets|Outdoor jackets|Winter jackets & coats":{cagr:"2.0%",id:"Sangat Rendah",fit:"Low fit",act:"Skip"},
-  "Jackets|Outdoor jackets|Ski & snowboard jackets":{cagr:"2.0%",id:"Sangat Rendah",fit:"Off-brand",act:"Skip"},
-  "Jackets|Outdoor jackets|Gilets":         {cagr:"3.0%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Jackets|Fleece jackets|":                {cagr:"3.5%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Jackets|Gilet|":                         {cagr:"3.0%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Jeans|Baggy & Loose|":                   {cagr:"4.2%",id:"Tinggi",fit:"Core",act:"P2 — Expand 0→12 Article"},
-  "Jeans|Straight|":                        {cagr:"4.2%",id:"Sangat Tinggi",fit:"Core",act:"P1 — Expand 0→20 Article"},
-  "Jeans|Slim|":                            {cagr:"3.5%",id:"Menengah",fit:"Core",act:"Expand 1→8 Article"},
-  "Jeans|Tapered|":                         {cagr:"4.2%",id:"Tinggi",fit:"Core",act:"P2 — Expand 0→12 Article"},
-  "Jeans|Relaxed|":                         {cagr:"4.0%",id:"Menengah",fit:"Core",act:"P3 — setelah Straight solid"},
-  "Jeans|Skinny|":                          {cagr:"2.0%",id:"Rendah",fit:"Core",act:"Low priority — trend turun"},
-  "Jeans|Bootcut & Flared|":                {cagr:"2.5%",id:"Rendah",fit:"Adjacent",act:"Skip"},
-  "Jeans|Overalls & Workwear|":             {cagr:"2.5%",id:"Rendah",fit:"Adjacent",act:"Skip"},
-  "Jeans|Denim shorts|":                    {cagr:"3.5%",id:"Menengah",fit:"Off-brand",act:"Skip"},
-  "Trousers|Chinos|":                       {cagr:"3.5%",id:"Tinggi",fit:"Core",act:"Hold — 17 Article ada"},
-  "Trousers|Smart trousers|":               {cagr:"4.5%",id:"Sangat Tinggi",fit:"Core",act:"Hold — 46 Article kuat"},
-  "Trousers|Cargo trousers|":               {cagr:"4.8%",id:"Tinggi",fit:"Core",act:"P2 — Expand 1→12 Article"},
-  "Trousers|Joggers|":                      {cagr:"5.0%",id:"Tinggi",fit:"Core",act:"P2 — Expand 12→20 Article"},
-  "Trousers|Dungarees|":                    {cagr:"2.5%",id:"Rendah",fit:"Adjacent",act:"Skip"},
-  "Sweatshirts & Hoodies|Hoodies|":         {cagr:"5.1%",id:"Tinggi",fit:"Core",act:"P2 — Expand 3→18 Article"},
-  "Sweatshirts & Hoodies|Sweatshirts|":     {cagr:"5.1%",id:"Tinggi",fit:"Core",act:"P2 — Expand 7→22 Article"},
-  "Sweatshirts & Hoodies|Sweat jackets|":   {cagr:"5.1%",id:"Menengah",fit:"Adjacent",act:"P3"},
-  "Sweatshirts & Hoodies|Fleece pullover|": {cagr:"3.5%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Knitwear|Cardigans|":                    {cagr:"5.8%",id:"Tinggi",fit:"Core",act:"P2 — Expand 4→15 Article"},
-  "Knitwear|Knitted jumper|":               {cagr:"5.8%",id:"Sangat Tinggi",fit:"Core",act:"P1 — Expand 11→30 Article"},
-  "Coats|Trench coats|":                    {cagr:"3.2%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Coats|Parkas|":                          {cagr:"2.5%",id:"Sangat Rendah",fit:"Low fit",act:"Skip"},
-  "Coats|Short coats|":                     {cagr:"3.0%",id:"Rendah",fit:"Low fit",act:"Skip"},
-  "Coats|Winter coats|":                    {cagr:"2.0%",id:"Sangat Rendah",fit:"Low fit",act:"Skip — iklim tropis"},
-  "Coats|Wool coats|":                      {cagr:"2.5%",id:"Sangat Rendah",fit:"Low fit",act:"Skip"},
-  "Coats|Down coats|":                      {cagr:"2.0%",id:"Sangat Rendah",fit:"Low fit",act:"Skip"},
-  "Tracksuits & Joggers|Tracksuits|":       {cagr:"9.7%",id:"Tinggi",fit:"Adjacent",act:"P2 — 0→10 Article (covered only)"},
-  "Tracksuits & Joggers|Joggers|":          {cagr:"9.7%",id:"Tinggi",fit:"Core",act:"P2 — Expand 1→12 Article"},
-  "Tracksuits & Joggers|Tracksuit Jackets|":{cagr:"9.7%",id:"Menengah",fit:"Adjacent",act:"P3"},
-  "Suits & Tailoring|Suits|":              {cagr:"4.5%",id:"Sangat Tinggi",fit:"Core",act:"P1 — Expand 1→15 Article"},
-  "Suits & Tailoring|Suit jackets|":        {cagr:"4.5%",id:"Tinggi",fit:"Core",act:"Expand 1→10 Article"},
-  "Suits & Tailoring|Shirts|":              {cagr:"3.8%",id:"Tinggi",fit:"Core",act:"P3 — Suit companion"},
-  "Suits & Tailoring|Suit trousers|":       {cagr:"4.5%",id:"Sangat Tinggi",fit:"Core",act:"P1 — 0→15 Article kritis"},
-  "Suits & Tailoring|Suit waistcoats|":     {cagr:"3.5%",id:"Menengah",fit:"Core",act:"Hold — 5 Article ada"},
-  "Suits & Tailoring|Blazer jackets|":      {cagr:"4.5%",id:"Sangat Tinggi",fit:"Core",act:"P2 — Expand 9→25 Article"},
-  "Suits & Tailoring|Ties & accessories|":  {cagr:"2.5%",id:"Menengah",fit:"Adjacent",act:"Low priority"},
-  "Shorts|Casual Shorts|":                  {cagr:"5.5%",id:"Tinggi",fit:"Off-brand",act:"Skip"},
-  "Shorts|Denim shorts|":                   {cagr:"3.5%",id:"Menengah",fit:"Off-brand",act:"Skip"},
-  "Shorts|Sport Shorts|":                   {cagr:"5.5%",id:"Tinggi",fit:"Off-brand",act:"Skip"},
-  "Underwear & Socks|Underpants|Boxers & trunks":{cagr:"4.0%",id:"Menengah",fit:"Adjacent",act:"P3 — brand extension"},
-  "Underwear & Socks|Underpants|Boxer shorts":{cagr:"4.0%",id:"Menengah",fit:"Adjacent",act:"P3 — bundle"},
-  "Underwear & Socks|Underpants|Briefs":    {cagr:"3.5%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Underwear & Socks|Underpants|Jockstraps":{cagr:"2.0%",id:"Sangat Rendah",fit:"Off-brand",act:"Skip"},
-  "Underwear & Socks|Underpants|Thongs":    {cagr:"1.5%",id:"Sangat Rendah",fit:"Off-brand",act:"Skip"},
-  "Underwear & Socks|Undershirts|":         {cagr:"3.5%",id:"Menengah",fit:"Adjacent",act:"P3 — base layer"},
-  "Underwear & Socks|Socks|Socks":          {cagr:"3.5%",id:"Menengah",fit:"Adjacent",act:"Expand → 5–8 Article"},
-  "Underwear & Socks|Socks|Sports socks":   {cagr:"4.0%",id:"Menengah",fit:"Adjacent",act:"Expand → 5 Article"},
-  "Underwear & Socks|Socks|Knee high socks":{cagr:"2.5%",id:"Rendah",fit:"Adjacent",act:"Low priority"},
-  "Underwear & Socks|Socks|Sneaker Socks":  {cagr:"4.5%",id:"Tinggi",fit:"Adjacent",act:"Hold 1 Article — expand"},
-  "Underwear & Socks|Bathrobes|":           {cagr:"3.0%",id:"Rendah",fit:"Off-brand",act:"Skip"},
-  "Swimwear|Swim trunks|Shorts":            {cagr:"7.4%",id:"Tinggi",fit:"Off-brand",act:"Skip"},
-  "Swimwear|Swim trunks|Trunks":            {cagr:"7.4%",id:"Tinggi",fit:"Off-brand",act:"Skip"},
-  "Swimwear|Swim trunks|Briefs":            {cagr:"5.0%",id:"Rendah",fit:"Off-brand",act:"Skip"},
-  "Swimwear|Shirts & tops|":               {cagr:"5.0%",id:"Menengah",fit:"Off-brand",act:"Skip"},
-  "Swimwear|Bathrobes|":                    {cagr:"3.0%",id:"Rendah",fit:"Off-brand",act:"Skip"},
-  "Swimwear|Towels|":                       {cagr:"2.5%",id:"Rendah",fit:"Off-brand",act:"Skip"},
-  "Loungewear & Sleepwear|Pyjamas|":        {cagr:"5.5%",id:"Menengah",fit:"Adjacent",act:"P3 — elevated version"},
-  "Loungewear & Sleepwear|Shirts|":         {cagr:"5.5%",id:"Menengah",fit:"Adjacent",act:"P3 — linen crossover"},
-  "Loungewear & Sleepwear|Trousers|":       {cagr:"5.5%",id:"Tinggi",fit:"Adjacent",act:"P3 — elevated lounge pants"}
-};
+/* ════════════════════════════════════════════════════════
+   GAP MATRIX — with filter & sort
+════════════════════════════════════════════════════════ */
+function populateMainCatFilter(){
+  var sel = document.getElementById('gc-maincat');
+  var existing = Array.from(sel.options).map(function(o){return o.value;});
+  var cats = [];
+  RAW.forEach(function(r){ if(cats.indexOf(r.m)===-1) cats.push(r.m); });
+  // Only add if changed
+  if(cats.length !== sel.options.length-1){
+    sel.innerHTML = '<option value="">Semua Main Cat</option>';
+    cats.forEach(function(c){ sel.innerHTML += '<option value="'+c+'">'+c+'</option>'; });
+  }
+}
 
-RAW.forEach(function(r){
-  var key=r.c+'|'+r.s1+'|'+r.s2;
-  var ann=ANNOTATIONS[key]||{cagr:"—",id:"—",fit:"—",act:"—"};
-  var isSkip=ann.act.indexOf('Skip')!==-1||ann.fit.indexOf('Off-brand')!==-1;
-  var isLow=ann.act.indexOf('Low priority')!==-1||ann.fit.indexOf('Low fit')!==-1;
-  var nColor=r.n===0?'#c94040':r.n<6?'#c97840':r.n<20?'#2d7a4f':'#1a5c35';
-  var actColor=ann.act.indexOf('P1')!==-1?'#c94040':ann.act.indexOf('P2')!==-1?'#c8a96e':ann.act.indexOf('P3')!==-1?'#2d7a4f':isSkip?'#bbb':'#888';
-  var trStyle='opacity:'+(isSkip?.35:isLow?.6:1);
-  app('gap-tbl','<tr style="'+trStyle+'">'+
-    '<td style="font-size:11px;color:var(--muted)">'+r.m+'</td>'+
-    '<td style="font-weight:600">'+r.c+'</td>'+
-    '<td>'+r.s1+'</td>'+
-    '<td style="font-size:11px;color:var(--muted)">'+(r.s2||'—')+'</td>'+
-    '<td style="font-weight:700;color:'+nColor+'">'+r.n+'</td>'+
-    '<td style="font-weight:700">'+ann.cagr+'</td>'+
-    '<td style="font-size:11px">'+ann.id+'</td>'+
-    '<td style="font-size:11px;color:'+(ann.fit==='Core'?'var(--green)':ann.fit==='Off-brand'?'#bbb':ann.fit==='Low fit'?'#ccc':'var(--muted)')+'">'+ann.fit+'</td>'+
-    '<td style="font-weight:600;font-size:11px;color:'+actColor+'">'+ann.act+'</td>'+
-  '</tr>');
-});
+function getGapRows(){
+  return RAW.map(function(r){
+    var key = r.c+'|'+r.s1+'|'+r.s2;
+    var ann = ANNOTATIONS[key] || {cagr:"—",cagrN:0,id:"—",idN:0,fit:"—",act:"—"};
+    return {mainCat:r.m, cat:r.c, s1:r.s1, s2:r.s2, n:r.n,
+      cagr:ann.cagr, cagrN:ann.cagrN, id:ann.id, idN:ann.idN,
+      fit:ann.fit, act:ann.act};
+  });
+}
 
-/* ═══════════════════════════════════════════════════
+function sortGap(col){
+  if(gapSortCol === col){
+    gapSortDir = gapSortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    gapSortCol = col;
+    gapSortDir = col === 'n' || col === 'cagr' ? 'desc' : 'asc';
+  }
+  renderGapMatrix();
+}
+
+function renderGapMatrix(){
+  populateMainCatFilter();
+  var search  = (document.getElementById('gc-search').value||'').toLowerCase();
+  var mainCat = document.getElementById('gc-maincat').value;
+  var fit     = document.getElementById('gc-fit').value;
+  var act     = document.getElementById('gc-act').value;
+  var skuF    = document.getElementById('gc-sku').value;
+
+  var rows = getGapRows();
+
+  // Filter
+  rows = rows.filter(function(r){
+    if(mainCat && r.mainCat !== mainCat) return false;
+    if(fit && r.fit !== fit) return false;
+    if(act && r.act.indexOf(act) === -1) return false;
+    if(skuF){
+      if(skuF==='0' && r.n!==0) return false;
+      if(skuF==='1-5' && (r.n<1||r.n>5)) return false;
+      if(skuF==='6-20' && (r.n<6||r.n>20)) return false;
+      if(skuF==='20+' && r.n<=20) return false;
+    }
+    if(search){
+      var searchable = (r.mainCat+' '+r.cat+' '+r.s1+' '+r.s2+' '+r.fit+' '+r.act).toLowerCase();
+      if(searchable.indexOf(search)===-1) return false;
+    }
+    return true;
+  });
+
+  // Sort
+  var idOrder = {none:0,"Sangat Rendah":1,"Rendah":2,"Menengah":3,"Tinggi":4,"Sangat Tinggi":5};
+  rows.sort(function(a,b){
+    var va, vb;
+    if(gapSortCol==='n'){va=a.n;vb=b.n;}
+    else if(gapSortCol==='cagr'){va=a.cagrN;vb=b.cagrN;}
+    else if(gapSortCol==='id'){va=idOrder[a.id]||0;vb=idOrder[b.id]||0;}
+    else{va=(a[gapSortCol]||'').toLowerCase();vb=(b[gapSortCol]||'').toLowerCase();}
+    if(typeof va==='number'){return gapSortDir==='asc'?va-vb:vb-va;}
+    return gapSortDir==='asc'?(va<vb?-1:va>vb?1:0):(va<vb?1:va>vb?-1:0);
+  });
+
+  // Update sort header icons
+  ['mainCat','cat','s1','s2','n','cagr','id','fit','act'].forEach(function(col){
+    var th = document.getElementById('gh-'+col);
+    if(!th) return;
+    th.className = gapSortCol===col ? 'sort-'+gapSortDir : '';
+    var icon = th.querySelector('.sort-icon');
+    if(icon) icon.innerHTML = gapSortCol===col ? (gapSortDir==='asc'?'&#8593;':'&#8595;') : '&#8597;';
+  });
+
+  // Render tbody
+  var tb = document.getElementById('gap-tbl');
+  tb.innerHTML = '';
+  rows.forEach(function(r){
+    var isSkip = r.act.indexOf('Skip')!==-1 || r.fit.indexOf('Off-brand')!==-1;
+    var isLow  = r.act.indexOf('Low priority')!==-1 || r.fit.indexOf('Low fit')!==-1;
+    var nColor = r.n===0?'#c94040':r.n<6?'#c97840':r.n<20?'#2d7a4f':'#1a5c35';
+    var actColor = r.act.indexOf('P1')!==-1?'#c94040':r.act.indexOf('P2')!==-1?'#c8a96e':r.act.indexOf('P3')!==-1?'#2d7a4f':isSkip?'#bbb':'#888';
+    var trStyle = 'opacity:'+(isSkip?.35:isLow?.6:1);
+    tb.innerHTML += '<tr style="'+trStyle+'">'+
+      '<td style="font-size:11px;color:var(--muted)">'+r.mainCat+'</td>'+
+      '<td style="font-weight:600">'+r.cat+'</td>'+
+      '<td>'+r.s1+'</td>'+
+      '<td style="font-size:11px;color:var(--muted)">'+(r.s2||'—')+'</td>'+
+      '<td style="font-weight:700;color:'+nColor+'">'+r.n+'</td>'+
+      '<td style="font-weight:700">'+r.cagr+'</td>'+
+      '<td style="font-size:11px">'+r.id+'</td>'+
+      '<td style="font-size:11px;color:'+(r.fit==='Core'?'var(--green)':r.fit==='Off-brand'||r.fit==='Low fit'?'#ccc':'var(--muted)')+'">'+r.fit+'</td>'+
+      '<td style="font-weight:600;font-size:11px;color:'+actColor+'">'+r.act+'</td>'+
+    '</tr>';
+  });
+  document.getElementById('gap-count').textContent = rows.length + ' / ' + RAW.length + ' baris';
+}
+
+function resetGapFilters(){
+  document.getElementById('gc-search').value='';
+  document.getElementById('gc-maincat').value='';
+  document.getElementById('gc-fit').value='';
+  document.getElementById('gc-act').value='';
+  document.getElementById('gc-sku').value='';
+  gapSortCol='n'; gapSortDir='desc';
+  renderGapMatrix();
+}
+
+/* ════════════════════════════════════════════════════════
    ROADMAP
-════════════════════════════════════════════════════ */
-var PHASES=[
-  {ph:"Phase 1 — Q3 2026",color:"#c94040",bg:"#fdf2f2",sub:"Quick wins: gap besar, demand tinggi, DNA brand perfect fit, barrier rendah",items:[
-    {cat:"Suits & Tailoring → Suits",zalando:"Clothing > Suits & Tailoring > Suits",n:"1 Article",why:"1 Article untuk kategori high-AOV. Kondangan & wisuda = demand year-round di Indonesia. Cross-sell Blazer & Suit trousers.",target:"15–20 Article",effort:"Menengah"},
-    {cat:"Suits & Tailoring → Suit trousers",zalando:"Clothing > Suits & Tailoring > Suit trousers",n:"0 Article",why:"0 Article padahal Blazer (9) dan Waistcoat (5) sudah ada. Gap tidak logis. Wajib hadir.",target:"15–20 Article",effort:"Rendah"},
-    {cat:"Shirts → Business Shirts",zalando:"Clothing > Shirts > Business Shirts",n:"6 Article",why:"175 Casual Shirts kuat — tapi Business Shirts hanya 6. Gap besar untuk office demand Indonesia.",target:"20–30 Article",effort:"Rendah"},
-    {cat:"Jeans → Straight",zalando:"Clothing > Jeans > Straight",n:"0 Article",why:"0 Article. Straight denim adalah wardrobe staple paling fundamental — tidak ada untuk complete menswear brand.",target:"18–25 Article",effort:"Rendah"},
-    {cat:"Knitwear → Knitted jumper",zalando:"Clothing > Knitwear > Knitted jumper",n:"11 Article",why:"11 Article tapi CAGR 5.8% dan viral 2026. Quarter-zip, turtleneck, crewneck premium — semua perlu diperkuat.",target:"28–35 Article",effort:"Rendah"}
+════════════════════════════════════════════════════════ */
+var PHASES_DEF=[
+  {ph:"Phase 1 — Q3 2026",color:"#c94040",bg:"#fdf2f2",sub:"Quick wins: gap besar, demand tinggi, DNA brand perfect fit",items:[
+    {cat:"Suits & Tailoring → Suits",cat_:["Suits & Tailoring","Suits",""],zalando:"Clothing > Suits & Tailoring > Suits",why:"High-AOV. Kondangan & wisuda demand year-round. Cross-sell Blazer & Suit trousers.",target:"15–20 SKU",effort:"Menengah"},
+    {cat:"Suits & Tailoring → Suit trousers",cat_:["Suits & Tailoring","Suit trousers",""],zalando:"Clothing > Suits & Tailoring > Suit trousers",why:"0 SKU padahal Blazer (9) dan Waistcoat (5) sudah ada. Gap tidak logis.",target:"15–20 SKU",effort:"Rendah"},
+    {cat:"Shirts → Business Shirts",cat_:["Shirts","Business Shirts",""],zalando:"Clothing > Shirts > Business Shirts",why:"175 Casual Shirts kuat — tapi Business Shirts sangat tipis. Gap besar.",target:"20–30 SKU",effort:"Rendah"},
+    {cat:"Jeans → Straight",cat_:["Jeans","Straight",""],zalando:"Clothing > Jeans > Straight",why:"0 SKU. Straight denim adalah wardrobe staple paling fundamental.",target:"18–25 SKU",effort:"Rendah"},
+    {cat:"Knitwear → Knitted jumper",cat_:["Knitwear","Knitted jumper",""],zalando:"Clothing > Knitwear > Knitted jumper",why:"CAGR 5.8% dan viral 2026. Quarter-zip, turtleneck, crewneck premium perlu diperkuat.",target:"28–35 SKU",effort:"Rendah"}
   ]},
-  {ph:"Phase 2 — Q1 2027",color:"#c8a96e",bg:"#fffbf0",sub:"Ekspansi strategis: tren kuat, demand terbukti, sesuai DNA HEYMALE",items:[
-    {cat:"Jeans → Baggy & Loose",zalando:"Clothing > Jeans > Baggy & Loose",n:"0 Article",why:"Baggy +243% arrivals. Tren terkuat denim 2025-26. Masuk setelah Straight solid.",target:"10–15 Article",effort:"Rendah"},
-    {cat:"Jeans → Tapered",zalando:"Clothing > Jeans > Tapered",n:"0 Article",why:"Tapered paling versatile — cross-sell ke Blazer & Business Shirts. Smart-casual denim.",target:"10–15 Article",effort:"Rendah"},
-    {cat:"Sweatshirts & Hoodies → Hoodies",zalando:"Clothing > Sweatshirts & Hoodies > Hoodies",n:"3 Article",why:"3 Article sangat tipis. TikTok viral. Pullover + zip-up + oversized = 3 niche berbeda.",target:"15–20 Article",effort:"Rendah"},
-    {cat:"Sweatshirts & Hoodies → Sweatshirts",zalando:"Clothing > Sweatshirts & Hoodies > Sweatshirts",n:"7 Article",why:"7 Article perlu di-expand. Premium crewneck = quiet luxury essentials.",target:"18–25 Article",effort:"Rendah"},
-    {cat:"Tracksuits & Joggers → Tracksuits",zalando:"Clothing > Tracksuits & Joggers > Tracksuits",n:"0 Article",why:"CAGR 9.7%. Gym culture +21%. Covered full-length sets saja.",target:"8–12 sets",effort:"Menengah"},
-    {cat:"Suits & Tailoring → Blazer jackets",zalando:"Clothing > Suits & Tailoring > Blazer jackets",n:"9 Article",why:"9 Article solid tapi perlu expansion. Structured + unstructured + linen blazer.",target:"20–28 Article",effort:"Menengah"},
-    {cat:"Knitwear → Cardigans",zalando:"Clothing > Knitwear > Cardigans",n:"4 Article",why:"4 Article tipis. Office-to-weekend layer. CAGR 5.8%.",target:"12–18 Article",effort:"Rendah"},
-    {cat:"Trousers → Cargo trousers",zalando:"Clothing > Trousers > Cargo trousers",n:"1 Article",why:"1 Article. Smart cargo CAGR 4.8%. Urban professional Indonesia.",target:"10–15 Article",effort:"Rendah"}
+  {ph:"Phase 2 — Q1 2027",color:"#c8a96e",bg:"#fffbf0",sub:"Ekspansi strategis: tren kuat, demand terbukti",items:[
+    {cat:"Jeans → Baggy & Loose",cat_:["Jeans","Baggy & Loose",""],zalando:"Clothing > Jeans > Baggy & Loose",why:"Baggy +243% arrivals. Tren terkuat denim 2025-26.",target:"10–15 SKU",effort:"Rendah"},
+    {cat:"Jeans → Tapered",cat_:["Jeans","Tapered",""],zalando:"Clothing > Jeans > Tapered",why:"Tapered paling versatile — cross-sell ke Blazer & Business Shirts.",target:"10–15 SKU",effort:"Rendah"},
+    {cat:"Sweatshirts & Hoodies → Hoodies",cat_:["Sweatshirts & Hoodies","Hoodies",""],zalando:"Clothing > Sweatshirts & Hoodies > Hoodies",why:"CAGR 5.1%. TikTok viral. Pullover + zip-up + oversized.",target:"15–20 SKU",effort:"Rendah"},
+    {cat:"Sweatshirts & Hoodies → Sweatshirts",cat_:["Sweatshirts & Hoodies","Sweatshirts",""],zalando:"Clothing > Sweatshirts & Hoodies > Sweatshirts",why:"Premium crewneck = quiet luxury essentials.",target:"18–25 SKU",effort:"Rendah"},
+    {cat:"Tracksuits & Joggers → Tracksuits",cat_:["Tracksuits & Joggers","Tracksuits",""],zalando:"Clothing > Tracksuits & Joggers > Tracksuits",why:"CAGR 9.7%. Gym culture +21%. Full-length sets saja.",target:"8–12 sets",effort:"Menengah"},
+    {cat:"Suits & Tailoring → Blazer jackets",cat_:["Suits & Tailoring","Blazer jackets",""],zalando:"Clothing > Suits & Tailoring > Blazer jackets",why:"Expand dari existing. Structured + unstructured + linen blazer.",target:"20–28 SKU",effort:"Menengah"},
+    {cat:"Knitwear → Cardigans",cat_:["Knitwear","Cardigans",""],zalando:"Clothing > Knitwear > Cardigans",why:"CAGR 5.8%. Office-to-weekend layer.",target:"12–18 SKU",effort:"Rendah"},
+    {cat:"Trousers → Cargo trousers",cat_:["Trousers","Cargo trousers",""],zalando:"Clothing > Trousers > Cargo trousers",why:"Smart cargo CAGR 4.8%. Urban professional Indonesia.",target:"10–15 SKU",effort:"Rendah"}
   ]},
-  {ph:"Phase 3 — H2 2027",color:"#2d7a4f",bg:"#f2faf5",sub:"Diversifikasi ekosistem: memperlengkap brand sebagai one-stop menswear",items:[
-    {cat:"Loungewear & Sleepwear → Trousers",zalando:"Clothing > Loungewear & Sleepwear > Trousers",n:"0 Article",why:"Elevated lounge pants (linen, modal). WFH culture. 'Smart home comfort' positioning.",target:"8–12 Article",effort:"Menengah"},
-    {cat:"Sweatshirts & Hoodies → Sweat jackets",zalando:"Clothing > Sweatshirts & Hoodies > Sweat jackets",n:"0 Article",why:"Casual outer layer. Setelah Hoodies kuat.",target:"8–10 Article",effort:"Rendah"},
-    {cat:"Tracksuits & Joggers → Tracksuit Jackets",zalando:"Clothing > Tracksuits & Joggers > Tracksuit Jackets",n:"1 Article",why:"Companion untuk Tracksuits. Expand jika Tracksuits solid.",target:"6–8 Article",effort:"Rendah"},
-    {cat:"Suits & Tailoring → Shirts",zalando:"Clothing > Suits & Tailoring > Shirts",n:"0 Article",why:"Suit companion shirts. Bundle dengan Suits & Blazer. Premium formal positioning.",target:"8–12 Article",effort:"Menengah"},
-    {cat:"Jeans → Relaxed",zalando:"Clothing > Jeans > Relaxed",n:"0 Article",why:"Setelah Straight & Tapered solid. Comfort denim untuk pria yang transisi dari slim.",target:"8–12 Article",effort:"Rendah"}
+  {ph:"Phase 3 — H2 2027",color:"#2d7a4f",bg:"#f2faf5",sub:"Diversifikasi ekosistem: complete menswear lifestyle",items:[
+    {cat:"Loungewear & Sleepwear → Trousers",cat_:["Loungewear & Sleepwear","Trousers",""],zalando:"Clothing > Loungewear & Sleepwear > Trousers",why:"Elevated lounge pants (linen, modal). WFH culture.",target:"8–12 SKU",effort:"Menengah"},
+    {cat:"Sweatshirts & Hoodies → Sweat jackets",cat_:["Sweatshirts & Hoodies","Sweat jackets",""],zalando:"Clothing > Sweatshirts & Hoodies > Sweat jackets",why:"Casual outer layer. Setelah Hoodies kuat.",target:"8–10 SKU",effort:"Rendah"},
+    {cat:"Suits & Tailoring → Shirts",cat_:["Suits & Tailoring","Shirts",""],zalando:"Clothing > Suits & Tailoring > Shirts",why:"Suit companion shirts. Bundle dengan Suits & Blazer.",target:"8–12 SKU",effort:"Menengah"},
+    {cat:"Jeans → Relaxed",cat_:["Jeans","Relaxed",""],zalando:"Clothing > Jeans > Relaxed",why:"Setelah Straight & Tapered solid. Comfort denim.",target:"8–12 SKU",effort:"Rendah"}
   ]}
 ];
 
-PHASES.forEach(function(p){
-  var items=p.items.map(function(i){
-    return '<div class="phase-item">'+
-      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px">'+
-      '<div><strong style="font-size:13px">'+i.cat+'</strong>'+
-      '<br><span class="cat-path" style="font-size:9px">'+i.zalando+'</span>'+
-      '<span style="font-size:11px;color:'+(i.n==='0 Article'?'var(--red)':'var(--accent)')+';font-weight:700;margin-left:6px">'+i.n+'</span></div>'+
-      '<div style="display:flex;gap:5px;flex-shrink:0">'+
-      '<span class="pill pill-blue">'+i.target+'</span>'+
-      '<span class="pill pill-gray">'+i.effort+'</span></div></div>'+
-      '<div style="font-size:12px;color:var(--text-light);line-height:1.5">'+i.why+'</div></div>';
-  }).join('');
-  app('roadmap-body','<div class="phase-block" style="border-left:4px solid '+p.color+';background:'+p.bg+'">'+
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:'+p.color+';margin-bottom:2px">'+p.ph+'</div>'+
-    '<div style="font-size:12px;color:var(--text-light);margin-bottom:14px">'+p.sub+'</div>'+
-    items+'</div>');
-});
+function buildRoadmap(){
+  var rb = document.getElementById('roadmap-body');
+  rb.innerHTML = '';
+  PHASES_DEF.forEach(function(p){
+    var items = p.items.map(function(i){
+      var n = getN(i.cat_[0], i.cat_[1], i.cat_[2]);
+      var nColor = n===0?'var(--red)':n<6?'#c97840':'var(--green)';
+      return '<div class="phase-item">'+
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px">'+
+        '<div><strong style="font-size:13px">'+i.cat+'</strong>'+
+        '<br><span class="cat-path" style="font-size:9px">'+i.zalando+'</span>'+
+        '<span style="font-size:11px;color:'+nColor+';font-weight:700;margin-left:6px">'+n+' SKU kini</span></div>'+
+        '<div style="display:flex;gap:5px;flex-shrink:0">'+
+        '<span class="pill pill-blue">'+i.target+'</span>'+
+        '<span class="pill pill-gray">'+i.effort+'</span></div></div>'+
+        '<div style="font-size:12px;color:var(--text-light);line-height:1.5">'+i.why+'</div></div>';
+    }).join('');
+    rb.innerHTML += '<div class="phase-block" style="border-left:4px solid '+p.color+';background:'+p.bg+'">'+
+      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:'+p.color+';margin-bottom:2px">'+p.ph+'</div>'+
+      '<div style="font-size:12px;color:var(--text-light);margin-bottom:14px">'+p.sub+'</div>'+
+      items+'</div>';
+  });
 
-/* CHECKLIST */
-var CL=["Path Zalando dikonfirmasi sebelum listing produk baru","Demand validation: cek keyword Shopee/Tokopedia untuk sub-kategori","Kompetitor audit: siapa yang kuat di kategori ini di ID?","Brand fit 3-V: Versatile, Visual Coherent, Value-driven","Supplier audit: leverage existing atau sumber baru?","Sizing: proporsi pria Indonesia vs Zalando EU benchmark","Content plan: TikTok/IG shoot plan sebelum launch","KPI: sell-through >60% dalam 90 hari pertama"];
-CL.forEach(function(c){
-  app('checklist','<div style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;cursor:pointer" onclick="this.querySelector(\'.cb\').classList.toggle(\'on\');this.style.opacity=this.querySelector(\'.cb\').classList.contains(\'on\')?.5:1">'+
-    '<span class="cb" style="width:15px;height:15px;border:1.5px solid #ccc;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;font-size:10px"></span>'+
-    '<span>'+c+'</span></div>');
-});
+  // Checklist
+  var cl = document.getElementById('checklist');
+  if(!cl.innerHTML){
+    var CL=["Path Zalando dikonfirmasi sebelum listing produk baru","Demand validation: cek keyword Shopee/Tokopedia","Kompetitor audit: siapa yang kuat di kategori ini?","Brand fit 3-V: Versatile, Visual Coherent, Value-driven","Supplier audit: leverage existing atau sumber baru?","Sizing: proporsi pria Indonesia vs Zalando EU benchmark","Content plan: TikTok/IG shoot plan sebelum launch","KPI: sell-through >60% dalam 90 hari pertama"];
+    CL.forEach(function(c){
+      cl.innerHTML += '<div style="display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;cursor:pointer" onclick="this.querySelector(\'.cb\').classList.toggle(\'on\');this.style.opacity=this.querySelector(\'.cb\').classList.contains(\'on\')?.5:1">'+
+        '<span class="cb" style="width:15px;height:15px;border:1.5px solid #ccc;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;font-size:10px"></span>'+
+        '<span>'+c+'</span></div>';
+    });
+  }
 
-/* Article TARGETS */
-var Article_TARGETS=[
-  {ph:"Phase 1",rows:[
-    ["Suits & Tailoring > Suits","1 → 15–20 Article"],
-    ["Suits & Tailoring > Suit trousers","0 → 15–20 Article"],
-    ["Shirts > Business Shirts","6 → 25–30 Article"],
-    ["Jeans > Straight","0 → 18–25 Article"],
-    ["Knitwear > Knitted jumper","11 → 28–35 Article"]
-  ],color:"#c94040"},
-  {ph:"Phase 2",rows:[
-    ["Jeans > Baggy & Loose","0 → 10–15 Article"],
-    ["Jeans > Tapered","0 → 10–15 Article"],
-    ["Sweatshirts & Hoodies > Hoodies","3 → 15–20 Article"],
-    ["Sweatshirts & Hoodies > Sweatshirts","7 → 18–25 Article"],
-    ["Tracksuits & Joggers > Tracksuits","0 → 8–12 sets"],
-    ["Suits & Tailoring > Blazer jackets","9 → 20–28 Article"],
-    ["Knitwear > Cardigans","4 → 12–18 Article"],
-    ["Trousers > Cargo trousers","1 → 10–15 Article"]
-  ],color:"#c8a96e"},
-  {ph:"Phase 3",rows:[
-    ["Loungewear > Trousers","0 → 8–12 Article"],
-    ["Sweatshirts & Hoodies > Sweat jackets","0 → 8–10 Article"],
-    ["Suits & Tailoring > Shirts","0 → 8–12 Article"],
-    ["Jeans > Relaxed","0 → 8–12 Article"]
-  ],color:"#2d7a4f"}
-];
-Article_TARGETS.forEach(function(p){
-  app('sku-targets','<div style="margin-bottom:14px"><div style="font-size:11px;font-weight:700;color:'+p.color+';text-transform:uppercase;margin-bottom:6px">'+p.ph+'</div>'+
-    p.rows.map(function(r){
-      return '<div style="display:flex;justify-content:space-between;font-size:11px;padding:5px 0;border-bottom:1px solid var(--border)">'+
-        '<span class="cat-path" style="font-size:9px">'+r[0]+'</span>'+
-        '<span style="font-weight:700;font-size:12px;color:'+p.color+'">'+r[1]+'</span></div>';
-    }).join('')+'</div>');
-});
+  // SKU targets
+  var st = document.getElementById('sku-targets');
+  st.innerHTML = '';
+  PHASES_DEF.forEach(function(p){
+    st.innerHTML += '<div style="margin-bottom:14px"><div style="font-size:11px;font-weight:700;color:'+p.color+';text-transform:uppercase;margin-bottom:6px">'+p.ph.split('—')[0].trim()+'</div>'+
+      p.items.map(function(i){
+        var n = getN(i.cat_[0], i.cat_[1], i.cat_[2]);
+        return '<div style="display:flex;justify-content:space-between;font-size:11px;padding:5px 0;border-bottom:1px solid var(--border)">'+
+          '<span class="cat-path" style="font-size:9px">'+i.cat.replace(' → ',' > ')+'</span>'+
+          '<span style="font-weight:700;font-size:12px;color:'+p.color+'">'+n+' → '+i.target+'</span></div>';
+      }).join('')+'</div>';
+  });
+}
 
-/* SOURCES */
+/* ════════════════════════════════════════════════════════
+   SOURCES
+════════════════════════════════════════════════════════ */
 var SRC_USED=[
   {name:"Renub Research — Global Menswear 2026–2034",url:"renub.com",desc:"$973B 2034, CAGR 5.1%. TikTok #MensFashion 58B views 2025."},
   {name:"Grand View Research — Business Casual Menswear 2026–30",url:"grandviewresearch.com",desc:"CAGR 6.2% smart-casual. Formal tailoring CAGR 4.5%."},
-  {name:"Mordor Intelligence — Knitwear Market 2025–32",url:"mordorintelligence.com",desc:"Premium knitwear CAGR 5.8%. Quarter-zip dan turtleneck key drivers."},
+  {name:"Mordor Intelligence — Knitwear Market 2025–32",url:"mordorintelligence.com",desc:"Premium knitwear CAGR 5.8%."},
   {name:"Fortune Business Insights — Athleisure 2026–34",url:"fortunebusinessinsights.com",desc:"CAGR 9.7%. $402B→$844B. Gym culture driver Asia Tenggara."},
-  {name:"Allied Market Research — Denim Jeans 2025",url:"alliedmarketresearch.com",desc:"CAGR 4.2%. Baggy & relaxed fit dominan. Straight sebagai baseline."},
-  {name:"Vogue Business — Baggy Denim 2025",url:"voguebusiness.com",desc:"+243% baggy/barrel arrivals. FW26-27 relaxed silhouette dominan."},
-  {name:"Style Arcade — FW26-27 Trend Report (Feb 2026)",url:"stylearcade.com",desc:"Knitwear layering, tailoring, relaxed denim. Runway buyer signals."},
+  {name:"Allied Market Research — Denim Jeans 2025",url:"alliedmarketresearch.com",desc:"CAGR 4.2%. Baggy & relaxed fit dominan."},
+  {name:"Vogue Business — Baggy Denim 2025",url:"voguebusiness.com",desc:"+243% baggy/barrel arrivals."},
+  {name:"Style Arcade — FW26-27 Trend Report (Feb 2026)",url:"stylearcade.com",desc:"Knitwear layering, tailoring, relaxed denim."},
   {name:"CNN — What Men Will Wear in 2026 (Jan 2026)",url:"cnn.com",desc:"Quarter-zip viral. Knitted jumper foundational 2026."},
-  {name:"KenResearch — Indonesia Sports Apparel 2025",url:"kenresearch.com",desc:"Gym membership +21% YoY. Athleisure $4.5B market Indonesia."},
-  {name:"Statista — Men's Apparel Indonesia 2026",url:"statista.com",desc:"$8.4B proyeksi 2028. CAGR 3.64%. Breakdown per kategori."},
-  {name:"Zalando Taxonomy CSV (Primary Benchmark)",url:"internal",desc:"88 rows, 6 kolom. Main Cat → Category → Sub Category. Baseline seluruh analisis."}
+  {name:"KenResearch — Indonesia Sports Apparel 2025",url:"kenresearch.com",desc:"Gym membership +21% YoY."},
+  {name:"Statista — Men's Apparel Indonesia 2026",url:"statista.com",desc:"$8.4B proyeksi 2028. CAGR 3.64%."},
+  {name:"Zalando Taxonomy CSV (Primary Benchmark)",url:"internal",desc:"88 rows, 6 kolom. Baseline seluruh analisis."}
 ];
 var SRC_ONGOING=[
-  {name:"Style Arcade — Season Trend Reports",url:"stylearcade.com/blog",desc:"SS & FW runway + retail buyer insights. Update per season."},
+  {name:"Style Arcade — Season Trend Reports",url:"stylearcade.com/blog",desc:"SS & FW runway + retail buyer insights."},
   {name:"Business of Fashion — Menswear",url:"businessoffashion.com",desc:"Analisis mendalam brand strategy dan market data global."},
-  {name:"McKinsey State of Fashion (tahunan)",url:"mckinsey.com",desc:"Laporan terlengkap fashion industry. Terbit Januari tiap tahun."},
-  {name:"Lyst — Wardobe Intelligence Reports",url:"lyst.com",desc:"Quarterly berdasarkan 200M+ user. Search & purchase data real."},
-  {name:"Google Trends",url:"trends.google.com",desc:"Real-time search interest per sub-kategori. Validasi demand lokal."},
-  {name:"Shopee / Tokopedia Trending",url:"shopee.co.id",desc:"Monitor produk terlaris langsung di pasar Indonesia."}
+  {name:"McKinsey State of Fashion (tahunan)",url:"mckinsey.com",desc:"Laporan terlengkap fashion industry."},
+  {name:"Lyst — Wardobe Intelligence Reports",url:"lyst.com",desc:"Quarterly berdasarkan 200M+ user."},
+  {name:"Google Trends",url:"trends.google.com",desc:"Real-time search interest per sub-kategori."},
+  {name:"Shopee / Tokopedia Trending",url:"shopee.co.id",desc:"Monitor produk terlaris di pasar Indonesia."}
 ];
-SRC_USED.forEach(function(s){app('src-used','<div class="source-item"><div class="source-name">'+s.name+'</div><div class="source-url">'+s.url+'</div><div class="source-desc">'+s.desc+'</div></div>');});
-SRC_ONGOING.forEach(function(s){app('src-ongoing','<div class="source-item"><div class="source-name">'+s.name+'</div><div class="source-url">'+s.url+'</div><div class="source-desc">'+s.desc+'</div></div>');});
+(function buildSources(){
+  var su=document.getElementById('src-used'), so=document.getElementById('src-ongoing');
+  SRC_USED.forEach(function(s){su.innerHTML+='<div class="source-item"><div class="source-name">'+s.name+'</div><div class="source-url">'+s.url+'</div><div class="source-desc">'+s.desc+'</div></div>';});
+  SRC_ONGOING.forEach(function(s){so.innerHTML+='<div class="source-item"><div class="source-name">'+s.name+'</div><div class="source-url">'+s.url+'</div><div class="source-desc">'+s.desc+'</div></div>';});
+})();
 
-/* ═══ NAV ═══ */
-function showSec(name,btn){
-  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
-  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
-  el('sec-'+name).classList.add('active');btn.classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-/* ═══ EXPORT ═══ */
-var selFmt='exec';
+/* ════════════════════════════════════════════════════════
+   EXPORT
+════════════════════════════════════════════════════════ */
+var selFmtVal = 'exec';
 var SLIDE_FMTS=[
-  {id:'exec',icon:'&#128084;',title:'Executive Summary',desc:'5 slide keputusan untuk leadership. Situasi, peluang kritis, roadmap, next steps.',sel:true},
-  {id:'full',icon:'&#128202;',title:'Full Deck',desc:'8 slide komprehensif dengan data Zalando, gap matrix, tren global.',sel:false},
-  {id:'pitch',icon:'&#128640;',title:'Pitch Deck',desc:'8 slide action-oriented. Problem, opportunity, GTM. Untuk partner/vendor.',sel:false}
+  {id:'exec',icon:'&#128084;',title:'Executive Summary',desc:'5 slide keputusan untuk leadership.'},
+  {id:'full',icon:'&#128202;',title:'Full Deck',desc:'8 slide komprehensif dengan data Zalando dan tren global.'},
+  {id:'pitch',icon:'&#128640;',title:'Pitch Deck',desc:'8 slide action-oriented untuk partner/vendor.'}
 ];
-SLIDE_FMTS.forEach(function(f){
-  app('slide-opts','<div class="slide-opt'+(f.sel?' sel':'')+'" id="opt-'+f.id+'" onclick="selFmt(\''+f.id+'\')">'+
-    '<div class="so-icon">'+f.icon+'</div><div class="so-title">'+f.title+'</div><div class="so-desc">'+f.desc+'</div></div>');
-});
+(function buildExportModal(){
+  var so=document.getElementById('slide-opts');
+  SLIDE_FMTS.forEach(function(f){
+    so.innerHTML+='<div class="slide-opt'+(f.id==='exec'?' sel':'')+'" id="opt-'+f.id+'" onclick="selFmt(\''+f.id+'\')">'+
+      '<div class="so-icon">'+f.icon+'</div><div class="so-title">'+f.title+'</div><div class="so-desc">'+f.desc+'</div></div>';
+  });
+})();
 function selFmt(id){
-  selFmt=id;
+  selFmtVal=id;
   document.querySelectorAll('.slide-opt').forEach(function(e){e.classList.remove('sel');});
-  el('opt-'+id).classList.add('sel');
+  document.getElementById('opt-'+id).classList.add('sel');
 }
-function openExport(){el('modal-bg').classList.add('open');}
-function closeExport(){el('modal-bg').classList.remove('open');}
+function openExport(){document.getElementById('modal-bg').classList.add('open');}
+function closeExport(){document.getElementById('modal-bg').classList.remove('open');}
 
 function doExport(){
-  var fmt=typeof selFmt==='string'?selFmt:'exec';
-  var css='*{box-sizing:border-box;margin:0;padding:0}body{font-family:sans-serif;background:#111;padding:24px}.slide{background:#fafaf7;border-radius:10px;max-width:840px;margin:0 auto 18px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.3)}.sh{background:#0f0f0f;padding:8px 20px;display:flex;justify-content:space-between;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#888}.sh span{color:#c8a96e}.sb{padding:26px 30px}.h1{font-size:26px;font-weight:300;margin-bottom:10px}.h2{font-size:18px;font-weight:600;margin-bottom:10px}.ey{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#c8a96e;margin-bottom:6px}.sub{font-size:12px;color:#888;margin-bottom:14px;line-height:1.6}.card{background:#f4f1ec;border-radius:8px;padding:12px 16px;margin-bottom:10px}.path{font-family:monospace;font-size:10px;color:#1e3a6e;background:#eef2fb;padding:2px 6px;border-radius:3px;display:inline-block}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}.kv{font-size:22px;font-weight:300;color:#c8a96e}.kl{font-size:11px;color:#888}.p1c{color:#c94040}.p2c{color:#c8a96e}.p3c{color:#2d7a4f}.tbl{width:100%;border-collapse:collapse;font-size:11px}.tbl th{background:#f4f1ec;padding:5px 8px;text-align:left;font-size:9px;text-transform:uppercase;color:#888;border-bottom:1px solid #ddd}.tbl td{padding:7px 8px;border-bottom:1px solid #eee;vertical-align:top}.hint{text-align:center;color:rgba(255,255,255,.3);font-size:11px;margin-top:20px;border:1px dashed rgba(255,255,255,.12);border-radius:8px;padding:12px;max-width:420px;margin-left:auto;margin-right:auto}';
-
-  function slide(num,tot,title,body){
-    return '<div class="slide"><div class="sh">Slide '+num+' / '+tot+' &mdash; HEYMALE Expansion · Q2 2026 <span>'+title+'</span></div><div class="sb">'+body+'</div></div>';
-  }
-
-  var p1Items=PHASES[0].items.map(function(i){
-    return '<tr><td><span class="path">'+i.zalando+'</span></td><td class="p1c" style="font-weight:700">'+i.n+'</td><td>'+i.target+'</td><td style="font-size:11px;color:#666">'+i.why.substring(0,70)+'...</td></tr>';
-  }).join('');
-
+  var s = getStats();
+  var fmt = selFmtVal;
+  var css='*{box-sizing:border-box;margin:0;padding:0}body{font-family:sans-serif;background:#111;padding:24px}.slide{background:#fafaf7;border-radius:10px;max-width:840px;margin:0 auto 18px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.3)}.sh{background:#0f0f0f;padding:8px 20px;display:flex;justify-content:space-between;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#888}.sh span{color:#c8a96e}.sb{padding:26px 30px}.h2{font-size:18px;font-weight:600;margin-bottom:10px}.ey{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#c8a96e;margin-bottom:6px}.sub{font-size:12px;color:#888;margin-bottom:14px;line-height:1.6}.card{background:#f4f1ec;border-radius:8px;padding:12px 16px;margin-bottom:10px}.path{font-family:monospace;font-size:10px;color:#1e3a6e;background:#eef2fb;padding:2px 6px;border-radius:3px;display:inline-block}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}.kv{font-size:22px;font-weight:300;color:#c8a96e}.kl{font-size:11px;color:#888}.tbl{width:100%;border-collapse:collapse;font-size:11px}.tbl th{background:#f4f1ec;padding:5px 8px;text-align:left;font-size:9px;text-transform:uppercase;color:#888;border-bottom:1px solid #ddd}.tbl td{padding:7px 8px;border-bottom:1px solid #eee}.hint{text-align:center;color:rgba(255,255,255,.3);font-size:11px;margin-top:20px;border:1px dashed rgba(255,255,255,.12);border-radius:8px;padding:12px;max-width:420px;margin-left:auto;margin-right:auto}';
+  function slide(num,tot,title,body){return '<div class="slide"><div class="sh">Slide '+num+' / '+tot+' &mdash; HEYMALE Expansion · Q2 2026 <span>'+title+'</span></div><div class="sb">'+body+'</div></div>';}
+  var dataNote = dataFromUpload ? ' <em style="font-size:10px;color:#7acc9a">(data diperbarui dari upload)</em>' : '';
   var slides=[
-    // COVER
-    slide(1,'X','Cover','<div class="ey">Brand Expansion Strategy · Q2 2026 · Baseline: Zalando Taxonomy CSV (88 rows)</div>'+
-      '<h1 class="h1">HEYMALE — Peta Ekspansi Kategori</h1>'+
-      '<p class="sub">Gap portofolio berbasis data Zalando taxonomy, tren global 2025–Q1 2026, dan brand positioning HEYMALE.<br><em>One-stop lifestyle solution · Smart-casual · Modest athleisure · Effortless · Premium accessible</em></p>'+
+    slide(1,'X','Cover','<div class="ey">Brand Expansion Strategy · Q2 2026 · Baseline: Zalando Taxonomy CSV'+dataNote+'</div>'+
+      '<h2 class="h2" style="font-size:24px;font-weight:300">HEYMALE — Peta Ekspansi Kategori</h2>'+
       '<div class="grid3">'+
-        '<div class="card"><div class="kv">'+TOTAL+'</div><div class="kl">Total Artikel HEYMALE</div></div>'+
-        '<div class="card"><div class="kv">'+ZERO+'/88</div><div class="kl">Sub-kategori Zalando = 0 Artikel</div></div>'+
-        '<div class="card"><div class="kv">'+ACTIVE+'</div><div class="kl">Sub-kategori aktif</div></div>'+
+        '<div class="card"><div class="kv">'+s.total+'</div><div class="kl">Total artikel HEYMALE</div></div>'+
+        '<div class="card"><div class="kv">'+s.zero+'/88</div><div class="kl">Sub-kategori Zalando = 0 artikel</div></div>'+
+        '<div class="card"><div class="kv">'+s.active+'</div><div class="kl">Sub-kategori aktif</div></div>'+
       '</div>'+
       '<div class="grid3">'+
         '<div class="card"><div class="kv" style="font-size:18px">6.2%</div><div class="kl">CAGR Smart-Casual 2026–30</div></div>'+
         '<div class="card"><div class="kv" style="font-size:18px">5.8%</div><div class="kl">CAGR Knitwear 2025–32</div></div>'+
         '<div class="card"><div class="kv" style="font-size:18px">9.7%</div><div class="kl">CAGR Athleisure 2026–34</div></div>'+
       '</div>'),
-    // SITUASI
-    slide(2,'X','Situasi Portofolio','<div class="ey">Data CSV Zalando — 88 Sub-Kategori</div>'+
-      '<h2 class="h2">Konsentrasi Tinggi + Gap Besar = Risiko & Peluang</h2>'+
-      '<div class="grid3">'+
-        '<div class="card"><div class="kv p1c">'+Math.round(175/TOTAL*100)+'%</div><div class="kl">Artikel di 1 sub-kategori (Casual Shirts)</div></div>'+
-        '<div class="card"><div class="kv" style="color:#c8a96e">'+ZERO+'</div><div class="kl">sub-kategori Zalando = 0 Article</div></div>'+
-        '<div class="card"><div class="kv" style="color:#2d7a4f">13+</div><div class="kl">peluang ekspansi yang brand-fit</div></div>'+
-      '</div>'+
-      '<table class="tbl"><thead><tr><th>Zalando Path (Kritis)</th><th>Article Kini</th><th>CAGR</th><th>Aksi</th></tr></thead><tbody>'+
-      [["Suits & Tailoring > Suits","1","4.5%","P1"],
-       ["Suits & Tailoring > Suit trousers","0","4.5%","P1"],
-       ["Shirts > Business Shirts","6","3.8%","P1"],
-       ["Jeans > Straight","0","4.2%","P1"],
-       ["Knitwear > Knitted jumper","11","5.8%","P1"],
-       ["Jeans > Baggy & Loose","0","4.2%","P2"],
-       ["Sweatshirts & Hoodies > Hoodies","3","5.1%","P2"],
-       ["Tracksuits & Joggers > Tracksuits","0","9.7%","P2"]].map(function(r){
-        var c=r[3]==='P1'?'p1c':r[3]==='P2'?'p2c':'p3c';
-        return '<tr><td><span class="path">'+r[0]+'</span></td><td style="font-weight:700;color:'+(r[1]==='0'?'#c94040':'#c97840')+'">'+r[1]+' Article</td><td style="font-weight:700">'+r[2]+'</td><td class="'+c+'" style="font-weight:700">'+r[3]+'</td></tr>';
-       }).join('')+
-      '</tbody></table>'),
-    // TREN GLOBAL
-    slide(3,'X','Tren Global','<div class="ey">Global Market Data 2025–Q1 2026 — Mapped ke Zalando Taxonomy</div>'+
-      '<h2 class="h2">Segmen Tumbuh yang Relevan untuk HEYMALE</h2>'+
-      '<div class="grid3">'+KPIS.slice(0,3).map(function(k){return '<div class="card"><div class="kv">'+k.val+'</div><div class="kl">'+k.lbl+'</div></div>';}).join('')+'</div>'+
-      '<table class="tbl"><thead><tr><th>Zalando: Category → Sub Category</th><th>Article HEYMALE</th><th>CAGR</th><th>Signal</th></tr></thead><tbody>'+
-      [["Knitwear > Knitted jumper","11","5.8%","CNN Jan 2026: quarter-zip 'foundational item 2026'"],
-       ["Jeans > Straight + Baggy & Loose","0","4.2%","Vogue 2025: baggy +243% arrivals global"],
-       ["Suits & Tailoring > Suits","1","4.5%","Lyst 2026: intentional dressing & suit rebound"],
-       ["Tracksuits & Joggers > Tracksuits","0","9.7%","Indo gym +21% YoY; athleisure CAGR tertinggi"],
-       ["Sweatshirts & Hoodies > Hoodies","3","5.1%","TikTok #MensFashion 58B views; hoodie terlaris"]].map(function(r){
-        return '<tr><td><span class="path">'+r[0]+'</span></td><td style="font-weight:700;color:'+(parseInt(r[1])===0?'#c94040':parseInt(r[1])<6?'#c97840':'#2d7a4f')+'">'+r[1]+' Article</td><td style="font-weight:700">'+r[2]+'</td><td style="font-size:10px;color:#666">'+r[3]+'</td></tr>';
+    slide(2,'X','Situasi Portofolio','<div class="ey">Gap Kritis — Zalando Taxonomy</div>'+
+      '<h2 class="h2">Kategori dengan Gap Terbesar & Demand Tinggi</h2>'+
+      '<table class="tbl"><thead><tr><th>Zalando Path</th><th>SKU Kini</th><th>CAGR</th><th>Aksi</th></tr></thead><tbody>'+
+      [["Suits > Suits",getN("Suits & Tailoring","Suits",""),"4.5%","P1"],
+       ["Suits > Suit trousers",getN("Suits & Tailoring","Suit trousers",""),"4.5%","P1"],
+       ["Shirts > Business Shirts",getN("Shirts","Business Shirts",""),"3.8%","P1"],
+       ["Jeans > Straight",getN("Jeans","Straight",""),"4.2%","P1"],
+       ["Knitwear > Knitted jumper",getN("Knitwear","Knitted jumper",""),"5.8%","P1"],
+       ["Jeans > Baggy & Loose",getN("Jeans","Baggy & Loose",""),"4.2%","P2"],
+       ["Hoodies",getN("Sweatshirts & Hoodies","Hoodies",""),"5.1%","P2"],
+       ["Tracksuits",getN("Tracksuits & Joggers","Tracksuits",""),"9.7%","P2"]].map(function(r){
+        var c=r[3]==='P1'?'#c94040':r[3]==='P2'?'#c8a96e':'#2d7a4f';
+        return '<tr><td><span class="path">'+r[0]+'</span></td>'+
+          '<td style="font-weight:700;color:'+(r[1]===0?'#c94040':r[1]<6?'#c97840':'#2d7a4f')+'">'+r[1]+' SKU</td>'+
+          '<td style="font-weight:700">'+r[2]+'</td>'+
+          '<td style="font-weight:700;color:'+c+'">'+r[3]+'</td></tr>';
        }).join('')+'</tbody></table>'),
-    // TOP PELUANG P1
-    slide(4,'X','Prioritas 1 — P1','<div class="ey">5 Kategori Zalando yang Harus Dimasukkan Segera — Q3 2026</div>'+
-      '<h2 class="h2">Phase 1: Quick Wins dengan DNA Brand Perfect Fit</h2>'+
-      '<table class="tbl"><thead><tr><th>Zalando Path</th><th>Article Kini</th><th>Target</th><th>Reasoning</th></tr></thead><tbody>'+p1Items+'</tbody></table>'+
-      '<div class="card" style="margin-top:12px;background:#fffbf0;border:1px solid #e8c97a">'+
-        '<strong style="font-size:11px;color:#9a7a42">Brand Alignment Check:</strong>'+
-        '<p style="font-size:11px;color:#5a4a20;margin-top:3px;line-height:1.5">Semua 5 kategori Phase 1 bisa dieksekusi dalam palet warna netral, desain clean, dan effortless positioning — konsisten 100% dengan DNA HEYMALE. Suit trousers + Blazer + Business Shirts = complete office-to-event bundle.</p>'+
-      '</div>'),
-    // ROADMAP
-    slide(5,'X','Roadmap','<div class="ey">3 Fase Ekspansi — Berbasis Zalando Taxonomy Path</div>'+
+    slide(3,'X','Roadmap','<div class="ey">3 Fase Ekspansi — Berbasis Zalando Taxonomy</div>'+
       '<h2 class="h2">Dari Quick Wins ke Complete Menswear Ecosystem</h2>'+
-      PHASES.map(function(p){
+      PHASES_DEF.map(function(p){
         return '<div style="border-left:3px solid '+p.color+';padding:8px 12px;margin-bottom:10px;background:'+(p.color==='#c94040'?'#fdf2f2':p.color==='#c8a96e'?'#fffbf0':'#f2faf5')+';border-radius:6px">'+
           '<div style="font-size:10px;font-weight:700;color:'+p.color+';text-transform:uppercase;margin-bottom:5px">'+p.ph+'</div>'+
           '<div style="display:flex;flex-wrap:wrap;gap:5px">'+
-          p.items.map(function(i){return '<span style="background:#fff;border:1px solid '+p.color+'55;border-radius:4px;padding:3px 7px;font-size:10px;font-weight:600">'+i.cat.split(' → ')[1]+' <span style="font-weight:400;color:#888">→ '+i.target+'</span></span>';}).join('')+
-          '</div></div>';
+          p.items.map(function(i){
+            var n=getN(i.cat_[0],i.cat_[1],i.cat_[2]);
+            return '<span style="background:#fff;border:1px solid '+p.color+'55;border-radius:4px;padding:3px 7px;font-size:10px;font-weight:600">'+i.cat.split('→')[1].trim()+' <span style="font-weight:400;color:#888">('+n+' → '+i.target+')</span></span>';
+          }).join('')+'</div></div>';
       }).join(''))
   ];
-
-  // Extend for full/pitch decks
-  if(fmt!=='exec'){
-    // Add brand filter slide
-    slides.push(slide(slides.length+1,'X','Brand Filter',
-      '<div class="ey">HEYMALE Guardrails — Ekspansi yang Boleh vs. Skip</div>'+
-      '<h2 class="h2">Filter Brand: 3V + Zalando Path Check</h2>'+
-      '<div class="grid2">'+
-        '<div><div style="font-size:12px;font-weight:700;color:#2d7a4f;margin-bottom:8px">EKSPANSI (Zalando paths yang direkomendasikan)</div>'+
-        [["Suits & Tailoring > Suits","High AOV, kondangan demand, 1 Article"],
-         ["Suits & Tailoring > Suit trousers","Cross-sell kritis, 0 Article"],
-         ["Shirts > Business Shirts","Office demand, 6 Article saja"],
-         ["Jeans > Straight + Baggy + Tapered","Wardrobe staple, 0 Article"],
-         ["Knitwear > Knitted jumper + Cardigans","Viral 2026, CAGR 5.8%"],
-         ["Sweatshirts & Hoodies > Hoodies + Sweatshirts","TikTok viral, 3+7 Article tipis"],
-         ["Tracksuits & Joggers > Tracksuits","Full-length only, gym culture"]].map(function(a){
-          return '<div style="font-size:10px;padding:5px 0;border-bottom:1px solid #dce8dc"><span class="path">'+a[0]+'</span><br><span style="color:#555">'+a[1]+'</span></div>';
-        }).join('')+'</div>'+
-        '<div><div style="font-size:12px;font-weight:700;color:#888;margin-bottom:8px">SKIP (Off-brand atau low relevance)</div>'+
-        [["Shorts > Casual/Denim/Sport Shorts","Off-brand DNA HEYMALE"],
-         ["Swimwear > Swim trunks + all","Off-brand"],
-         ["Jackets > Winter/Down/Ski jackets","Iklim tropis, low relevance"],
-         ["Underwear > Jockstraps/Thongs","Off-brand"],
-         ["Jeans > Skinny","Tren turun, declining demand"],
-         ["Coats > Winter/Wool/Down coats","Iklim tropis"]].map(function(a){
-          return '<div style="font-size:10px;padding:5px 0;border-bottom:1px solid #ede8e0"><span class="path" style="background:#f5f0f0;color:#999">'+a[0]+'</span><br><span style="color:#aaa">'+a[1]+'</span></div>';
-        }).join('')+'</div>'+
-      '</div>'));
-    // Add next steps
-    slides.push(slide(slides.length+1,'X','Next Steps',
-      '<div class="ey">Action Items — Apa yang Dilakukan Sekarang</div>'+
-      '<h2 class="h2">5 Langkah Segera</h2>'+
-      [['1','Approve Phase 1 — Q3 2026','Suits (1→15 Article), Suit trousers (0→15), Business Shirts (6→25), Jeans Straight (0→20), Knitted jumper (11→30). Start sourcing & sampling.','#c94040'],
-       ['2','Validate Demand Lokal','Cek search volume Shopee/Tokopedia untuk setiap Zalando sub-category path P1. Prioritaskan berdasarkan volume Jakarta/Surabaya.','#c94040'],
-       ['3','Content Plan per Kategori','Setiap kategori baru butuh TikTok + IG content plan sebelum launch. Knitted jumper & Jeans adalah yang paling viral.','#c97840'],
-       ['4','Supplier Audit per Path','Identifikasi supplier untuk Suits, Jeans denim, dan Knitwear. Cek overlap dengan supplier existing (Trousers → Suit trousers, Shirts → Business Shirts).','#c97840'],
-       ['5','Set KPI: Sell-through >60% dalam 90 hari','Metric sederhana: jika tercapai → accelerate ke Phase 2. Jika tidak → riset ulang sub-category path tersebut.','#2d7a4f']].map(function(s){
-        return '<div style="display:flex;gap:10px;padding:8px 12px;margin-bottom:6px;border-radius:7px;border:1px solid #e8e3d8;border-left:3px solid '+s[3]+'">'+
-          '<div style="width:20px;height:20px;border-radius:50%;background:'+s[3]+';color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">'+s[0]+'</div>'+
-          '<div><div style="font-size:11px;font-weight:700">'+s[1]+'</div><div style="font-size:10px;color:#666;line-height:1.5">'+s[2]+'</div></div></div>';
-       }).join('')));
-  }
-
-  // Fix slide numbers
   var tot=slides.length;
   slides=slides.map(function(s){return s.replace(/Slide \d+ \/ X/,function(m){return m.replace('/ X','/ '+tot);});});
-
   var html='<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><title>HEYMALE Expansion Q2 2026</title><style>'+css+'</style></head><body>'+
     '<div style="text-align:center;margin-bottom:20px"><h1 style="color:#fafaf7;font-size:20px;font-weight:300">HEYMALE — Expansion Presentation</h1>'+
-    '<p style="color:rgba(255,255,255,.4);font-size:12px;margin-top:4px">Q2 2026 · Baseline: Zalando Taxonomy CSV 88 rows · '+({exec:'Executive Summary',full:'Full Deck',pitch:'Pitch Deck'}[fmt]||'')+' ('+tot+' Slides)</p></div>'+
-    slides.join('')+
-    '<div class="hint">Buka di browser → Ctrl+P → Save as PDF</div></body></html>';
-
+    '<p style="color:rgba(255,255,255,.4);font-size:12px;margin-top:4px">Q2 2026 · Zalando Taxonomy 88 rows · '+({exec:'Executive Summary',full:'Full Deck',pitch:'Pitch Deck'}[fmt]||'')+' ('+tot+' Slides)</p></div>'+
+    slides.join('')+'<div class="hint">Buka di browser → Ctrl+P → Save as PDF</div></body></html>';
   var blob=new Blob([html],{type:'text/html;charset=utf-8'});
   var url=URL.createObjectURL(blob);
   var a=document.createElement('a');
   a.href=url;a.download='HEYMALE_Expansion_Q2_2026.html';
   document.body.appendChild(a);a.click();
   setTimeout(function(){URL.revokeObjectURL(url);document.body.removeChild(a);},500);
-  var msg=el('export-msg');
-  msg.textContent='Berhasil! File HEYMALE_Expansion_Q2_2026.html sudah di-download.';
+  var msg=document.getElementById('export-msg');
+  msg.textContent='✓ Berhasil! File HEYMALE_Expansion_Q2_2026.html sudah di-download.';
   msg.style.display='block';
   setTimeout(function(){closeExport();msg.style.display='none';},4000);
 }
+
+/* ════════════════════════════════════════════════════════
+   NAV
+════════════════════════════════════════════════════════ */
+function showSec(name,btn){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('sec-'+name).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ════════════════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════════════════ */
+rebuildAll();
 </script>
 </body>
 </html>
